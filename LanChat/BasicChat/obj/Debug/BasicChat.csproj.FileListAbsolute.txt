@@ -1,0 +1,10 @@
+C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\bin\Debug\BasicChat.exe
+C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\bin\Debug\BasicChat.pdb
+C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.csproj.AssemblyReference.cache
+C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.DangNhap.resources
+C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.DangKy.resources
+C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.FormChat.resources
+C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.csproj.GenerateResource.cache
+C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.exe
+C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.pdb

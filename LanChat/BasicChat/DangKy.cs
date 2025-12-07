@@ -1,0 +1,92 @@
+using System;
+using System.Windows.Forms;
+using BasicChat.Networking;
+
+namespace BasicChat
+{
+    public partial class DangKy : Form
+    {
+        private ClientSocket _client;
+        private string _serverIp = "127.0.0.1";
+        private int _serverPort = 9000;
+
+        public DangKy()
+        {
+            InitializeComponent();
+            _client = new ClientSocket();
+            _client.OnMessageReceived = HandleServerResponse;
+            _client.OnError = (err) => MessageBox.Show(err, "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private async void btnRegister_Click(object sender, EventArgs e)
+        {
+            string user = txtUsername.Text.Trim();
+            string pass = txtPassword.Text.Trim();
+            string email = txtEmail.Text.Trim();
+
+            if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
+            {
+                MessageBox.Show("Vui long nhap day du thong tin.");
+                return;
+            }
+
+            btnRegister.Enabled = false;
+
+            if (!_client.IsConnected)
+            {
+                bool connected = await _client.ConnectAsync(_serverIp, _serverPort);
+                if (!connected)
+                {
+                    MessageBox.Show("Khong the ket noi den server.");
+                    btnRegister.Enabled = true;
+                    return;
+                }
+            }
+
+            var regMsg = new ChatMessage
+            {
+                Type = MessageType.REGISTER_REQUEST,
+                Sender = user,
+                Content = pass,
+                Receiver = email
+            };
+            _client.Send(regMsg);
+        }
+
+        private void HandleServerResponse(ChatMessage msg)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<ChatMessage>(HandleServerResponse), msg);
+                return;
+            }
+
+            if (msg.Type == MessageType.REGISTER_RESPONSE)
+            {
+                btnRegister.Enabled = true;
+                _client.Disconnect();
+
+                if (msg.Success)
+                {
+                    MessageBox.Show("Dang ky thanh cong! Hay dang nhap.");
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Dang ky that bai. Ten dang nhap da ton tai.");
+                }
+            }
+        }
+
+        private void lblBack_Click(object sender, EventArgs e)
+        {
+            _client.Disconnect();
+            this.Close();
+        }
+
+        private void DangKy_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _client.Disconnect();
+        }
+    }
+}
