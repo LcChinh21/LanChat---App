@@ -140,7 +140,7 @@ namespace BasicChat
             if (lstUsers.SelectedItem != null)
             {
                 _selectedUser = lstUsers.SelectedItem.ToString();
-                lblSelectedUser.Text = "Chat voi: " + _selectedUser;
+                //lblSelectedUser.Text = "Chat voi: " + _selectedUser;
             }
         }
 
@@ -157,13 +157,13 @@ namespace BasicChat
         private void UpdateChatMode()
         {
             _isGroupChat = rdGroupChat.Checked;
-            pnlUsers.Visible = !_isGroupChat;
+            //pnlUsers.Visible = !_isGroupChat;
 
             if (_isGroupChat)
             {
                 lblChatMode.Text = "Che do: Chat Nhom";
                 _selectedUser = null;
-                lblSelectedUser.Text = "";
+                //lblSelectedUser.Text = "";
             }
             else
             {
@@ -184,6 +184,11 @@ namespace BasicChat
         {
             _client.Disconnect();
             Application.Exit();
+        }
+
+        private void splitContainer2_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
