@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Forms;
 using BasicChat.Networking;
 
@@ -13,8 +13,8 @@ namespace BasicChat
         public DangKy()
         {
             InitializeComponent();
-            _client = new ClientSocket();
-            _client.OnMessageReceived = HandleServerResponse;
+            _client = new ClientSocket(); //tạo client socket
+            _client.OnMessageReceived = HandleServerResponse; //gán hàm xử lý tin nhắn từ server
             _client.OnError = (err) => MessageBox.Show(err, "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
@@ -33,7 +33,7 @@ namespace BasicChat
             btnRegister.Enabled = false;
 
             if (!_client.IsConnected)
-            {
+            {   //client kết nối tới sever qua _severIp và _serverPort
                 bool connected = await _client.ConnectAsync(_serverIp, _serverPort);
                 if (!connected)
                 {
@@ -42,15 +42,15 @@ namespace BasicChat
                     return;
                 }
             }
-
+            //khai báo 1 tin nhắn đăng ký và gửi lên server
             var regMsg = new ChatMessage
             {
-                Type = MessageType.REGISTER_REQUEST,
+                Type = MessageType.REGISTER_REQUEST, //loại message đăng ký tài khoản
                 Sender = user,
                 Content = pass,
                 Receiver = email
             };
-            _client.Send(regMsg);
+            _client.Send(regMsg); //gửi gói tin nhắn này lên server
         }
 
         private void HandleServerResponse(ChatMessage msg)

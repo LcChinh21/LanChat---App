@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -171,7 +171,7 @@ namespace BasicChat
             }
         }
 
-        private void txtMessage_KeyPress(object sender, KeyPressEventArgs e)
+        private void txtMessage_KeyPress(object sender, KeyPressEventArgs e) //enter tự động gửi
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
