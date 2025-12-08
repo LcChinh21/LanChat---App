@@ -22,3 +22,28 @@ C:\Users\Admin\source\repos\LanChat - Replit\LanChat\ServerLogConsole\obj\Debug\
 C:\Users\Admin\source\repos\LanChat - Replit\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.pdb
 C:\Users\Admin\source\repos\LanChat - Replit\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.genruntimeconfig.cache
 C:\Users\Admin\source\repos\LanChat - Replit\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ref\ServerLogConsole.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\ServerLogConsole.exe
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\ServerLogConsole.deps.json
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\ServerLogConsole.runtimeconfig.json
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\ServerLogConsole.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\ServerLogConsole.pdb
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\System.Data.SqlClient.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\runtimes\win-arm64\native\sni.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\runtimes\win-x64\native\sni.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\runtimes\win-x86\native\sni.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.csproj.AssemblyReference.cache
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.Form1.resources
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.csproj.GenerateResource.cache
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.GeneratedMSBuildEditorConfig.editorconfig
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.AssemblyInfoInputs.cache
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.AssemblyInfo.cs
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.csproj.CoreCompileInputs.cache
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.sourcelink.json
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLo.1C7DE091.Up2Date
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\refint\ServerLogConsole.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.pdb
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ServerLogConsole.genruntimeconfig.cache
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\obj\Debug\net6.0-windows\ref\ServerLogConsole.dll

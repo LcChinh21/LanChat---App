@@ -8,3 +8,13 @@ C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicCh
 C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.csproj.CoreCompileInputs.cache
 C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.exe
 C:\Users\Admin\source\repos\LanChat - Replit\LanChat\BasicChat\obj\Debug\BasicChat.pdb
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\bin\Debug\BasicChat.exe
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\bin\Debug\BasicChat.pdb
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.csproj.AssemblyReference.cache
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.DangNhap.resources
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.DangKy.resources
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.FormChat.resources
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.csproj.GenerateResource.cache
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.csproj.CoreCompileInputs.cache
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.exe
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.pdb

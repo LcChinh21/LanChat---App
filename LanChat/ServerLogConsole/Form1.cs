@@ -33,7 +33,7 @@ namespace ServerLogConsole
             try
             {
                 int port = int.Parse(txtPort.Text);
-                
+                //t?o 1 ??i t??ng csdl, ki?m tra và ??m b?o database s?n sàng
                 var dbHelper = new DatabaseHelper();
                 var (dbSuccess, dbMessage) = dbHelper.EnsureDatabase();
                 
@@ -46,10 +46,10 @@ namespace ServerLogConsole
                     LogMessage(dbMessage, Color.Red);
                     LogMessage("Server van chay nhung dang nhap/dang ky se that bai!", Color.Orange);
                 }
-                
+                //kh?i ??ng sever và truy?n hàm log
                 _server = new ServerSocket(port, LogMessage);
                 _server.Start();
-
+                //chuy?n d?ng button
                 _isRunning = true;
                 btnStart.Text = "Dung Server";
                 btnStart.BackColor = Color.Red;
@@ -67,6 +67,7 @@ namespace ServerLogConsole
         {
             try
             {
+                //d?ng sever và ??i d?ng nút
                 _server?.Stop();
                 _isRunning = false;
                 btnStart.Text = "Chay Server";
@@ -81,14 +82,14 @@ namespace ServerLogConsole
             }
         }
 
-        public void LogMessage(string message, Color color)
+        public void LogMessage(string message, Color color) //hàm ghi l?i tr?ng thái c?a server
         {
-            if (rtbLog.InvokeRequired)
+            if (rtbLog.InvokeRequired)//true thì ?ang ? thread ph? false thì ? UI thread
             {
                 rtbLog.Invoke(new Action<string, Color>(LogMessage), message, color);
                 return;
             }
-
+            //t? ??ng cu?n xu?ng d??i và ??i màu ch?
             rtbLog.SelectionStart = rtbLog.TextLength;
             rtbLog.SelectionColor = color;
             rtbLog.AppendText($"[{DateTime.Now:HH:mm:ss}] {message}\n");
