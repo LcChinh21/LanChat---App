@@ -12,7 +12,12 @@ namespace ServerLogConsole.Networking
         PRIVATE_MESSAGE,
         USER_LIST,
         USER_JOINED,
-        USER_LEFT
+        USER_LEFT,
+        CREATE_GROUP_REQUEST,
+        CREATE_GROUP_RESPONSE,
+        GROUP_INVITE_REQUEST,
+        GROUP_INVITE_RESPONSE,
+        GROUP_CHAT_MESSAGE
     }
 
     public class ChatMessage
