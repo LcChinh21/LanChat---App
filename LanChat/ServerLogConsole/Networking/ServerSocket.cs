@@ -27,6 +27,7 @@ namespace ServerLogConsole.Networking
         private Dictionary<string, ClientInfo> _clients;
         private Action<string, Color> _logAction;
         private DatabaseHelper _dbHelper;
+        private Dictionary<string, List<string>> _groups = new Dictionary<string, List<string>>();
 
         public ServerSocket(int port, Action<string, Color> logAction)
         {
@@ -360,6 +361,38 @@ namespace ServerLogConsole.Networking
 
                 BroadcastUserList();
             }
+        }
+        private void HandleCreateGroup(ClientInfo clientInfo, ChatMessage message)
+        {
+            if (!clientInfo.IsAuthenticated)
+                return;
+
+            string groupname = message.Content;
+            lock (_groups)
+            {
+                if (_groups.ContainsKey(groupname))
+                {
+                    var errorMsg = new ChatMessage
+                    {
+                        Type = MessageType.CREATE_GROUP_RESPONSE,
+                        Success = false,
+                        Content = "Nhom da ton tai"
+                    };
+                    SendToClient(clientInfo, errorMsg);
+                    return;
+                }
+                _groups[groupname] = new List<string>
+                {
+                    clientInfo.Username
+                };
+            }
+            var succcessMsg = new ChatMessage
+            {
+                Type = MessageType.CREATE_GROUP_RESPONSE,
+                Success = true,
+                Content = "Tao nhom thanh cong"
+            };
+            SendToClient(clientInfo, succcessMsg);
         }
     }
 }

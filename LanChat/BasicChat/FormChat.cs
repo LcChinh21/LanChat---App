@@ -68,14 +68,14 @@ namespace BasicChat
 
         private void UpdateUserList(string[] users)
         {
-            lstUsers.Items.Clear();
+            lstUsers.Items.Clear(); //xóa hết danh sách user hiện có
             if (users != null)
             {
                 foreach (string user in users)
                 {
                     if (!string.IsNullOrEmpty(user) && user != _currentUser)
                     {
-                        lstUsers.Items.Add(user);
+                        lstUsers.Items.Add(user); //cập nhật lại danh sách user
                     }
                 }
             }
@@ -121,7 +121,7 @@ namespace BasicChat
             txtMessage.Focus();
         }
 
-        private void AppendChat(string text, Color color)
+        private void AppendChat(string text, Color color) //hiện chat trên rtb
         {
             if (rtbChat.InvokeRequired)
             {
@@ -180,7 +180,7 @@ namespace BasicChat
             }
         }
 
-        private void FormChat_FormClosing(object sender, FormClosingEventArgs e)
+        private void FormChat_FormClosing(object sender, FormClosingEventArgs e) //đóng form thì ngắt kết nối
         {
             _client.Disconnect();
             Application.Exit();

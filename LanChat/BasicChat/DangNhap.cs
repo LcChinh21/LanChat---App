@@ -73,7 +73,7 @@ namespace BasicChat
                 else
                 {
                     MessageBox.Show("Sai ten dang nhap hoac mat khau.");
-                    _client.Disconnect();
+                    _client.Disconnect(); //Khi ??ng nh?p th?t b?i thì ?óng k?t n?i
                 }
             }
         }
