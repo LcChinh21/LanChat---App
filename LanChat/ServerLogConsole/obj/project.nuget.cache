@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "q9+SghOTcVE=",
+  "dgSpecHash": "pliEF4opXvk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Source\\Repos\\LanChat - App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
+  "projectFilePath": "D:\\LanChat--App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
@@ -23,9 +23,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'System.Data.SqlClient' 4.8.5 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7",
-      "projectPath": "C:\\Users\\Admin\\Source\\Repos\\LanChat - App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
+      "projectPath": "D:\\LanChat--App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\Admin\\Source\\Repos\\LanChat - App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
+      "filePath": "D:\\LanChat--App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
       "libraryId": "System.Data.SqlClient",
       "targetGraphs": [
         "net6.0-windows7.0"
