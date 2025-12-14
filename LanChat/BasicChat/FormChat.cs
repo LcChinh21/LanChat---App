@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using BasicChat.Networking;
+using System.Linq;
 
 namespace BasicChat
 {
@@ -12,6 +13,9 @@ namespace BasicChat
         private string _currentUser;
         private string _selectedUser = null;
         private bool _isGroupChat = true;
+        private List<Button> _groupButtons = new List<Button>();
+        private string _currentGroup = null;
+
 
         public FormChat(string username, ClientSocket client)
         {
@@ -189,6 +193,90 @@ namespace BasicChat
         private void splitContainer2_Panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+        private void SendCreateGroupRequest(string groupName)
+        {
+            var msg = new ChatMessage
+            {
+                Type = MessageType.CREATE_GROUP_REQUEST,
+                Content = groupName
+            };
+
+            _client.Send(msg);
+        }
+        private string ShowInputDialog(string title, string prompt)
+        {
+            Form form = new Form();
+            Label lbl = new Label();
+            TextBox txt = new TextBox();
+            Button btnOk = new Button();
+            Button btnCancel = new Button();
+
+            form.Text = title;
+            form.FormBorderStyle = FormBorderStyle.FixedDialog;
+            form.StartPosition = FormStartPosition.CenterParent;
+            form.ClientSize = new Size(300, 130);
+            form.MaximizeBox = false;
+            form.MinimizeBox = false;
+
+            lbl.Text = prompt;
+            lbl.SetBounds(10, 10, 280, 20);
+
+            txt.SetBounds(10, 35, 270, 25);
+
+            btnOk.Text = "OK";
+            btnOk.SetBounds(60, 70, 75, 30);
+            btnOk.DialogResult = DialogResult.OK;
+
+            btnCancel.Text = "Huy";
+            btnCancel.SetBounds(150, 70, 75, 30);
+            btnCancel.DialogResult = DialogResult.Cancel;
+
+            form.Controls.AddRange(new Control[] { lbl, txt, btnOk, btnCancel });
+            form.AcceptButton = btnOk;
+            form.CancelButton = btnCancel;
+
+            return form.ShowDialog() == DialogResult.OK ? txt.Text : null;
+        }
+
+        private void CreateGroupButton(string groupName)
+        {
+            // Không tạo trùng
+            if (_groupButtons.Any(b => b.Text == groupName))
+                return;
+
+            Button btn = new Button();
+            btn.Text = groupName;
+            btn.Width = splitContainer2.Panel1.Width - 10;
+            btn.Height = 35;
+            btn.Left = 5;
+            btn.Top = 40 + _groupButtons.Count * 40;
+
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.ForeColor = Color.White;
+            btn.BackColor = Color.FromArgb(64, 64, 90);
+            btn.FlatAppearance.BorderSize = 0;
+
+            btn.Click += (s, e) =>
+            {
+                _currentGroup = groupName;
+                rdGroupChat.Checked = true;
+                lblChatMode.Text = $"Che do: Chat Nhom ({groupName})";
+            };
+
+            splitContainer2.Panel1.Controls.Add(btn);
+            _groupButtons.Add(btn);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string groupName = ShowInputDialog("Tao Group", "Nhap ten group:");
+
+            if (string.IsNullOrWhiteSpace(groupName))
+                return;
+
+            CreateGroupButton(groupName);
+            SendCreateGroupRequest(groupName);
         }
     }
 }

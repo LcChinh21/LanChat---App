@@ -3,16 +3,36 @@
   "WorkspaceRootPath": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\dangky.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\formchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\formchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9CBA7586-A366-FF78-326F-06FFE70A5B56}|ServerLogConsole\\ServerLogConsole.csproj|d:\\hoctap\\hk3\\lttq\\lanchat\\lanchat---app\\lanchat\\serverlogconsole\\networking\\serversocket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9CBA7586-A366-FF78-326F-06FFE70A5B56}|ServerLogConsole\\ServerLogConsole.csproj|solutionrelative:serverlogconsole\\networking\\serversocket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\formchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\formchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\dangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\dangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\dangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\dangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|d:\\hoctap\\hk3\\lttq\\lanchat\\lanchat---app\\lanchat\\basicchat\\dangky.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\dangky.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\dangky.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\dangky.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9CBA7586-A366-FF78-326F-06FFE70A5B56}|ServerLogConsole\\ServerLogConsole.csproj|d:\\hoctap\\hk3\\lttq\\lanchat\\lanchat---app\\lanchat\\serverlogconsole\\networking\\serversocket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{9CBA7586-A366-FF78-326F-06FFE70A5B56}|ServerLogConsole\\ServerLogConsole.csproj|solutionrelative:serverlogconsole\\networking\\serversocket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9CBA7586-A366-FF78-326F-06FFE70A5B56}|ServerLogConsole\\ServerLogConsole.csproj|d:\\hoctap\\hk3\\lttq\\lanchat\\lanchat---app\\lanchat\\serverlogconsole\\networking\\messageprotocol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -31,26 +51,6 @@
       "RelativeMoniker": "D:0:0:{9CBA7586-A366-FF78-326F-06FFE70A5B56}|ServerLogConsole\\ServerLogConsole.csproj|solutionrelative:serverlogconsole\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\formchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\formchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\dangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\dangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\formchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\formchat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\dangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\dangnhap.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\basicchat\\networking\\clientsocket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6569973E-E0F7-45F3-8072-CCB6F7769476}|BasicChat\\BasicChat.csproj|solutionrelative:basicchat\\networking\\clientsocket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -66,7 +66,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -78,13 +78,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "DangKy.cs",
               "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangKy.cs",
               "RelativeDocumentMoniker": "BasicChat\\DangKy.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangKy.cs",
-              "RelativeToolTip": "BasicChat\\DangKy.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAUwE0AAAANAAAAAAAAAA==",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangKy.cs*",
+              "RelativeToolTip": "BasicChat\\DangKy.cs*",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAcwEMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-08T01:29:35.758Z",
               "EditorCaption": ""
@@ -95,52 +95,92 @@
               "Title": "ServerSocket.cs",
               "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Networking\\ServerSocket.cs",
               "RelativeDocumentMoniker": "ServerLogConsole\\Networking\\ServerSocket.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Networking\\ServerSocket.cs",
-              "RelativeToolTip": "ServerLogConsole\\Networking\\ServerSocket.cs",
-              "ViewState": "AgIAAFgBAAAAAAAAAADwv20BAABAAAAAAAAAAA==",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Networking\\ServerSocket.cs*",
+              "RelativeToolTip": "ServerLogConsole\\Networking\\ServerSocket.cs*",
+              "ViewState": "AgIAAFEBAAAAAAAAAAAAAG0BAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-07T14:05:20.442Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MessageProtocol.cs",
-              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Networking\\MessageProtocol.cs",
-              "RelativeDocumentMoniker": "ServerLogConsole\\Networking\\MessageProtocol.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Networking\\MessageProtocol.cs",
-              "RelativeToolTip": "ServerLogConsole\\Networking\\MessageProtocol.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAIwCgAAABAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\Program.cs",
+              "RelativeDocumentMoniker": "BasicChat\\Program.cs",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\Program.cs",
+              "RelativeToolTip": "BasicChat\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-12T07:00:27.079Z",
+              "WhenOpened": "2025-12-08T10:47:41.025Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DangKy.cs [Design]",
-              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangKy.cs",
-              "RelativeDocumentMoniker": "BasicChat\\DangKy.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangKy.cs [Design]",
-              "RelativeToolTip": "BasicChat\\DangKy.cs [Design]",
+              "DocumentIndex": 5,
+              "Title": "DangNhap.cs [Design]",
+              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangNhap.cs",
+              "RelativeDocumentMoniker": "BasicChat\\DangNhap.cs",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangNhap.cs [Design]*",
+              "RelativeToolTip": "BasicChat\\DangNhap.cs [Design]*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-07T13:52:26.942Z",
+              "WhenOpened": "2025-12-07T13:52:25.013Z",
               "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Form1.cs [Design]",
-              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Form1.cs",
-              "RelativeDocumentMoniker": "ServerLogConsole\\Form1.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Form1.cs [Design]",
-              "RelativeToolTip": "ServerLogConsole\\Form1.cs [Design]",
+              "DocumentIndex": 4,
+              "Title": "DangNhap.cs",
+              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangNhap.cs",
+              "RelativeDocumentMoniker": "BasicChat\\DangNhap.cs",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangNhap.cs*",
+              "RelativeToolTip": "BasicChat\\DangNhap.cs*",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAYwEsAAABTAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-07T15:55:49.322Z"
+              "WhenOpened": "2025-12-07T13:59:32.565Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
+              "Title": "FormChat.cs [Design]",
+              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\FormChat.cs",
+              "RelativeDocumentMoniker": "BasicChat\\FormChat.cs",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\FormChat.cs [Design]*",
+              "RelativeToolTip": "BasicChat\\FormChat.cs [Design]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T13:52:21.04Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Form1.cs",
+              "RelativeDocumentMoniker": "ServerLogConsole\\Form1.cs",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Form1.cs",
+              "RelativeToolTip": "ServerLogConsole\\Form1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFQAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-07T16:03:45.78Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FormChat.cs",
+              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\FormChat.cs",
+              "RelativeDocumentMoniker": "BasicChat\\FormChat.cs",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\FormChat.cs*",
+              "RelativeToolTip": "BasicChat\\FormChat.cs*",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAYwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-08T01:47:43.703Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "DatabaseHelper.cs",
               "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\DatabaseHelper.cs",
               "RelativeDocumentMoniker": "ServerLogConsole\\DatabaseHelper.cs",
@@ -153,73 +193,40 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Form1.cs",
+              "DocumentIndex": 11,
+              "Title": "Form1.cs [Design]",
               "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Form1.cs",
               "RelativeDocumentMoniker": "ServerLogConsole\\Form1.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Form1.cs",
-              "RelativeToolTip": "ServerLogConsole\\Form1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFQAAAArAAAAAAAAAA==",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Form1.cs [Design]",
+              "RelativeToolTip": "ServerLogConsole\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-07T16:03:45.78Z"
+              "WhenOpened": "2025-12-07T15:55:49.322Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\Program.cs",
-              "RelativeDocumentMoniker": "BasicChat\\Program.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\Program.cs",
-              "RelativeToolTip": "BasicChat\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Title": "DangKy.cs [Design]",
+              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangKy.cs",
+              "RelativeDocumentMoniker": "BasicChat\\DangKy.cs",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangKy.cs [Design]*",
+              "RelativeToolTip": "BasicChat\\DangKy.cs [Design]*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T10:47:41.025Z"
+              "WhenOpened": "2025-12-07T13:52:26.942Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
-              "Title": "FormChat.cs",
-              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\FormChat.cs",
-              "RelativeDocumentMoniker": "BasicChat\\FormChat.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\FormChat.cs",
-              "RelativeToolTip": "BasicChat\\FormChat.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAANAAAAAAAAAA==",
+              "Title": "MessageProtocol.cs",
+              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Networking\\MessageProtocol.cs",
+              "RelativeDocumentMoniker": "ServerLogConsole\\Networking\\MessageProtocol.cs",
+              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\Networking\\MessageProtocol.cs",
+              "RelativeToolTip": "ServerLogConsole\\Networking\\MessageProtocol.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAIwCgAAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-08T01:47:43.703Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "DangNhap.cs [Design]",
-              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangNhap.cs",
-              "RelativeDocumentMoniker": "BasicChat\\DangNhap.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangNhap.cs [Design]",
-              "RelativeToolTip": "BasicChat\\DangNhap.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-07T13:52:25.013Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "FormChat.cs [Design]",
-              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\FormChat.cs",
-              "RelativeDocumentMoniker": "BasicChat\\FormChat.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\FormChat.cs [Design]",
-              "RelativeToolTip": "BasicChat\\FormChat.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-07T13:52:21.04Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "DangNhap.cs",
-              "DocumentMoniker": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangNhap.cs",
-              "RelativeDocumentMoniker": "BasicChat\\DangNhap.cs",
-              "ToolTip": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\BasicChat\\DangNhap.cs",
-              "RelativeToolTip": "BasicChat\\DangNhap.cs",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAgwBEAAABBAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-07T13:59:32.565Z"
+              "WhenOpened": "2025-12-12T07:00:27.079Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -231,7 +238,8 @@
               "RelativeToolTip": "BasicChat\\Networking\\MessageProtocol.cs",
               "ViewState": "AgIAAB4AAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-07T14:04:49.357Z"
+              "WhenOpened": "2025-12-07T14:04:49.357Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -243,7 +251,8 @@
               "RelativeToolTip": "BasicChat\\Networking\\ClientSocket.cs",
               "ViewState": "AgIAAC8AAAAAAAAAAAAswAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-07T14:05:08.386Z"
+              "WhenOpened": "2025-12-07T14:05:08.386Z",
+              "EditorCaption": ""
             }
           ]
         }

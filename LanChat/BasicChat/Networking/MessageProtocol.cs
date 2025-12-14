@@ -12,7 +12,11 @@ namespace BasicChat.Networking
         PRIVATE_MESSAGE,
         USER_LIST,
         USER_JOINED,
-        USER_LEFT
+        USER_LEFT,
+        GROUP_JOIN,
+        GROUP_LEAVE,
+        CREATE_GROUP_REQUEST,
+        CREATE_GROUP_RESPONSE
     }
 
     public class ChatMessage

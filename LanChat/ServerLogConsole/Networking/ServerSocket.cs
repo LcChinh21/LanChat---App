@@ -1,3 +1,4 @@
+using BasicChat.Networking;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -150,12 +151,24 @@ namespace ServerLogConsole.Networking
                     HandleRegister(clientInfo, message);
                     break;
 
+                case MessageType.PRIVATE_MESSAGE:
+                    HandlePrivateMessage(clientInfo, message);
+                    break;
+
                 case MessageType.GROUP_MESSAGE:
                     HandleGroupMessage(clientInfo, message);
                     break;
 
-                case MessageType.PRIVATE_MESSAGE:
-                    HandlePrivateMessage(clientInfo, message);
+                case MessageType.GROUP_JOIN:
+                    HandleGroupJoin(clientInfo, message);
+                    break;
+
+                case MessageType.GROUP_LEAVE:
+                    HandleGroupLeave(clientInfo, message);
+                    break;
+
+                case MessageType.CREATE_GROUP_REQUEST:
+                    HandleCreateGroup(clientInfo, message);
                     break;
             }
         }
@@ -239,12 +252,38 @@ namespace ServerLogConsole.Networking
 
         private void HandleGroupMessage(ClientInfo clientInfo, ChatMessage message)
         {
-            if (!clientInfo.IsAuthenticated) return;
+            if (!clientInfo.IsAuthenticated)
+                return;
 
-            _logAction($"[Nhom] {message.Sender}: {message.Content}", Color.White);
+            // Dùng Receiver làm tên group
+            string groupName = message.Receiver;
+            if (string.IsNullOrEmpty(groupName))
+                return;
 
-            BroadcastExcept(message, clientInfo.Username);
+            List<string> members;
+            lock (_groups)
+            {
+                if (!_groups.TryGetValue(groupName, out members))
+                    return;
+            }
+
+            _logAction(
+                $"[Nhom:{groupName}] {message.Sender}: {message.Content}",
+                Color.White
+            );
+
+            foreach (var username in members)
+            {
+                if (username == clientInfo.Username)
+                    continue;
+
+                if (_clients.TryGetValue(username, out ClientInfo target))
+                {
+                    SendToClient(target, message);
+                }
+            }
         }
+
 
         private void HandlePrivateMessage(ClientInfo clientInfo, ChatMessage message)
         {
@@ -394,5 +433,54 @@ namespace ServerLogConsole.Networking
             };
             SendToClient(clientInfo, succcessMsg);
         }
+        private void HandleGroupJoin(ClientInfo clientInfo, ChatMessage message)
+        {
+            if (!clientInfo.IsAuthenticated)
+                return;
+
+            string groupName = message.Receiver;
+            if (string.IsNullOrEmpty(groupName))
+                return;
+
+            lock (_groups)
+            {
+                if (!_groups.ContainsKey(groupName))
+                    _groups[groupName] = new List<string>();
+
+                if (!_groups[groupName].Contains(clientInfo.Username))
+                    _groups[groupName].Add(clientInfo.Username);
+            }
+
+            _logAction(
+                $"{clientInfo.Username} joined group {groupName}",
+                Color.LightGreen
+            );
+        }
+        private void HandleGroupLeave(ClientInfo clientInfo, ChatMessage message)
+        {
+            if (!clientInfo.IsAuthenticated)
+                return;
+
+            string groupName = message.Receiver;
+            if (string.IsNullOrEmpty(groupName))
+                return;
+
+            lock (_groups)
+            {
+                if (_groups.TryGetValue(groupName, out var members))
+                {
+                    members.Remove(clientInfo.Username);
+
+                    if (members.Count == 0)
+                        _groups.Remove(groupName);
+                }
+            }
+
+            _logAction(
+                $"{clientInfo.Username} left group {groupName}",
+                Color.Orange
+            );
+        }
+
     }
 }

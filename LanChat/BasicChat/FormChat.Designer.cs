@@ -37,9 +37,10 @@ namespace BasicChat
             this.pnlChatMode = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.lblGroupChats = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.splitter2 = new System.Windows.Forms.Splitter();
-            this.lblGroupChats = new System.Windows.Forms.Label();
+            this.addGroupButton = new System.Windows.Forms.Button();
             this.pnlChatMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -57,7 +58,7 @@ namespace BasicChat
             this.rtbChat.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbChat.ForeColor = System.Drawing.Color.White;
             this.rtbChat.Location = new System.Drawing.Point(4, 86);
-            this.rtbChat.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rtbChat.Margin = new System.Windows.Forms.Padding(4);
             this.rtbChat.Name = "rtbChat";
             this.rtbChat.ReadOnly = true;
             this.rtbChat.Size = new System.Drawing.Size(496, 463);
@@ -70,7 +71,7 @@ namespace BasicChat
             this.txtMessage.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMessage.Location = new System.Drawing.Point(8, 573);
-            this.txtMessage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(4);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(377, 27);
             this.txtMessage.TabIndex = 3;
@@ -82,7 +83,7 @@ namespace BasicChat
             this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSend.ForeColor = System.Drawing.Color.White;
             this.btnSend.Location = new System.Drawing.Point(393, 567);
-            this.btnSend.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSend.Margin = new System.Windows.Forms.Padding(4);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(107, 37);
             this.btnSend.TabIndex = 4;
@@ -109,7 +110,7 @@ namespace BasicChat
             this.lstUsers.FormattingEnabled = true;
             this.lstUsers.ItemHeight = 16;
             this.lstUsers.Location = new System.Drawing.Point(8, 32);
-            this.lstUsers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstUsers.Margin = new System.Windows.Forms.Padding(4);
             this.lstUsers.Name = "lstUsers";
             this.lstUsers.Size = new System.Drawing.Size(290, 592);
             this.lstUsers.TabIndex = 1;
@@ -146,7 +147,7 @@ namespace BasicChat
             this.rdGroupChat.Checked = true;
             this.rdGroupChat.ForeColor = System.Drawing.Color.White;
             this.rdGroupChat.Location = new System.Drawing.Point(13, 10);
-            this.rdGroupChat.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rdGroupChat.Margin = new System.Windows.Forms.Padding(4);
             this.rdGroupChat.Name = "rdGroupChat";
             this.rdGroupChat.Size = new System.Drawing.Size(94, 20);
             this.rdGroupChat.TabIndex = 0;
@@ -160,7 +161,7 @@ namespace BasicChat
             this.rdPrivateChat.AutoSize = true;
             this.rdPrivateChat.ForeColor = System.Drawing.Color.White;
             this.rdPrivateChat.Location = new System.Drawing.Point(160, 10);
-            this.rdPrivateChat.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rdPrivateChat.Margin = new System.Windows.Forms.Padding(4);
             this.rdPrivateChat.Name = "rdPrivateChat";
             this.rdPrivateChat.Size = new System.Drawing.Size(94, 20);
             this.rdPrivateChat.TabIndex = 1;
@@ -174,7 +175,7 @@ namespace BasicChat
             this.pnlChatMode.Controls.Add(this.rdPrivateChat);
             this.pnlChatMode.Controls.Add(this.lblChatMode);
             this.pnlChatMode.Location = new System.Drawing.Point(8, 35);
-            this.pnlChatMode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlChatMode.Margin = new System.Windows.Forms.Padding(4);
             this.pnlChatMode.Name = "pnlChatMode";
             this.pnlChatMode.Size = new System.Drawing.Size(492, 43);
             this.pnlChatMode.TabIndex = 1;
@@ -207,6 +208,7 @@ namespace BasicChat
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.splitContainer2.Panel1.Controls.Add(this.addGroupButton);
             this.splitContainer2.Panel1.Controls.Add(this.lblGroupChats);
             this.splitContainer2.Panel1.Controls.Add(this.splitter1);
             this.splitContainer2.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer2_Panel1_Paint);
@@ -222,6 +224,18 @@ namespace BasicChat
             this.splitContainer2.Size = new System.Drawing.Size(760, 632);
             this.splitContainer2.SplitterDistance = 253;
             this.splitContainer2.TabIndex = 0;
+            // 
+            // lblGroupChats
+            // 
+            this.lblGroupChats.AutoSize = true;
+            this.lblGroupChats.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblGroupChats.ForeColor = System.Drawing.Color.Silver;
+            this.lblGroupChats.Location = new System.Drawing.Point(10, 11);
+            this.lblGroupChats.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblGroupChats.Name = "lblGroupChats";
+            this.lblGroupChats.Size = new System.Drawing.Size(100, 20);
+            this.lblGroupChats.TabIndex = 1;
+            this.lblGroupChats.Text = "Group Chats:";
             // 
             // splitter1
             // 
@@ -239,17 +253,15 @@ namespace BasicChat
             this.splitter2.TabIndex = 2;
             this.splitter2.TabStop = false;
             // 
-            // lblGroupChats
+            // addGroupButton
             // 
-            this.lblGroupChats.AutoSize = true;
-            this.lblGroupChats.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblGroupChats.ForeColor = System.Drawing.Color.Silver;
-            this.lblGroupChats.Location = new System.Drawing.Point(10, 11);
-            this.lblGroupChats.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblGroupChats.Name = "lblGroupChats";
-            this.lblGroupChats.Size = new System.Drawing.Size(100, 20);
-            this.lblGroupChats.TabIndex = 1;
-            this.lblGroupChats.Text = "Group Chats:";
+            this.addGroupButton.Location = new System.Drawing.Point(163, 11);
+            this.addGroupButton.Name = "addGroupButton";
+            this.addGroupButton.Size = new System.Drawing.Size(75, 23);
+            this.addGroupButton.TabIndex = 2;
+            this.addGroupButton.Text = "button1";
+            this.addGroupButton.UseVisualStyleBackColor = true;
+            this.addGroupButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // FormChat
             // 
@@ -259,7 +271,7 @@ namespace BasicChat
             this.ClientSize = new System.Drawing.Size(1066, 636);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "FormChat";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -287,5 +299,6 @@ namespace BasicChat
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.Splitter splitter2;
         private System.Windows.Forms.Label lblGroupChats;
+        private System.Windows.Forms.Button addGroupButton;
     }
 }

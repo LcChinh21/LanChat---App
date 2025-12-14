@@ -1,6 +1,6 @@
 using System;
 
-namespace ServerLogConsole.Networking
+namespace BasicChat.Networking
 {
     public enum MessageType
     {
@@ -13,11 +13,10 @@ namespace ServerLogConsole.Networking
         USER_LIST,
         USER_JOINED,
         USER_LEFT,
+        GROUP_JOIN,
+        GROUP_LEAVE,
         CREATE_GROUP_REQUEST,
-        CREATE_GROUP_RESPONSE,
-        GROUP_INVITE_REQUEST,
-        GROUP_INVITE_RESPONSE,
-        GROUP_CHAT_MESSAGE
+        CREATE_GROUP_RESPONSE
     }
 
     public class ChatMessage
