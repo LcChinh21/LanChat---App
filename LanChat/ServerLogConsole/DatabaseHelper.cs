@@ -1,5 +1,5 @@
-using System;
-using System.Data.SqlClient;
+﻿using System;
+using MySql.Data.MySqlClient;
 
 namespace ServerLogConsole
 {
@@ -13,30 +13,27 @@ namespace ServerLogConsole
 
         public DatabaseHelper()
         {
-            _connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=LanChatDB;Integrated Security=True;Connect Timeout=5";
-            _masterConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=master;Integrated Security=True;Connect Timeout=5";
+            _connectionString =
+                "Server=sql12.freesqldatabase.com;" +
+                "Database=sql12811813;" +
+                "User=sql12811813;" +
+                "Password=CcqIIHHKaH;" +
+                "Port=3306;";
+
+            _masterConnectionString = _connectionString; // giữ cho khỏi lỗi
         }
 
         public DatabaseHelper(string connectionString)
         {
             _connectionString = connectionString;
-            int idx = connectionString.IndexOf("Initial Catalog=");
-            if (idx >= 0)
-            {
-                _masterConnectionString = connectionString.Substring(0, idx) + "Initial Catalog=master;" + 
-                    connectionString.Substring(connectionString.IndexOf(";", idx) + 1);
-            }
-            else
-            {
-                _masterConnectionString = connectionString;
-            }
+            _masterConnectionString = connectionString;
         }
 
         public bool TestConnection()
         {
             try
             {
-                using (var conn = new SqlConnection(_connectionString))
+                using (var conn = new MySqlConnection(_connectionString))
                 {
                     conn.Open();
                     _lastError = null;
@@ -54,16 +51,19 @@ namespace ServerLogConsole
         {
             try
             {
-                using (var conn = new SqlConnection(_connectionString))
+                using (var conn = new MySqlConnection(_connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username AND Password = @Password";
-                    using (var cmd = new SqlCommand(query, conn))
+                    string query =
+                        "SELECT COUNT(*) FROM Users " +
+                        "WHERE Username = @Username AND Password = @Password";
+
+                    using (var cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@Username", username);
                         cmd.Parameters.AddWithValue("@Password", password);
 
-                        int count = (int)cmd.ExecuteScalar();
+                        long count = (long)cmd.ExecuteScalar();
                         _lastError = null;
                         return count > 0;
                     }
@@ -80,15 +80,18 @@ namespace ServerLogConsole
         {
             try
             {
-                using (var conn = new SqlConnection(_connectionString))
+                using (var conn = new MySqlConnection(_connectionString))
                 {
                     conn.Open();
 
-                    string checkQuery = "SELECT COUNT(*) FROM Users WHERE Username = @Username";
-                    using (var checkCmd = new SqlCommand(checkQuery, conn))
+                    string checkQuery =
+                        "SELECT COUNT(*) FROM Users WHERE Username = @Username";
+
+                    using (var checkCmd = new MySqlCommand(checkQuery, conn))
                     {
                         checkCmd.Parameters.AddWithValue("@Username", username);
-                        int exists = (int)checkCmd.ExecuteScalar();
+                        long exists = (long)checkCmd.ExecuteScalar();
+
                         if (exists > 0)
                         {
                             _lastError = "Ten dang nhap da ton tai";
@@ -96,12 +99,16 @@ namespace ServerLogConsole
                         }
                     }
 
-                    string insertQuery = "INSERT INTO Users (Username, Password, Email) VALUES (@Username, @Password, @Email)";
-                    using (var insertCmd = new SqlCommand(insertQuery, conn))
+                    string insertQuery =
+                        "INSERT INTO Users (Username, Password, Email) " +
+                        "VALUES (@Username, @Password, @Email)";
+
+                    using (var insertCmd = new MySqlCommand(insertQuery, conn))
                     {
                         insertCmd.Parameters.AddWithValue("@Username", username);
                         insertCmd.Parameters.AddWithValue("@Password", password);
-                        insertCmd.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(email) ? DBNull.Value : email);
+                        insertCmd.Parameters.AddWithValue("@Email",
+                            string.IsNullOrEmpty(email) ? DBNull.Value : email);
 
                         int rows = insertCmd.ExecuteNonQuery();
                         _lastError = null;
@@ -120,18 +127,20 @@ namespace ServerLogConsole
         {
             try
             {
-                using (var masterConn = new SqlConnection(_masterConnectionString))
+                using (var masterConn = new MySqlConnection(_masterConnectionString))
                 {
                     masterConn.Open();
 
-                    string checkDbQuery = "SELECT database_id FROM sys.databases WHERE Name = 'LanChatDB'";
-                    using (var checkCmd = new SqlCommand(checkDbQuery, masterConn))
+                    string checkDbQuery =
+                        "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'LanChatDB'";
+
+                    using (var checkCmd = new MySqlCommand(checkDbQuery, masterConn))
                     {
                         var result = checkCmd.ExecuteScalar();
                         if (result == null)
                         {
                             string createDbQuery = "CREATE DATABASE LanChatDB";
-                            using (var createCmd = new SqlCommand(createDbQuery, masterConn))
+                            using (var createCmd = new MySqlCommand(createDbQuery, masterConn))
                             {
                                 createCmd.ExecuteNonQuery();
                             }
@@ -139,19 +148,18 @@ namespace ServerLogConsole
                     }
                 }
 
-                using (var conn = new SqlConnection(_connectionString))
+                using (var conn = new MySqlConnection(_connectionString))
                 {
                     conn.Open();
                     string createTableQuery = @"
-                        IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Users' AND xtype='U')
-                        CREATE TABLE Users (
-                            Id INT IDENTITY(1,1) PRIMARY KEY,
-                            Username NVARCHAR(50) NOT NULL UNIQUE,
-                            Password NVARCHAR(255) NOT NULL,
-                            Email NVARCHAR(100) NULL
+                        CREATE TABLE IF NOT EXISTS Users (
+                            Id INT AUTO_INCREMENT PRIMARY KEY,
+                            Username VARCHAR(50) NOT NULL UNIQUE,
+                            Password VARCHAR(255) NOT NULL,
+                            Email VARCHAR(100) NULL
                         )";
 
-                    using (var cmd = new SqlCommand(createTableQuery, conn))
+                    using (var cmd = new MySqlCommand(createTableQuery, conn))
                     {
                         cmd.ExecuteNonQuery();
                     }

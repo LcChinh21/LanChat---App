@@ -1,4 +1,4 @@
-using BasicChat.Networking;
+﻿using BasicChat.Networking;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -252,21 +252,27 @@ namespace ServerLogConsole.Networking
 
         private void HandleGroupMessage(ClientInfo clientInfo, ChatMessage message)
         {
+            // Kiểm tra xác thực
+            // IsAuthenticated là true nếu người dùng đã đăng nhập thành công
             if (!clientInfo.IsAuthenticated)
                 return;
 
-            // D�ng Receiver l�m t�n group
+            // Dùng Receiver làm tên group
             string groupName = message.Receiver;
+            // Nếu groupName rỗng thì không làm gì cả
             if (string.IsNullOrEmpty(groupName))
                 return;
 
+            // Lấy danh sách thành viên nhóm
             List<string> members;
             lock (_groups)
             {
+                // Nếu nhóm không tồn tại thì thoát
                 if (!_groups.TryGetValue(groupName, out members))
                     return;
             }
 
+            // Ghi log tin nhắn nhóm
             _logAction(
                 $"[Nhom:{groupName}] {message.Sender}: {message.Content}",
                 Color.White
