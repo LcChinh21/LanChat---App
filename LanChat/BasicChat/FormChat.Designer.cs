@@ -56,7 +56,7 @@
             this.rtbChat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
             this.rtbChat.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbChat.ForeColor = System.Drawing.Color.White;
-            this.rtbChat.Location = new System.Drawing.Point(4, 86);
+            this.rtbChat.Location = new System.Drawing.Point(7, 86);
             this.rtbChat.Margin = new System.Windows.Forms.Padding(4);
             this.rtbChat.Name = "rtbChat";
             this.rtbChat.ReadOnly = true;
@@ -112,7 +112,7 @@
             this.lstUsers.Location = new System.Drawing.Point(8, 32);
             this.lstUsers.Margin = new System.Windows.Forms.Padding(4);
             this.lstUsers.Name = "lstUsers";
-            this.lstUsers.Size = new System.Drawing.Size(290, 592);
+            this.lstUsers.Size = new System.Drawing.Size(290, 544);
             this.lstUsers.TabIndex = 1;
             this.lstUsers.SelectedIndexChanged += new System.EventHandler(this.lstUsers_SelectedIndexChanged);
             // 
@@ -158,9 +158,8 @@
             this.Name1.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.Name1.Location = new System.Drawing.Point(3, 6);
             this.Name1.Name = "Name1";
-            this.Name1.Size = new System.Drawing.Size(123, 29);
+            this.Name1.Size = new System.Drawing.Size(0, 29);
             this.Name1.TabIndex = 3;
-            this.Name1.Text = "Test Text";
             // 
             // splitContainer1
             // 

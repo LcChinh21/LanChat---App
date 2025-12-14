@@ -28,3 +28,7 @@ C:\Users\Admin\Source\Repos\LanChat - App\LanChat\BasicChat\obj\Debug\BasicChat.
 C:\Users\Admin\Source\Repos\LanChat - App\LanChat\BasicChat\obj\Debug\BasicChat.csproj.CoreCompileInputs.cache
 C:\Users\Admin\Source\Repos\LanChat - App\LanChat\BasicChat\obj\Debug\BasicChat.exe
 C:\Users\Admin\Source\Repos\LanChat - App\LanChat\BasicChat\obj\Debug\BasicChat.pdb
+C:\Users\Admin\Source\Repos\LanChat - App\LanChat\BasicChat\bin\Debug\aa-DJ\BasicChat.resources.dll
+C:\Users\Admin\Source\Repos\LanChat - App\LanChat\BasicChat\obj\Debug\BasicChat.FormCreateGroup.resources
+C:\Users\Admin\Source\Repos\LanChat - App\LanChat\BasicChat\obj\Debug\BasicChat.FormCreateGroup.aa-DJ.resources
+C:\Users\Admin\Source\Repos\LanChat - App\LanChat\BasicChat\obj\Debug\aa-DJ\BasicChat.resources.dll

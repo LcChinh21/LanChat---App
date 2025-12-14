@@ -70,6 +70,9 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CreateGroupForm.aa-DJ.resx">
+      <DependentUpon>CreateGroupForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CreateGroupForm.resx">
       <DependentUpon>CreateGroupForm.cs</DependentUpon>
     </EmbeddedResource>
