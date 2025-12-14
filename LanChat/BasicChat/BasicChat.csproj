@@ -68,6 +68,11 @@
       <DependentUpon>FormChat.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CreateGroupForm.aa-DJ.resx">
@@ -85,6 +90,19 @@
     <EmbeddedResource Include="FormChat.resx">
       <DependentUpon>FormChat.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrows_up_arrow_icon_225559.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\scrollarrowtodown_83796.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\upscrollarrow_83865 %281%29.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

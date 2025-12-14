@@ -388,5 +388,27 @@ namespace BasicChat
             }
         }
 
+        private void HideUsersLists_Click(object sender, EventArgs e)
+        {
+            if (ShowUsersLists.Visible)
+                return;
+            lstUsers.Visible = false;
+            ShowUsersLists.Visible = true;
+            HideUsersLists.Visible = false;
+        }
+
+        private void ShowUsersLists_Click(object sender, EventArgs e)
+        {
+            if (HideUsersLists.Visible)
+                return;
+            lstUsers.Visible = true;
+            ShowUsersLists.Visible = false;
+            HideUsersLists.Visible = true;
+        }
+
+        private void lstMember_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -40,6 +40,11 @@
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.flowGroups = new System.Windows.Forms.FlowLayoutPanel();
             this.splitter2 = new System.Windows.Forms.Splitter();
+            this.HideUsersLists = new System.Windows.Forms.PictureBox();
+            this.ShowUsersLists = new System.Windows.Forms.PictureBox();
+            this.FlowUsers = new System.Windows.Forms.FlowLayoutPanel();
+            this.lstMember = new System.Windows.Forms.ListView();
+            this.lblGroupMembers = new System.Windows.Forms.Label();
             this.pnlChatMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -49,6 +54,9 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).BeginInit();
+            this.FlowUsers.SuspendLayout();
             this.SuspendLayout();
             // 
             // rtbChat
@@ -109,10 +117,10 @@
             this.lstUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lstUsers.FormattingEnabled = true;
             this.lstUsers.ItemHeight = 16;
-            this.lstUsers.Location = new System.Drawing.Point(8, 32);
+            this.lstUsers.Location = new System.Drawing.Point(4, 4);
             this.lstUsers.Margin = new System.Windows.Forms.Padding(4);
             this.lstUsers.Name = "lstUsers";
-            this.lstUsers.Size = new System.Drawing.Size(290, 544);
+            this.lstUsers.Size = new System.Drawing.Size(286, 256);
             this.lstUsers.TabIndex = 1;
             this.lstUsers.SelectedIndexChanged += new System.EventHandler(this.lstUsers_SelectedIndexChanged);
             // 
@@ -173,9 +181,11 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.splitContainer1.Panel2.Controls.Add(this.HideUsersLists);
+            this.splitContainer1.Panel2.Controls.Add(this.ShowUsersLists);
             this.splitContainer1.Panel2.Controls.Add(this.splitter2);
             this.splitContainer1.Panel2.Controls.Add(this.lblOnlineUsers);
-            this.splitContainer1.Panel2.Controls.Add(this.lstUsers);
+            this.splitContainer1.Panel2.Controls.Add(this.FlowUsers);
             this.splitContainer1.Size = new System.Drawing.Size(1067, 632);
             this.splitContainer1.SplitterDistance = 760;
             this.splitContainer1.TabIndex = 6;
@@ -212,12 +222,12 @@
             // button1
             // 
             this.button1.AutoSize = true;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.button1.Location = new System.Drawing.Point(193, 3);
+            this.button1.Location = new System.Drawing.Point(212, 2);
             this.button1.Name = "button1";
             this.button1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.button1.Size = new System.Drawing.Size(37, 38);
+            this.button1.Size = new System.Drawing.Size(28, 29);
             this.button1.TabIndex = 4;
             this.button1.Text = "+";
             this.button1.Click += new System.EventHandler(this.label1_Click);
@@ -260,6 +270,62 @@
             this.splitter2.TabIndex = 2;
             this.splitter2.TabStop = false;
             // 
+            // HideUsersLists
+            // 
+            this.HideUsersLists.Image = global::BasicChat.Properties.Resources.upscrollarrow_83865__1_;
+            this.HideUsersLists.Location = new System.Drawing.Point(270, 6);
+            this.HideUsersLists.Name = "HideUsersLists";
+            this.HideUsersLists.Size = new System.Drawing.Size(26, 23);
+            this.HideUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.HideUsersLists.TabIndex = 5;
+            this.HideUsersLists.TabStop = false;
+            this.HideUsersLists.Click += new System.EventHandler(this.HideUsersLists_Click);
+            // 
+            // ShowUsersLists
+            // 
+            this.ShowUsersLists.Image = global::BasicChat.Properties.Resources.scrollarrowtodown_83796;
+            this.ShowUsersLists.Location = new System.Drawing.Point(270, 6);
+            this.ShowUsersLists.Name = "ShowUsersLists";
+            this.ShowUsersLists.Size = new System.Drawing.Size(26, 23);
+            this.ShowUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ShowUsersLists.TabIndex = 6;
+            this.ShowUsersLists.TabStop = false;
+            this.ShowUsersLists.Visible = false;
+            this.ShowUsersLists.Click += new System.EventHandler(this.ShowUsersLists_Click);
+            // 
+            // FlowUsers
+            // 
+            this.FlowUsers.Controls.Add(this.lstUsers);
+            this.FlowUsers.Controls.Add(this.lblGroupMembers);
+            this.FlowUsers.Controls.Add(this.lstMember);
+            this.FlowUsers.Location = new System.Drawing.Point(9, 35);
+            this.FlowUsers.Name = "FlowUsers";
+            this.FlowUsers.Size = new System.Drawing.Size(291, 588);
+            this.FlowUsers.TabIndex = 7;
+            // 
+            // lstMember
+            // 
+            this.lstMember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.lstMember.HideSelection = false;
+            this.lstMember.Location = new System.Drawing.Point(3, 287);
+            this.lstMember.Name = "lstMember";
+            this.lstMember.Size = new System.Drawing.Size(288, 301);
+            this.lstMember.TabIndex = 2;
+            this.lstMember.UseCompatibleStateImageBehavior = false;
+            this.lstMember.SelectedIndexChanged += new System.EventHandler(this.lstMember_SelectedIndexChanged);
+            // 
+            // lblGroupMembers
+            // 
+            this.lblGroupMembers.AutoSize = true;
+            this.lblGroupMembers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblGroupMembers.ForeColor = System.Drawing.Color.Silver;
+            this.lblGroupMembers.Location = new System.Drawing.Point(4, 264);
+            this.lblGroupMembers.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblGroupMembers.Name = "lblGroupMembers";
+            this.lblGroupMembers.Size = new System.Drawing.Size(77, 20);
+            this.lblGroupMembers.TabIndex = 7;
+            this.lblGroupMembers.Text = "GROUPS: ";
+            // 
             // FormChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -287,6 +353,10 @@
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).EndInit();
+            this.FlowUsers.ResumeLayout(false);
+            this.FlowUsers.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -299,5 +369,10 @@
         private System.Windows.Forms.FlowLayoutPanel flowGroups;
         private System.Windows.Forms.Label button1;
         private System.Windows.Forms.Label Name1;
+        private System.Windows.Forms.PictureBox ShowUsersLists;
+        private System.Windows.Forms.PictureBox HideUsersLists;
+        private System.Windows.Forms.FlowLayoutPanel FlowUsers;
+        private System.Windows.Forms.ListView lstMember;
+        private System.Windows.Forms.Label lblGroupMembers;
     }
 }

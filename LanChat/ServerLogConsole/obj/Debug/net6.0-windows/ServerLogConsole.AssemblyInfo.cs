@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ServerLogConsole")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bb9b2388b1447b1447d5687ee33a9b79e20a424c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+078977d57b96a11691154478be02845e64a646eb")]
 [assembly: System.Reflection.AssemblyProductAttribute("ServerLogConsole")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ServerLogConsole")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

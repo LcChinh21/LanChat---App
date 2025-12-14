@@ -126,7 +126,7 @@
     <value>Microsoft Sans Serif, 14pt</value>
   </data>
   <data name="lblTitle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 71</value>
+    <value>12, 86</value>
   </data>
   <data name="lblTitle.Size" type="System.Drawing.Size, System.Drawing">
     <value>182, 29</value>
@@ -153,7 +153,7 @@
     <value>Microsoft Sans Serif, 15pt</value>
   </data>
   <data name="txtGroupName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 116</value>
+    <value>12, 131</value>
   </data>
   <data name="txtGroupName.Size" type="System.Drawing.Size, System.Drawing">
     <value>518, 36</value>
