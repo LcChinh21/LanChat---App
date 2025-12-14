@@ -41,6 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateGroupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateGroupForm.Designer.cs">
+      <DependentUpon>CreateGroupForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Networking\MessageProtocol.cs" />
     <Compile Include="Networking\ClientSocket.cs" />
     <Compile Include="DangNhap.cs">
@@ -64,6 +70,9 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CreateGroupForm.resx">
+      <DependentUpon>CreateGroupForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DangNhap.resx">
       <DependentUpon>DangNhap.cs</DependentUpon>
     </EmbeddedResource>

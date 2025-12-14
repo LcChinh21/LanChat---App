@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using MySql.Data.MySqlClient;
 
 namespace ServerLogConsole
@@ -127,37 +128,18 @@ namespace ServerLogConsole
         {
             try
             {
-                using (var masterConn = new MySqlConnection(_masterConnectionString))
-                {
-                    masterConn.Open();
-
-                    string checkDbQuery =
-                        "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'LanChatDB'";
-
-                    using (var checkCmd = new MySqlCommand(checkDbQuery, masterConn))
-                    {
-                        var result = checkCmd.ExecuteScalar();
-                        if (result == null)
-                        {
-                            string createDbQuery = "CREATE DATABASE LanChatDB";
-                            using (var createCmd = new MySqlCommand(createDbQuery, masterConn))
-                            {
-                                createCmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                }
-
+                // CHỈ connect thẳng DB hiện có (sql12811813)
                 using (var conn = new MySqlConnection(_connectionString))
                 {
                     conn.Open();
+
                     string createTableQuery = @"
-                        CREATE TABLE IF NOT EXISTS Users (
-                            Id INT AUTO_INCREMENT PRIMARY KEY,
-                            Username VARCHAR(50) NOT NULL UNIQUE,
-                            Password VARCHAR(255) NOT NULL,
-                            Email VARCHAR(100) NULL
-                        )";
+                CREATE TABLE IF NOT EXISTS Users (
+                    Id INT AUTO_INCREMENT PRIMARY KEY,
+                    Username VARCHAR(50) NOT NULL UNIQUE,
+                    Password VARCHAR(255) NOT NULL,
+                    Email VARCHAR(100) NULL
+                )";
 
                     using (var cmd = new MySqlCommand(createTableQuery, conn))
                     {
@@ -173,6 +155,11 @@ namespace ServerLogConsole
                 _lastError = ex.Message;
                 return (false, $"Loi database: {ex.Message}");
             }
+
+        }
+        public string GetConnectionString()
+        {
+            return _connectionString;
         }
     }
 }

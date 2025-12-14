@@ -16,7 +16,9 @@ namespace BasicChat.Networking
         GROUP_JOIN,
         GROUP_LEAVE,
         CREATE_GROUP_REQUEST,
-        CREATE_GROUP_RESPONSE
+        CREATE_GROUP_RESPONSE,
+        GROUP_INVITE_REQUEST,
+        GROUP_INVITE_RESPONSE
     }
 
     public class ChatMessage
@@ -28,6 +30,8 @@ namespace BasicChat.Networking
         public bool Success { get; set; }
         public string[] UserList { get; set; }
         public DateTime Timestamp { get; set; }
+
+        public string GroupName { get; set; }   
 
         public ChatMessage()
         {

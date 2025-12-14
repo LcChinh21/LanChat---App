@@ -13,8 +13,11 @@ namespace BasicChat
         private string _currentUser;
         private string _selectedUser = null;
         private bool _isGroupChat = true;
-        private List<Button> _groupButtons = new List<Button>();
         private string _currentGroup = null;
+        private List<string> _groupButtons = new List<string>();
+        private Dictionary<string, List<(string text, Color color)>> _groupMessages
+            = new Dictionary<string, List<(string, Color)>>();
+
 
 
         public FormChat(string username, ClientSocket client)
@@ -31,8 +34,6 @@ namespace BasicChat
             {
                 AppendChat("[He thong] " + msg, Color.Red);
             };
-
-            rdGroupChat.Checked = true;
             UpdateChatMode();
         }
 
@@ -47,8 +48,11 @@ namespace BasicChat
             switch (msg.Type)
             {
                 case MessageType.GROUP_MESSAGE:
-                    string groupText = $"[Nhom] {msg.Sender}: {msg.Content}";
-                    AppendChat(groupText, Color.Black);
+                    AppendGroupChat(
+                        msg.Receiver,
+                        $"{msg.Sender}: {msg.Content}",
+                        Color.Black
+                    );
                     break;
 
                 case MessageType.PRIVATE_MESSAGE:
@@ -66,6 +70,16 @@ namespace BasicChat
 
                 case MessageType.USER_LEFT:
                     AppendChat($"[He thong] {msg.Sender} da roi.", Color.Orange);
+                    break;
+                case MessageType.CREATE_GROUP_RESPONSE:
+                    if (msg.Success)
+                    {
+                        CreateGroupButton(msg.Content);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Group da ton tai!");
+                    }
                     break;
             }
         }
@@ -94,13 +108,26 @@ namespace BasicChat
 
             if (_isGroupChat)
             {
+                if (string.IsNullOrEmpty(_currentGroup))
+                {
+                    MessageBox.Show("Vui long chon nhom!");
+                    return;
+                }
+
                 chatMsg = new ChatMessage
                 {
                     Type = MessageType.GROUP_MESSAGE,
                     Sender = _currentUser,
+                    Receiver = _currentGroup,   // 🔥 BẮT BUỘC
                     Content = message
                 };
-                AppendChat($"[Nhom] Ban: {message}", Color.Blue);
+
+                // append theo group
+                AppendGroupChat(
+                    _currentGroup,
+                    $"Ban: {message}",
+                    Color.Blue
+                );
             }
             else
             {
@@ -117,13 +144,18 @@ namespace BasicChat
                     Receiver = _selectedUser,
                     Content = message
                 };
-                AppendChat($"[Gui rieng cho {_selectedUser}]: {message}", Color.Purple);
+
+                AppendChat(
+                    $"[Gui rieng cho {_selectedUser}]: {message}",
+                    Color.Purple
+                );
             }
 
             _client.Send(chatMsg);
             txtMessage.Clear();
             txtMessage.Focus();
         }
+
 
         private void AppendChat(string text, Color color) //hiện chat trên rtb
         {
@@ -160,7 +192,6 @@ namespace BasicChat
 
         private void UpdateChatMode()
         {
-            _isGroupChat = rdGroupChat.Checked;
             //pnlUsers.Visible = !_isGroupChat;
 
             if (_isGroupChat)
@@ -241,42 +272,121 @@ namespace BasicChat
 
         private void CreateGroupButton(string groupName)
         {
-            // Không tạo trùng
-            if (_groupButtons.Any(b => b.Text == groupName))
-                return;
-
-            Button btn = new Button();
-            btn.Text = groupName;
-            btn.Width = splitContainer2.Panel1.Width - 10;
-            btn.Height = 35;
-            btn.Left = 5;
-            btn.Top = 40 + _groupButtons.Count * 40;
-
-            btn.FlatStyle = FlatStyle.Flat;
-            btn.ForeColor = Color.White;
-            btn.BackColor = Color.FromArgb(64, 64, 90);
-            btn.FlatAppearance.BorderSize = 0;
-
-            btn.Click += (s, e) =>
+            foreach (Control c in flowGroups.Controls)
             {
-                _currentGroup = groupName;
-                rdGroupChat.Checked = true;
-                lblChatMode.Text = $"Che do: Chat Nhom ({groupName})";
+                if (c is Button btn && btn.Text == groupName)
+                    return; // đã tồn tại
+            }
+
+            Button groupBtn = new Button
+            {
+                Text = groupName,
+                Width = 210,
+                Height = 40,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.FromArgb(39, 39, 58),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(10, 0, 0, 0),
+                Tag = groupName
             };
 
-            splitContainer2.Panel1.Controls.Add(btn);
-            _groupButtons.Add(btn);
+            groupBtn.FlatAppearance.BorderSize = 0;
+            groupBtn.Click += GroupButton_Click;
+
+            flowGroups.Controls.Add(groupBtn);
         }
+
+        private void GroupButton_Click(object sender, EventArgs e)
+        {
+            foreach (Control c in flowGroups.Controls)
+                if (c is Button b)
+                    b.BackColor = Color.FromArgb(39, 39, 58);
+
+            Button btn = sender as Button;
+            btn.BackColor = Color.FromArgb(0, 120, 215);
+
+            _currentGroup = btn.Tag.ToString();
+
+            lblChatMode.Text = $"Dang chat nhom: {_currentGroup}";
+            Name1.Text = _currentGroup;
+            RenderCurrentGroup();
+        }
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string groupName = ShowInputDialog("Tao Group", "Nhap ten group:");
+            using (FormCreateGroup frm = new FormCreateGroup())
+            {
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    ChatMessage msg = new ChatMessage
+                    {
+                        Type = MessageType.CREATE_GROUP_REQUEST,
+                        Sender = _currentUser,
+                        Content = frm.GroupName
+                    };
 
-            if (string.IsNullOrWhiteSpace(groupName))
+                    _client.Send(msg);
+                }
+            }
+        }
+        private void AppendGroupChat(string groupName, string text, Color color)
+        {
+            if (string.IsNullOrEmpty(groupName))
                 return;
 
-            CreateGroupButton(groupName);
-            SendCreateGroupRequest(groupName);
+            if (!_groupMessages.ContainsKey(groupName))
+                _groupMessages[groupName] = new List<(string, Color)>();
+
+            _groupMessages[groupName].Add(($"[{DateTime.Now:HH:mm}] {text}", color));
+
+            if (_currentGroup == groupName)
+                RenderCurrentGroup();
         }
+        private void RenderCurrentGroup()
+        {
+            rtbChat.Clear();
+
+            if (string.IsNullOrEmpty(_currentGroup))
+                return;
+
+            if (!_groupMessages.ContainsKey(_currentGroup))
+                return;
+
+            foreach (var msg in _groupMessages[_currentGroup])
+            {
+                rtbChat.SelectionStart = rtbChat.TextLength;
+                rtbChat.SelectionColor = msg.color;
+                rtbChat.AppendText(msg.text + Environment.NewLine);
+            }
+
+            rtbChat.ScrollToCaret();
+        }
+
+        private void lblOnlineUsers_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            using (FormCreateGroup frm = new FormCreateGroup())
+            {
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    ChatMessage msg = new ChatMessage
+                    {
+                        Type = MessageType.CREATE_GROUP_REQUEST,
+                        Sender = _currentUser,
+                        Content = frm.GroupName
+                    };
+
+                    _client.Send(msg);
+                }
+            }
+        }
+
     }
 }

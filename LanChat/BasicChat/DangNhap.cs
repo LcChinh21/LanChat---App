@@ -7,7 +7,7 @@ namespace BasicChat
     public partial class DangNhap : Form
     {
         private ClientSocket _client;
-        private string _serverIp = "127.0.0.1";
+        private string _serverIp = "192.168.0.116";
         private int _serverPort = 9000;
 
         public DangNhap()
@@ -95,6 +95,16 @@ namespace BasicChat
         private void DangNhap_FormClosing(object sender, FormClosingEventArgs e)
         {
             _client.Disconnect();
+        }
+        //Enter de dang nhap
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnLogin.PerformClick();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
         }
     }
 }
