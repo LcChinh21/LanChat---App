@@ -1,6 +1,8 @@
-﻿using System;
+﻿using BasicChat.Networking;
+using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Windows.Forms;
-using BasicChat.Networking;
 
 namespace BasicChat
 {
@@ -23,10 +25,17 @@ namespace BasicChat
             string user = txtUsername.Text.Trim();
             string pass = txtPassword.Text.Trim();
             string email = txtEmail.Text.Trim();
+            _serverIp = txtSeverIP.Text.Trim();
 
-            if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
+            if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass) || string.IsNullOrEmpty(_serverIp))
             {
-                MessageBox.Show("Vui long nhap day du thong tin.");
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Missing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!IPAddress.TryParse(txtSeverIP.Text, out IPAddress ipAddr) || ipAddr.AddressFamily != AddressFamily.InterNetwork)
+            {
+                MessageBox.Show("Địa chỉ IP không hợp lệ!", "Invalid IP", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

@@ -63,16 +63,6 @@ namespace BasicChat.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap arrows_up_arrow_icon_225559 {
-            get {
-                object obj = ResourceManager.GetObject("arrows_up_arrow_icon_225559", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap scrollarrowtodown_83796 {
             get {
                 object obj = ResourceManager.GetObject("scrollarrowtodown_83796", resourceCulture);

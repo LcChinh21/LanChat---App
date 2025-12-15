@@ -1,13 +1,15 @@
+﻿using BasicChat.Networking;
 using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Windows.Forms;
-using BasicChat.Networking;
 
 namespace BasicChat
 {
     public partial class DangNhap : Form
     {
         private ClientSocket _client;
-        private string _serverIp = "192.168.0.116";
+        private string _serverIp;
         private int _serverPort = 9000;
 
         public DangNhap()
@@ -22,10 +24,16 @@ namespace BasicChat
         {
             string user = txtName.Text.Trim();
             string pass = txtPassword.Text.Trim();
+            _serverIp = txtSeverIP.Text.Trim();
 
-            if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
+            if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass) || string.IsNullOrEmpty(_serverIp))
             {
-                MessageBox.Show("Vui long nhap ten dang nhap va mat khau.");
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Missing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (!IPAddress.TryParse(txtSeverIP.Text, out IPAddress ipAddr) || ipAddr.AddressFamily != AddressFamily.InterNetwork)
+            {
+                MessageBox.Show("Địa chỉ IP không hợp lệ!", "Invalid IP", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -73,7 +81,7 @@ namespace BasicChat
                 else
                 {
                     MessageBox.Show("Sai ten dang nhap hoac mat khau.");
-                    _client.Disconnect(); //Khi ??ng nh?p th?t b?i th� ?�ng k?t n?i
+                    _client.Disconnect(); //Khi ??ng nh?p th?t b?i thì ?óng k?t n?i
                 }
             }
         }
