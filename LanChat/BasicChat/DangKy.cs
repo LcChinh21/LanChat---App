@@ -10,7 +10,7 @@ namespace BasicChat
     {
         private ClientSocket _client;
 
-        private string _serverIp;
+        private string _serverIp;   
         private int _serverPort = 9000;
 
         public DangKy()

@@ -256,11 +256,39 @@ namespace BasicChat
                 Width = 210,
                 Height = 40,
                 FlatStyle = FlatStyle.Flat,
-                BackColor = Color.FromArgb(39, 39, 58),
+                BackColor = Color.FromArgb(36, 45, 59),
                 ForeColor = Color.White,
                 TextAlign = ContentAlignment.MiddleLeft,
                 Padding = new Padding(10, 0, 0, 0),
                 Tag = groupName
+            };
+
+            ContextMenuStrip menu = new ContextMenuStrip();
+            menu.Items.Add("Invite", null, (s, e) => MessageBox.Show($"Invite {groupName}"));
+            menu.Items.Add("Leave", null, (s, e) => MessageBox.Show($"Leave {groupName}"));
+            menu.Items.Add("Info", null, (s, e) => MessageBox.Show($"Info {groupName}"));
+
+            groupBtn.Paint += (s, e) =>
+            {
+                string dots = "⋮";
+                SizeF size = e.Graphics.MeasureString(dots, groupBtn.Font);
+                float x = groupBtn.Width - size.Width - 10; // cách mép phải 10px
+                float y = (groupBtn.Height - size.Height) / 2;
+                e.Graphics.DrawString(dots, groupBtn.Font, Brushes.White, x, y);
+            };
+
+            groupBtn.MouseClick += (s, e) =>
+            {
+                // Nếu click vào 30px cuối bên phải -> hiện menu
+                if (e.X >= groupBtn.Width - 30)
+                {
+                    menu.Show(groupBtn, new System.Drawing.Point(e.X, e.Y));
+                }
+                else
+                {
+                    // Click vào phần còn lại -> chọn nhóm
+                    GroupButton_Click(groupBtn, EventArgs.Empty);
+                }
             };
 
             groupBtn.FlatAppearance.BorderSize = 0;
@@ -373,6 +401,11 @@ namespace BasicChat
         private void btnExit_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void flowGroups_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

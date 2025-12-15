@@ -1,4 +1,7 @@
-﻿namespace BasicChat
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace BasicChat
 {
     partial class FormChat
     {
@@ -33,23 +36,23 @@
             this.flowGroups = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlUsers = new System.Windows.Forms.Panel();
             this.FlowUsers = new System.Windows.Forms.FlowLayoutPanel();
-            this.lstMember = new System.Windows.Forms.ListView();
-            this.lblGroupMembers = new System.Windows.Forms.Label();
             this.lstUsers = new System.Windows.Forms.ListBox();
+            this.lblGroupMembers = new System.Windows.Forms.Label();
+            this.lstMember = new System.Windows.Forms.ListView();
             this.lblOnlineUsers = new System.Windows.Forms.Label();
-            this.ShowUsersLists = new System.Windows.Forms.PictureBox();
             this.HideUsersLists = new System.Windows.Forms.PictureBox();
+            this.ShowUsersLists = new System.Windows.Forms.PictureBox();
             this.pnlMenu = new System.Windows.Forms.Panel();
+            this.btnExit = new System.Windows.Forms.Button();
+            this.lblAppName = new System.Windows.Forms.Label();
             this.pnlGroups = new System.Windows.Forms.Panel();
             this.pnlChat = new System.Windows.Forms.Panel();
             this.btnSend = new System.Windows.Forms.PictureBox();
-            this.lblAppName = new System.Windows.Forms.Label();
-            this.btnExit = new System.Windows.Forms.Button();
             this.pnlChatMode.SuspendLayout();
             this.pnlUsers.SuspendLayout();
             this.FlowUsers.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).BeginInit();
             this.pnlMenu.SuspendLayout();
             this.pnlGroups.SuspendLayout();
             this.pnlChat.SuspendLayout();
@@ -78,7 +81,7 @@
             this.txtMessage.Location = new System.Drawing.Point(0, 532);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(4);
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(611, 27);
+            this.txtMessage.Size = new System.Drawing.Size(555, 27);
             this.txtMessage.TabIndex = 3;
             this.txtMessage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMessage_KeyPress);
             // 
@@ -113,10 +116,10 @@
             this.pnlChatMode.Controls.Add(this.Name1);
             this.pnlChatMode.Controls.Add(this.lblChatMode);
             this.pnlChatMode.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlChatMode.Location = new System.Drawing.Point(244, 40);
+            this.pnlChatMode.Location = new System.Drawing.Point(300, 40);
             this.pnlChatMode.Margin = new System.Windows.Forms.Padding(4);
             this.pnlChatMode.Name = "pnlChatMode";
-            this.pnlChatMode.Size = new System.Drawing.Size(611, 76);
+            this.pnlChatMode.Size = new System.Drawing.Size(555, 76);
             this.pnlChatMode.TabIndex = 1;
             // 
             // Name1
@@ -136,7 +139,7 @@
             this.button1.Dock = System.Windows.Forms.DockStyle.Right;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(191)))), ((int)(((byte)(229)))));
-            this.button1.Location = new System.Drawing.Point(216, 0);
+            this.button1.Location = new System.Drawing.Point(272, 0);
             this.button1.Name = "button1";
             this.button1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.button1.Size = new System.Drawing.Size(28, 29);
@@ -163,11 +166,12 @@
             this.flowGroups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(45)))), ((int)(((byte)(59)))));
             this.flowGroups.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowGroups.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowGroups.Location = new System.Drawing.Point(0, -250);
+            this.flowGroups.Location = new System.Drawing.Point(0, 23);
             this.flowGroups.Name = "flowGroups";
-            this.flowGroups.Size = new System.Drawing.Size(244, 885);
+            this.flowGroups.Size = new System.Drawing.Size(300, 612);
             this.flowGroups.TabIndex = 3;
             this.flowGroups.WrapContents = false;
+            this.flowGroups.Paint += new System.Windows.Forms.PaintEventHandler(this.flowGroups_Paint);
             // 
             // pnlUsers
             // 
@@ -193,16 +197,18 @@
             this.FlowUsers.Size = new System.Drawing.Size(211, 590);
             this.FlowUsers.TabIndex = 7;
             // 
-            // lstMember
+            // lstUsers
             // 
-            this.lstMember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
-            this.lstMember.HideSelection = false;
-            this.lstMember.Location = new System.Drawing.Point(3, 255);
-            this.lstMember.Name = "lstMember";
-            this.lstMember.Size = new System.Drawing.Size(205, 332);
-            this.lstMember.TabIndex = 2;
-            this.lstMember.UseCompatibleStateImageBehavior = false;
-            this.lstMember.SelectedIndexChanged += new System.EventHandler(this.lstMember_SelectedIndexChanged);
+            this.lstUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
+            this.lstUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstUsers.FormattingEnabled = true;
+            this.lstUsers.ItemHeight = 16;
+            this.lstUsers.Location = new System.Drawing.Point(4, 4);
+            this.lstUsers.Margin = new System.Windows.Forms.Padding(4);
+            this.lstUsers.Name = "lstUsers";
+            this.lstUsers.Size = new System.Drawing.Size(204, 224);
+            this.lstUsers.TabIndex = 1;
+            this.lstUsers.SelectedIndexChanged += new System.EventHandler(this.lstUsers_SelectedIndexChanged);
             // 
             // lblGroupMembers
             // 
@@ -216,18 +222,16 @@
             this.lblGroupMembers.TabIndex = 7;
             this.lblGroupMembers.Text = "GROUPS: ";
             // 
-            // lstUsers
+            // lstMember
             // 
-            this.lstUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
-            this.lstUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lstUsers.FormattingEnabled = true;
-            this.lstUsers.ItemHeight = 16;
-            this.lstUsers.Location = new System.Drawing.Point(4, 4);
-            this.lstUsers.Margin = new System.Windows.Forms.Padding(4);
-            this.lstUsers.Name = "lstUsers";
-            this.lstUsers.Size = new System.Drawing.Size(204, 224);
-            this.lstUsers.TabIndex = 1;
-            this.lstUsers.SelectedIndexChanged += new System.EventHandler(this.lstUsers_SelectedIndexChanged);
+            this.lstMember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
+            this.lstMember.HideSelection = false;
+            this.lstMember.Location = new System.Drawing.Point(3, 255);
+            this.lstMember.Name = "lstMember";
+            this.lstMember.Size = new System.Drawing.Size(205, 332);
+            this.lstMember.TabIndex = 2;
+            this.lstMember.UseCompatibleStateImageBehavior = false;
+            this.lstMember.SelectedIndexChanged += new System.EventHandler(this.lstMember_SelectedIndexChanged);
             // 
             // lblOnlineUsers
             // 
@@ -242,17 +246,6 @@
             this.lblOnlineUsers.Text = "Người dùng online:";
             this.lblOnlineUsers.Click += new System.EventHandler(this.lblOnlineUsers_Click);
             // 
-            // ShowUsersLists
-            // 
-            this.ShowUsersLists.Location = new System.Drawing.Point(177, 8);
-            this.ShowUsersLists.Name = "ShowUsersLists";
-            this.ShowUsersLists.Size = new System.Drawing.Size(26, 23);
-            this.ShowUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.ShowUsersLists.TabIndex = 6;
-            this.ShowUsersLists.TabStop = false;
-            this.ShowUsersLists.Visible = false;
-            this.ShowUsersLists.Click += new System.EventHandler(this.ShowUsersLists_Click);
-            // 
             // HideUsersLists
             // 
             this.HideUsersLists.ErrorImage = null;
@@ -264,6 +257,17 @@
             this.HideUsersLists.TabStop = false;
             this.HideUsersLists.Click += new System.EventHandler(this.HideUsersLists_Click);
             // 
+            // ShowUsersLists
+            // 
+            this.ShowUsersLists.Location = new System.Drawing.Point(177, 8);
+            this.ShowUsersLists.Name = "ShowUsersLists";
+            this.ShowUsersLists.Size = new System.Drawing.Size(26, 23);
+            this.ShowUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ShowUsersLists.TabIndex = 6;
+            this.ShowUsersLists.TabStop = false;
+            this.ShowUsersLists.Visible = false;
+            this.ShowUsersLists.Click += new System.EventHandler(this.ShowUsersLists_Click);
+            // 
             // pnlMenu
             // 
             this.pnlMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(45)))), ((int)(((byte)(59)))));
@@ -274,53 +278,6 @@
             this.pnlMenu.Name = "pnlMenu";
             this.pnlMenu.Size = new System.Drawing.Size(1066, 40);
             this.pnlMenu.TabIndex = 8;
-            // 
-            // pnlGroups
-            // 
-            this.pnlGroups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(45)))), ((int)(((byte)(59)))));
-            this.pnlGroups.Controls.Add(this.lblGroupChats);
-            this.pnlGroups.Controls.Add(this.button1);
-            this.pnlGroups.Controls.Add(this.flowGroups);
-            this.pnlGroups.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlGroups.Location = new System.Drawing.Point(0, 40);
-            this.pnlGroups.Name = "pnlGroups";
-            this.pnlGroups.Size = new System.Drawing.Size(244, 635);
-            this.pnlGroups.TabIndex = 9;
-            // 
-            // pnlChat
-            // 
-            this.pnlChat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.pnlChat.Controls.Add(this.btnSend);
-            this.pnlChat.Controls.Add(this.txtMessage);
-            this.pnlChat.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlChat.Location = new System.Drawing.Point(244, 116);
-            this.pnlChat.Name = "pnlChat";
-            this.pnlChat.Size = new System.Drawing.Size(611, 559);
-            this.pnlChat.TabIndex = 10;
-            // 
-            // btnSend
-            // 
-            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
-            this.btnSend.Location = new System.Drawing.Point(586, 534);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(20, 25);
-            this.btnSend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btnSend.TabIndex = 5;
-            this.btnSend.TabStop = false;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            // 
-            // lblAppName
-            // 
-            this.lblAppName.AutoSize = true;
-            this.lblAppName.Font = new System.Drawing.Font(".VnBlack", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAppName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(122)))), ((int)(((byte)(135)))));
-            this.lblAppName.Location = new System.Drawing.Point(4, 4);
-            this.lblAppName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblAppName.Name = "lblAppName";
-            this.lblAppName.Size = new System.Drawing.Size(123, 31);
-            this.lblAppName.TabIndex = 1;
-            this.lblAppName.Text = "LanChat";
             // 
             // btnExit
             // 
@@ -336,6 +293,53 @@
             this.btnExit.Text = "X";
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
+            // lblAppName
+            // 
+            this.lblAppName.AutoSize = true;
+            this.lblAppName.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAppName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(122)))), ((int)(((byte)(135)))));
+            this.lblAppName.Location = new System.Drawing.Point(4, 4);
+            this.lblAppName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblAppName.Name = "lblAppName";
+            this.lblAppName.Size = new System.Drawing.Size(108, 29);
+            this.lblAppName.TabIndex = 1;
+            this.lblAppName.Text = "LanChat";
+            // 
+            // pnlGroups
+            // 
+            this.pnlGroups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(45)))), ((int)(((byte)(59)))));
+            this.pnlGroups.Controls.Add(this.lblGroupChats);
+            this.pnlGroups.Controls.Add(this.button1);
+            this.pnlGroups.Controls.Add(this.flowGroups);
+            this.pnlGroups.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlGroups.Location = new System.Drawing.Point(0, 40);
+            this.pnlGroups.Name = "pnlGroups";
+            this.pnlGroups.Size = new System.Drawing.Size(300, 635);
+            this.pnlGroups.TabIndex = 9;
+            // 
+            // pnlChat
+            // 
+            this.pnlChat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.pnlChat.Controls.Add(this.btnSend);
+            this.pnlChat.Controls.Add(this.txtMessage);
+            this.pnlChat.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChat.Location = new System.Drawing.Point(300, 116);
+            this.pnlChat.Name = "pnlChat";
+            this.pnlChat.Size = new System.Drawing.Size(555, 559);
+            this.pnlChat.TabIndex = 10;
+            // 
+            // btnSend
+            // 
+            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
+            this.btnSend.Location = new System.Drawing.Point(586, 534);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(20, 25);
+            this.btnSend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnSend.TabIndex = 5;
+            this.btnSend.TabStop = false;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // FormChat
             // 
@@ -362,8 +366,8 @@
             this.pnlUsers.PerformLayout();
             this.FlowUsers.ResumeLayout(false);
             this.FlowUsers.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).EndInit();
             this.pnlMenu.ResumeLayout(false);
             this.pnlMenu.PerformLayout();
             this.pnlGroups.ResumeLayout(false);
