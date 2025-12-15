@@ -100,15 +100,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Resources\scrollarrowtodown_83796.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\upscrollarrow_83865 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ic_send_128_28719.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

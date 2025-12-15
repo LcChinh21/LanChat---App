@@ -9,7 +9,7 @@ namespace BasicChat
     public partial class DangKy : Form
     {
         private ClientSocket _client;
-        private string _serverIp = "192.168.0.116";
+        private string _serverIp;
         private int _serverPort = 9000;
 
         public DangKy()
