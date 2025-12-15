@@ -37,3 +37,4 @@ D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.F
 D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.Properties.Resources.resources
 D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\BasicChat.FormCreateGroup.aa-DJ.resources
 D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\BasicChat\obj\Debug\aa-DJ\BasicChat.resources.dll
+C:\Users\Admin\Source\Repos\LanChat - App\LanChat\BasicChat\obj\Debug\BasicChat.Properties.Resources.resources

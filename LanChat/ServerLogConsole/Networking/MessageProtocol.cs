@@ -18,7 +18,9 @@ namespace BasicChat.Networking
         CREATE_GROUP_REQUEST,
         CREATE_GROUP_RESPONSE,
         GROUP_INVITE_REQUEST,
-        GROUP_INVITE_RESPONSE
+        GROUP_INVITE_RESPONSE,
+        LOAD_GROUP_REQUEST,
+        LOAD_GROUP_RESPONSE
     }
 
     public class ChatMessage
@@ -32,6 +34,8 @@ namespace BasicChat.Networking
         public DateTime Timestamp { get; set; }
 
         public string GroupName { get; set; }
+
+        public Dictionary<string, List<string>> GroupList = new Dictionary<string, List<string>>();
 
         public ChatMessage()
         {

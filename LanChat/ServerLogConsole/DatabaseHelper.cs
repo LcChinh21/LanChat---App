@@ -1,6 +1,7 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Data;
 using System.Security.Cryptography.X509Certificates;
-using MySql.Data.MySqlClient;
 
 namespace ServerLogConsole
 {
@@ -161,5 +162,36 @@ namespace ServerLogConsole
         {
             return _connectionString;
         }
+        public Dictionary<string, List<string>> GetAllGroupsWithMembers()
+        {
+            var result = new Dictionary<string, List<string>>();
+
+            using (var conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = new MySqlCommand(@"
+            SELECT g.GroupName, gm.UserName
+            FROM ChatGroups g
+            LEFT JOIN GroupMembers gm ON g.GroupId = gm.GroupId
+            ORDER BY g.GroupName", conn);
+
+                using (var rd = cmd.ExecuteReader())
+                {
+                    while (rd.Read())
+                    {
+                        string group = rd.GetString("GroupName");
+                        string user = rd.IsDBNull("UserName") ? null : rd.GetString("UserName");
+
+                        if (!result.ContainsKey(group))
+                            result[group] = new List<string>();
+
+                        if (!string.IsNullOrEmpty(user))
+                            result[group].Add(user);
+                    }
+                }
+            }
+            return result;
+        }
+
     }
 }

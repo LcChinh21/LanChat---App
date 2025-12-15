@@ -171,8 +171,30 @@ namespace ServerLogConsole.Networking
                 case MessageType.CREATE_GROUP_REQUEST:
                     HandleCreateGroup(clientInfo, message);
                     break;
+                case MessageType.LOAD_GROUP_REQUEST:
+                    HandleLoadGroup(clientInfo);
+                    break;
             }
         }
+
+        private void HandleLoadGroup(ClientInfo client)
+        {
+            var groups = _dbHelper.GetAllGroupsWithMembers();
+
+            lock (_groups)
+            {
+                _groups = groups;
+            }
+
+            SendToClient(client, new ChatMessage
+            {
+                Type = MessageType.LOAD_GROUP_RESPONSE,
+                GroupList = groups
+            });
+        }
+
+
+
 
         private void HandleLogin(ClientInfo clientInfo, ChatMessage message)
         {

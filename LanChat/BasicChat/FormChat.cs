@@ -17,7 +17,8 @@ namespace BasicChat
         private List<string> _groupButtons = new List<string>();
         private Dictionary<string, List<(string text, Color color)>> _groupMessages
             = new Dictionary<string, List<(string, Color)>>();
-
+        private Dictionary<string, List<string>> _groupMembers
+            = new Dictionary<string, List<string>>();
 
 
         public FormChat(string username, ClientSocket client)
@@ -35,6 +36,18 @@ namespace BasicChat
                 AppendChat("[He thong] " + msg, Color.Red);
             };
             UpdateChatMode();
+            this.Load += FormChat_Load;
+        }
+
+        public void FormChat_Load(object sender, EventArgs e)
+        {
+            // Load nhóm từ server khi form được tải
+            ChatMessage loadGroupsMsg = new ChatMessage
+            {
+                Type = MessageType.LOAD_GROUP_REQUEST,
+                Sender = _currentUser
+            };
+            _client.Send(loadGroupsMsg);
         }
 
         private void HandleMessage(ChatMessage msg)
@@ -81,6 +94,20 @@ namespace BasicChat
                         MessageBox.Show("Group da ton tai!");
                     }
                     break;
+                case MessageType.LOAD_GROUP_RESPONSE:
+                    LoadGroups(msg.GroupList);
+                    break;
+            }
+        }
+
+        private void LoadGroups(Dictionary<string, List<string>> groups)
+        {
+            flowGroups.Controls.Clear();
+            _groupMembers = groups;
+
+            foreach (var g in groups)
+            {
+                CreateGroupButton(g.Key);
             }
         }
 
@@ -336,6 +363,7 @@ namespace BasicChat
             ShowUsersLists.Visible = false;
             HideUsersLists.Visible = true;
         }
+
 
         private void lstMember_SelectedIndexChanged(object sender, EventArgs e)
         {
