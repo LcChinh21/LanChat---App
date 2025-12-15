@@ -5,7 +5,6 @@
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.RichTextBox rtbChat;
         private System.Windows.Forms.TextBox txtMessage;
-        private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.ListBox lstUsers;
         private System.Windows.Forms.Label lblCurrentUser;
         private System.Windows.Forms.Label lblOnlineUsers;
@@ -26,7 +25,6 @@
         {
             this.rtbChat = new System.Windows.Forms.RichTextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
-            this.btnSend = new System.Windows.Forms.Button();
             this.lblOnlineUsers = new System.Windows.Forms.Label();
             this.lstUsers = new System.Windows.Forms.ListBox();
             this.lblCurrentUser = new System.Windows.Forms.Label();
@@ -39,12 +37,14 @@
             this.lblGroupChats = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.flowGroups = new System.Windows.Forms.FlowLayoutPanel();
-            this.splitter2 = new System.Windows.Forms.Splitter();
             this.HideUsersLists = new System.Windows.Forms.PictureBox();
             this.ShowUsersLists = new System.Windows.Forms.PictureBox();
+            this.splitter2 = new System.Windows.Forms.Splitter();
             this.FlowUsers = new System.Windows.Forms.FlowLayoutPanel();
-            this.lstMember = new System.Windows.Forms.ListView();
             this.lblGroupMembers = new System.Windows.Forms.Label();
+            this.lstMember = new System.Windows.Forms.ListView();
+            this.pnlChat = new System.Windows.Forms.Panel();
+            this.btnSend = new System.Windows.Forms.Button();
             this.pnlChatMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -57,6 +57,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).BeginInit();
             this.FlowUsers.SuspendLayout();
+            this.pnlChat.SuspendLayout();
             this.SuspendLayout();
             // 
             // rtbChat
@@ -64,11 +65,11 @@
             this.rtbChat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
             this.rtbChat.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbChat.ForeColor = System.Drawing.Color.White;
-            this.rtbChat.Location = new System.Drawing.Point(7, 86);
+            this.rtbChat.Location = new System.Drawing.Point(4, 84);
             this.rtbChat.Margin = new System.Windows.Forms.Padding(4);
             this.rtbChat.Name = "rtbChat";
             this.rtbChat.ReadOnly = true;
-            this.rtbChat.Size = new System.Drawing.Size(496, 463);
+            this.rtbChat.Size = new System.Drawing.Size(496, 488);
             this.rtbChat.TabIndex = 2;
             this.rtbChat.Text = "";
             // 
@@ -77,26 +78,12 @@
             this.txtMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
             this.txtMessage.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMessage.Location = new System.Drawing.Point(8, 573);
+            this.txtMessage.Location = new System.Drawing.Point(7, 580);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(4);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(377, 27);
             this.txtMessage.TabIndex = 3;
             this.txtMessage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMessage_KeyPress);
-            // 
-            // btnSend
-            // 
-            this.btnSend.BackColor = System.Drawing.Color.DodgerBlue;
-            this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSend.ForeColor = System.Drawing.Color.White;
-            this.btnSend.Location = new System.Drawing.Point(393, 567);
-            this.btnSend.Margin = new System.Windows.Forms.Padding(4);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(107, 37);
-            this.btnSend.TabIndex = 4;
-            this.btnSend.Text = "Gui";
-            this.btnSend.UseVisualStyleBackColor = false;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // lblOnlineUsers
             // 
@@ -129,7 +116,7 @@
             this.lblCurrentUser.AutoSize = true;
             this.lblCurrentUser.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblCurrentUser.ForeColor = System.Drawing.Color.LightSkyBlue;
-            this.lblCurrentUser.Location = new System.Drawing.Point(4, 8);
+            this.lblCurrentUser.Location = new System.Drawing.Point(109, 5);
             this.lblCurrentUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCurrentUser.Name = "lblCurrentUser";
             this.lblCurrentUser.Size = new System.Drawing.Size(108, 23);
@@ -141,7 +128,7 @@
             this.lblChatMode.AutoSize = true;
             this.lblChatMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChatMode.ForeColor = System.Drawing.Color.Green;
-            this.lblChatMode.Location = new System.Drawing.Point(333, 12);
+            this.lblChatMode.Location = new System.Drawing.Point(190, 35);
             this.lblChatMode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblChatMode.Name = "lblChatMode";
             this.lblChatMode.Size = new System.Drawing.Size(139, 16);
@@ -153,10 +140,12 @@
             this.pnlChatMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
             this.pnlChatMode.Controls.Add(this.Name1);
             this.pnlChatMode.Controls.Add(this.lblChatMode);
-            this.pnlChatMode.Location = new System.Drawing.Point(8, 35);
+            this.pnlChatMode.Controls.Add(this.lblCurrentUser);
+            this.pnlChatMode.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlChatMode.Location = new System.Drawing.Point(0, 0);
             this.pnlChatMode.Margin = new System.Windows.Forms.Padding(4);
             this.pnlChatMode.Name = "pnlChatMode";
-            this.pnlChatMode.Size = new System.Drawing.Size(492, 43);
+            this.pnlChatMode.Size = new System.Drawing.Size(503, 76);
             this.pnlChatMode.TabIndex = 1;
             // 
             // Name1
@@ -210,11 +199,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
-            this.splitContainer2.Panel2.Controls.Add(this.txtMessage);
             this.splitContainer2.Panel2.Controls.Add(this.pnlChatMode);
-            this.splitContainer2.Panel2.Controls.Add(this.rtbChat);
-            this.splitContainer2.Panel2.Controls.Add(this.btnSend);
-            this.splitContainer2.Panel2.Controls.Add(this.lblCurrentUser);
+            this.splitContainer2.Panel2.Controls.Add(this.pnlChat);
             this.splitContainer2.Size = new System.Drawing.Size(760, 632);
             this.splitContainer2.SplitterDistance = 253;
             this.splitContainer2.TabIndex = 0;
@@ -262,17 +248,10 @@
             this.flowGroups.TabIndex = 3;
             this.flowGroups.WrapContents = false;
             // 
-            // splitter2
-            // 
-            this.splitter2.Location = new System.Drawing.Point(0, 0);
-            this.splitter2.Name = "splitter2";
-            this.splitter2.Size = new System.Drawing.Size(3, 632);
-            this.splitter2.TabIndex = 2;
-            this.splitter2.TabStop = false;
-            // 
             // HideUsersLists
             // 
-            this.HideUsersLists.Location = new System.Drawing.Point(270, 6);
+            this.HideUsersLists.ErrorImage = null;
+            this.HideUsersLists.Location = new System.Drawing.Point(270, 7);
             this.HideUsersLists.Name = "HideUsersLists";
             this.HideUsersLists.Size = new System.Drawing.Size(26, 23);
             this.HideUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -291,6 +270,14 @@
             this.ShowUsersLists.Visible = false;
             this.ShowUsersLists.Click += new System.EventHandler(this.ShowUsersLists_Click);
             // 
+            // splitter2
+            // 
+            this.splitter2.Location = new System.Drawing.Point(0, 0);
+            this.splitter2.Name = "splitter2";
+            this.splitter2.Size = new System.Drawing.Size(3, 632);
+            this.splitter2.TabIndex = 2;
+            this.splitter2.TabStop = false;
+            // 
             // FlowUsers
             // 
             this.FlowUsers.Controls.Add(this.lstUsers);
@@ -300,17 +287,6 @@
             this.FlowUsers.Name = "FlowUsers";
             this.FlowUsers.Size = new System.Drawing.Size(291, 588);
             this.FlowUsers.TabIndex = 7;
-            // 
-            // lstMember
-            // 
-            this.lstMember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
-            this.lstMember.HideSelection = false;
-            this.lstMember.Location = new System.Drawing.Point(3, 287);
-            this.lstMember.Name = "lstMember";
-            this.lstMember.Size = new System.Drawing.Size(288, 301);
-            this.lstMember.TabIndex = 2;
-            this.lstMember.UseCompatibleStateImageBehavior = false;
-            this.lstMember.SelectedIndexChanged += new System.EventHandler(this.lstMember_SelectedIndexChanged);
             // 
             // lblGroupMembers
             // 
@@ -323,6 +299,41 @@
             this.lblGroupMembers.Size = new System.Drawing.Size(77, 20);
             this.lblGroupMembers.TabIndex = 7;
             this.lblGroupMembers.Text = "GROUPS: ";
+            // 
+            // lstMember
+            // 
+            this.lstMember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.lstMember.HideSelection = false;
+            this.lstMember.Location = new System.Drawing.Point(3, 287);
+            this.lstMember.Name = "lstMember";
+            this.lstMember.Size = new System.Drawing.Size(288, 301);
+            this.lstMember.TabIndex = 2;
+            this.lstMember.UseCompatibleStateImageBehavior = false;
+            this.lstMember.SelectedIndexChanged += new System.EventHandler(this.lstMember_SelectedIndexChanged);
+            // 
+            // pnlChat
+            // 
+            this.pnlChat.Controls.Add(this.btnSend);
+            this.pnlChat.Controls.Add(this.rtbChat);
+            this.pnlChat.Controls.Add(this.txtMessage);
+            this.pnlChat.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChat.Location = new System.Drawing.Point(0, 0);
+            this.pnlChat.Name = "pnlChat";
+            this.pnlChat.Size = new System.Drawing.Size(503, 632);
+            this.pnlChat.TabIndex = 6;
+            // 
+            // btnSend
+            // 
+            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(178)))), ((int)(((byte)(181)))));
+            this.btnSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSend.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSend.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnSend.Location = new System.Drawing.Point(391, 579);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(100, 28);
+            this.btnSend.TabIndex = 4;
+            this.btnSend.Text = "Gửi";
+            this.btnSend.UseVisualStyleBackColor = false;
             // 
             // FormChat
             // 
@@ -348,13 +359,14 @@
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).EndInit();
             this.FlowUsers.ResumeLayout(false);
             this.FlowUsers.PerformLayout();
+            this.pnlChat.ResumeLayout(false);
+            this.pnlChat.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -372,5 +384,7 @@
         private System.Windows.Forms.FlowLayoutPanel FlowUsers;
         private System.Windows.Forms.ListView lstMember;
         private System.Windows.Forms.Label lblGroupMembers;
+        private System.Windows.Forms.Panel pnlChat;
+        private System.Windows.Forms.Button btnSend;
     }
 }
