@@ -118,7 +118,7 @@ namespace BasicChat
                 {
                     Type = MessageType.GROUP_MESSAGE,
                     Sender = _currentUser,
-                    Receiver = _currentGroup,   // 🔥 BẮT BUỘC
+                    Receiver = _currentGroup,   // BẮT BUỘC
                     Content = message
                 };
 
@@ -176,34 +176,23 @@ namespace BasicChat
             if (lstUsers.SelectedItem != null)
             {
                 _selectedUser = lstUsers.SelectedItem.ToString();
-                //lblSelectedUser.Text = "Chat voi: " + _selectedUser;
+                Name1.Text = _selectedUser;
             }
-        }
-
-        private void rdGroupChat_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdateChatMode();
-        }
-
-        private void rdPrivateChat_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdateChatMode();
         }
 
         private void UpdateChatMode()
         {
-            //pnlUsers.Visible = !_isGroupChat;
-
             if (_isGroupChat)
             {
-                lblChatMode.Text = "Che do: Chat Nhom";
-                _selectedUser = null;
-                //lblSelectedUser.Text = "";
+                lstMember.Visible = true;
+                lblGroupMembers.Visible = true;
             }
-            else
+            else 
             {
-                lblChatMode.Text = "Che do: Chat Rieng";
+                lstMember.Visible = false;
+                lblGroupMembers.Visible = false;
             }
+            //thêm cập nhật hiển thị member trong nhóm
         }
 
         private void txtMessage_KeyPress(object sender, KeyPressEventArgs e) //enter tự động gửi
@@ -224,50 +213,6 @@ namespace BasicChat
         private void splitContainer2_Panel1_Paint(object sender, PaintEventArgs e)
         {
 
-        }
-        private void SendCreateGroupRequest(string groupName)
-        {
-            var msg = new ChatMessage
-            {
-                Type = MessageType.CREATE_GROUP_REQUEST,
-                Content = groupName
-            };
-
-            _client.Send(msg);
-        }
-        private string ShowInputDialog(string title, string prompt)
-        {
-            Form form = new Form();
-            Label lbl = new Label();
-            TextBox txt = new TextBox();
-            Button btnOk = new Button();
-            Button btnCancel = new Button();
-
-            form.Text = title;
-            form.FormBorderStyle = FormBorderStyle.FixedDialog;
-            form.StartPosition = FormStartPosition.CenterParent;
-            form.ClientSize = new Size(300, 130);
-            form.MaximizeBox = false;
-            form.MinimizeBox = false;
-
-            lbl.Text = prompt;
-            lbl.SetBounds(10, 10, 280, 20);
-
-            txt.SetBounds(10, 35, 270, 25);
-
-            btnOk.Text = "OK";
-            btnOk.SetBounds(60, 70, 75, 30);
-            btnOk.DialogResult = DialogResult.OK;
-
-            btnCancel.Text = "Huy";
-            btnCancel.SetBounds(150, 70, 75, 30);
-            btnCancel.DialogResult = DialogResult.Cancel;
-
-            form.Controls.AddRange(new Control[] { lbl, txt, btnOk, btnCancel });
-            form.AcceptButton = btnOk;
-            form.CancelButton = btnCancel;
-
-            return form.ShowDialog() == DialogResult.OK ? txt.Text : null;
         }
 
         private void CreateGroupButton(string groupName)
@@ -299,6 +244,11 @@ namespace BasicChat
 
         private void GroupButton_Click(object sender, EventArgs e)
         {
+            if(_isGroupChat == false)
+            {
+                _isGroupChat = true;
+                UpdateChatMode();
+            }
             foreach (Control c in flowGroups.Controls)
                 if (c is Button b)
                     b.BackColor = Color.FromArgb(39, 39, 58);
@@ -313,25 +263,6 @@ namespace BasicChat
             RenderCurrentGroup();
         }
 
-
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            using (FormCreateGroup frm = new FormCreateGroup())
-            {
-                if (frm.ShowDialog(this) == DialogResult.OK)
-                {
-                    ChatMessage msg = new ChatMessage
-                    {
-                        Type = MessageType.CREATE_GROUP_REQUEST,
-                        Sender = _currentUser,
-                        Content = frm.GroupName
-                    };
-
-                    _client.Send(msg);
-                }
-            }
-        }
         private void AppendGroupChat(string groupName, string text, Color color)
         {
             if (string.IsNullOrEmpty(groupName))

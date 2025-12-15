@@ -272,7 +272,6 @@
             // 
             // HideUsersLists
             // 
-            this.HideUsersLists.Image = global::BasicChat.Properties.Resources.upscrollarrow_83865__1_;
             this.HideUsersLists.Location = new System.Drawing.Point(270, 6);
             this.HideUsersLists.Name = "HideUsersLists";
             this.HideUsersLists.Size = new System.Drawing.Size(26, 23);
@@ -283,7 +282,6 @@
             // 
             // ShowUsersLists
             // 
-            this.ShowUsersLists.Image = global::BasicChat.Properties.Resources.scrollarrowtodown_83796;
             this.ShowUsersLists.Location = new System.Drawing.Point(270, 6);
             this.ShowUsersLists.Name = "ShowUsersLists";
             this.ShowUsersLists.Size = new System.Drawing.Size(26, 23);
