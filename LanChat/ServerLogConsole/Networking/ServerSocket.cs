@@ -193,9 +193,6 @@ namespace ServerLogConsole.Networking
             });
         }
 
-
-
-
         private void HandleLogin(ClientInfo clientInfo, ChatMessage message)
         {
             string username = message.Sender;

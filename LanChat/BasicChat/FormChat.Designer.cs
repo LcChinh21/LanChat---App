@@ -31,7 +31,7 @@ namespace BasicChat
             this.lblChatMode = new System.Windows.Forms.Label();
             this.pnlChatMode = new System.Windows.Forms.Panel();
             this.Name1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Label();
+            this.lblAdd = new System.Windows.Forms.Label();
             this.lblGroupChats = new System.Windows.Forms.Label();
             this.flowGroups = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlUsers = new System.Windows.Forms.Panel();
@@ -102,7 +102,7 @@ namespace BasicChat
             this.lblChatMode.AutoSize = true;
             this.lblChatMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChatMode.ForeColor = System.Drawing.Color.Green;
-            this.lblChatMode.Location = new System.Drawing.Point(465, 3);
+            this.lblChatMode.Location = new System.Drawing.Point(371, 8);
             this.lblChatMode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblChatMode.Name = "lblChatMode";
             this.lblChatMode.Size = new System.Drawing.Size(139, 16);
@@ -133,19 +133,18 @@ namespace BasicChat
             this.Name1.TabIndex = 3;
             this.Name1.Text = "n";
             // 
-            // button1
+            // lblAdd
             // 
-            this.button1.AutoSize = true;
-            this.button1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(191)))), ((int)(((byte)(229)))));
-            this.button1.Location = new System.Drawing.Point(272, 0);
-            this.button1.Name = "button1";
-            this.button1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.button1.Size = new System.Drawing.Size(28, 29);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "+";
-            this.button1.Click += new System.EventHandler(this.label1_Click);
+            this.lblAdd.AutoSize = true;
+            this.lblAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAdd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(191)))), ((int)(((byte)(229)))));
+            this.lblAdd.Location = new System.Drawing.Point(272, 0);
+            this.lblAdd.Name = "lblAdd";
+            this.lblAdd.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.lblAdd.Size = new System.Drawing.Size(22, 22);
+            this.lblAdd.TabIndex = 4;
+            this.lblAdd.Text = "+";
+            this.lblAdd.Click += new System.EventHandler(this.lblAdd_Click);
             // 
             // lblGroupChats
             // 
@@ -171,7 +170,6 @@ namespace BasicChat
             this.flowGroups.Size = new System.Drawing.Size(300, 612);
             this.flowGroups.TabIndex = 3;
             this.flowGroups.WrapContents = false;
-            this.flowGroups.Paint += new System.Windows.Forms.PaintEventHandler(this.flowGroups_Paint);
             // 
             // pnlUsers
             // 
@@ -231,7 +229,6 @@ namespace BasicChat
             this.lstMember.Size = new System.Drawing.Size(205, 332);
             this.lstMember.TabIndex = 2;
             this.lstMember.UseCompatibleStateImageBehavior = false;
-            this.lstMember.SelectedIndexChanged += new System.EventHandler(this.lstMember_SelectedIndexChanged);
             // 
             // lblOnlineUsers
             // 
@@ -310,7 +307,7 @@ namespace BasicChat
             // 
             this.pnlGroups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(45)))), ((int)(((byte)(59)))));
             this.pnlGroups.Controls.Add(this.lblGroupChats);
-            this.pnlGroups.Controls.Add(this.button1);
+            this.pnlGroups.Controls.Add(this.lblAdd);
             this.pnlGroups.Controls.Add(this.flowGroups);
             this.pnlGroups.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlGroups.Location = new System.Drawing.Point(0, 40);
@@ -380,7 +377,7 @@ namespace BasicChat
         }
         private System.Windows.Forms.Label lblGroupChats;
         private System.Windows.Forms.FlowLayoutPanel flowGroups;
-        private System.Windows.Forms.Label button1;
+        private System.Windows.Forms.Label lblAdd;
         private System.Windows.Forms.Label Name1;
         private System.Windows.Forms.Panel pnlUsers;
         private System.Windows.Forms.FlowLayoutPanel FlowUsers;

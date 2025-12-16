@@ -237,11 +237,6 @@ namespace BasicChat
             Application.Exit();
         }
 
-        private void splitContainer2_Panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void CreateGroupButton(string groupName)
         {
             foreach (Control c in flowGroups.Controls)
@@ -356,7 +351,7 @@ namespace BasicChat
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void lblAdd_Click(object sender, EventArgs e)
         {
             using (FormCreateGroup frm = new FormCreateGroup())
             {
@@ -391,21 +386,9 @@ namespace BasicChat
             ShowUsersLists.Visible = false;
             HideUsersLists.Visible = true;
         }
-
-
-        private void lstMember_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnExit_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void flowGroups_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }
