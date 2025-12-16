@@ -75,6 +75,8 @@ namespace BasicChat
 
                 case MessageType.USER_LIST:
                     UpdateUserList(msg.UserList);
+                    _client.OnlineUsers = new List<string>();
+                    _client.OnlineUsers.AddRange(msg.UserList);
                     break;
 
                 case MessageType.USER_JOINED:
@@ -237,11 +239,6 @@ namespace BasicChat
             Application.Exit();
         }
 
-        private void splitContainer2_Panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void CreateGroupButton(string groupName)
         {
             foreach (Control c in flowGroups.Controls)
@@ -264,9 +261,8 @@ namespace BasicChat
             };
 
             ContextMenuStrip menu = new ContextMenuStrip();
-            menu.Items.Add("Invite", null, (s, e) => MessageBox.Show($"Invite {groupName}"));
-            menu.Items.Add("Leave", null, (s, e) => MessageBox.Show($"Leave {groupName}"));
-            menu.Items.Add("Info", null, (s, e) => MessageBox.Show($"Info {groupName}"));
+            menu.Items.Add("Thêm", null, (s, e) => MessageBox.Show($"Invite {groupName}"));
+            menu.Items.Add("Rời nhóm", null, (s, e) => MessageBox.Show($"Leave {groupName}"));
 
             groupBtn.Paint += (s, e) =>
             {
@@ -356,9 +352,14 @@ namespace BasicChat
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void lblAdd_Click(object sender, EventArgs e)
         {
-            using (FormCreateGroup frm = new FormCreateGroup())
+            var tempMsg = new ChatMessage
+            {
+                Sender = _currentUser
+            };
+
+            using (InviteMembers frm = new InviteMembers(_client, tempMsg))
             {
                 if (frm.ShowDialog(this) == DialogResult.OK)
                 {
@@ -373,6 +374,7 @@ namespace BasicChat
                 }
             }
         }
+
 
         private void HideUsersLists_Click(object sender, EventArgs e)
         {
@@ -391,19 +393,12 @@ namespace BasicChat
             ShowUsersLists.Visible = false;
             HideUsersLists.Visible = true;
         }
-
-
-        private void lstMember_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnExit_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void flowGroups_Paint(object sender, PaintEventArgs e)
+        private void pnlUsers_Paint(object sender, PaintEventArgs e)
         {
 
         }

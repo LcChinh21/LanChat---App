@@ -82,7 +82,7 @@ namespace BasicChat
             // txtUsername
             // 
             this.txtUsername.Location = new System.Drawing.Point(67, 106);
-            this.txtUsername.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtUsername.Margin = new System.Windows.Forms.Padding(4);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(332, 22);
             this.txtUsername.TabIndex = 2;
@@ -90,7 +90,7 @@ namespace BasicChat
             // txtPassword
             // 
             this.txtPassword.Location = new System.Drawing.Point(67, 180);
-            this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPassword.Margin = new System.Windows.Forms.Padding(4);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(332, 22);
@@ -99,7 +99,7 @@ namespace BasicChat
             // txtEmail
             // 
             this.txtEmail.Location = new System.Drawing.Point(67, 254);
-            this.txtEmail.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtEmail.Margin = new System.Windows.Forms.Padding(4);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(332, 22);
             this.txtEmail.TabIndex = 6;
@@ -110,7 +110,7 @@ namespace BasicChat
             this.btnRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegister.ForeColor = System.Drawing.Color.White;
             this.btnRegister.Location = new System.Drawing.Point(67, 348);
-            this.btnRegister.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRegister.Margin = new System.Windows.Forms.Padding(4);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(333, 43);
             this.btnRegister.TabIndex = 7;
@@ -167,7 +167,7 @@ namespace BasicChat
             this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.lblBack);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "DangKy";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
