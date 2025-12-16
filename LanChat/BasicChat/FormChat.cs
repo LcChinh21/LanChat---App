@@ -75,6 +75,7 @@ namespace BasicChat
 
                 case MessageType.USER_LIST:
                     UpdateUserList(msg.UserList);
+                    _client.OnlineUsers.AddRange(msg.UserList);
                     break;
 
                 case MessageType.USER_JOINED:
@@ -259,9 +260,8 @@ namespace BasicChat
             };
 
             ContextMenuStrip menu = new ContextMenuStrip();
-            menu.Items.Add("Invite", null, (s, e) => MessageBox.Show($"Invite {groupName}"));
-            menu.Items.Add("Leave", null, (s, e) => MessageBox.Show($"Leave {groupName}"));
-            menu.Items.Add("Info", null, (s, e) => MessageBox.Show($"Info {groupName}"));
+            menu.Items.Add("Thêm", null, (s, e) => MessageBox.Show($"Invite {groupName}"));
+            menu.Items.Add("Rời nhóm", null, (s, e) => MessageBox.Show($"Leave {groupName}"));
 
             groupBtn.Paint += (s, e) =>
             {

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -16,9 +17,8 @@ namespace BasicChat.Networking
         public Action<ChatMessage> OnMessageReceived { get; set; }
         public Action<string> OnDisconnected { get; set; }
         public Action<string> OnError { get; set; }
-
         public bool IsConnected => _client != null && _client.Connected;
-
+        public List<string> OnlineUsers { get; set; }
         public async Task<bool> ConnectAsync(string ip, int port)
         {
             try

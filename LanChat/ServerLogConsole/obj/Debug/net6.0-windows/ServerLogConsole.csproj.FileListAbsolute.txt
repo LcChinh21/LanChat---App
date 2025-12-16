@@ -108,3 +108,6 @@ D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6
 D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\runtimes\win-x64\native\krb5_64.dll
 D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\runtimes\win-x64\native\krbcc64.dll
 D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\Guna.UI2.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\System.Management.dll
+D:\HocTap\HK3\LTTQ\LanChat\LanChat---App\LanChat\ServerLogConsole\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Management.dll
