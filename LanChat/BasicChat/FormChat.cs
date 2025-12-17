@@ -359,7 +359,7 @@ namespace BasicChat
                 Sender = _currentUser
             };
 
-            using (InviteMembers frm = new InviteMembers(_client, tempMsg))
+            using (FormCreateGroup frm = new FormCreateGroup())
             {
                 if (frm.ShowDialog(this) == DialogResult.OK)
                 {
