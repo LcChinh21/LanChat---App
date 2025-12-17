@@ -32,11 +32,11 @@ namespace BasicChat
         {
             if(lstOnlineUsers.SelectedItems.Count > 0)
             {
-                btnAdd.Enabled = true;
+                btnAdd.Visible = true;
             }
             else
             {
-                btnAdd.Enabled = false;
+                btnAdd.Visible = false;
             }
         }
 
@@ -47,9 +47,10 @@ namespace BasicChat
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if(lstOnlineUsers.SelectedItems.Count > 0)
+            if (lstOnlineUsers.SelectedItems.Count <= 0) return;
+            else
             {
-                foreach(var user in lstOnlineUsers.SelectedItems)
+                foreach (var user in lstOnlineUsers.SelectedItems)
                 {
                     string selectedUser = user.ToString();
                     var inviteMsg = new ChatMessage
