@@ -250,7 +250,7 @@ namespace BasicChat
             Button groupBtn = new Button
             {
                 Text = groupName,
-                Width = 210,
+                Width = 180,
                 Height = 40,
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.FromArgb(36, 45, 59),
@@ -261,7 +261,15 @@ namespace BasicChat
             };
 
             ContextMenuStrip menu = new ContextMenuStrip();
-            menu.Items.Add("Thêm", null, (s, e) => MessageBox.Show($"Invite {groupName}"));
+            menu.Items.Add("Thêm thành viên", null, (s, e) =>
+            {
+                InviteMembers frm = new InviteMembers(_client, new ChatMessage
+                {
+                    Sender = _currentUser,
+                    Content = groupName
+                });
+                frm.ShowDialog(this);
+            });
             menu.Items.Add("Rời nhóm", null, (s, e) => MessageBox.Show($"Leave {groupName}"));
 
             groupBtn.Paint += (s, e) =>

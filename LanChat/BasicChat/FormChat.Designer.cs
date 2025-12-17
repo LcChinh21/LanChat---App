@@ -157,6 +157,7 @@ namespace BasicChat
             this.flowGroups.Size = new System.Drawing.Size(228, 609);
             this.flowGroups.TabIndex = 3;
             this.flowGroups.WrapContents = false;
+            flowGroups.Padding = new Padding(0);
             // 
             // pnlUsers
             // 
