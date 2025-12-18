@@ -103,7 +103,7 @@ namespace BasicChat
             this.lblChatMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
             this.lblChatMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblChatMode.ForeColor = System.Drawing.Color.Green;
-            this.lblChatMode.Location = new System.Drawing.Point(460, 6);
+            this.lblChatMode.Location = new System.Drawing.Point(468, 35);
             this.lblChatMode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblChatMode.Name = "lblChatMode";
             this.lblChatMode.Size = new System.Drawing.Size(139, 16);
@@ -157,7 +157,6 @@ namespace BasicChat
             this.flowGroups.Size = new System.Drawing.Size(228, 609);
             this.flowGroups.TabIndex = 3;
             this.flowGroups.WrapContents = false;
-            flowGroups.Padding = new Padding(0);
             // 
             // pnlUsers
             // 
@@ -300,7 +299,7 @@ namespace BasicChat
             // 
             this.pnlChatMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
             this.pnlChatMode.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.pnlChatMode.BorderRadius = 25;
+            this.pnlChatMode.BorderRadius = 20;
             this.pnlChatMode.BorderThickness = 5;
             this.pnlChatMode.Controls.Add(this.lblChatMode);
             this.pnlChatMode.Controls.Add(this.lblCurrentUser);
@@ -350,7 +349,7 @@ namespace BasicChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(1066, 675);
             this.Controls.Add(this.pnlChat);
             this.Controls.Add(this.pnlUsers);

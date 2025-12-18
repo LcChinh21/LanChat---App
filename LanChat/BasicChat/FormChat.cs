@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using BasicChat.Networking;
 using System.Linq;
+using System.Configuration;
 
 namespace BasicChat
 {
@@ -89,6 +90,7 @@ namespace BasicChat
                 case MessageType.CREATE_GROUP_RESPONSE:
                     if (msg.Success)
                     {
+                        _groupMembers[msg.Content] = new List<string> { _currentUser };
                         CreateGroupButton(msg.Content);
                     }
                     else
@@ -263,11 +265,12 @@ namespace BasicChat
             ContextMenuStrip menu = new ContextMenuStrip();
             menu.Items.Add("Thêm thành viên", null, (s, e) =>
             {
-                InviteMembers frm = new InviteMembers(_client, new ChatMessage
+                ChatMessage addMsg = new ChatMessage
                 {
                     Sender = _currentUser,
                     Content = groupName
-                });
+                };
+                InviteMembers frm = new InviteMembers(_client, addMsg, _groupMembers[groupName]);
                 frm.ShowDialog(this);
             });
             menu.Items.Add("Rời nhóm", null, (s, e) => MessageBox.Show($"Leave {groupName}"));

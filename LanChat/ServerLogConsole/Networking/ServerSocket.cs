@@ -171,6 +171,7 @@ namespace ServerLogConsole.Networking
                 case MessageType.CREATE_GROUP_REQUEST:
                     HandleCreateGroup(clientInfo, message);
                     break;
+
                 case MessageType.LOAD_GROUP_REQUEST:
                     HandleLoadGroup(clientInfo);
                     break;

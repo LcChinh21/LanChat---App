@@ -102,12 +102,14 @@
             // lstOnlineUsers
             // 
             this.lstOnlineUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(42)))), ((int)(((byte)(55)))));
+            this.lstOnlineUsers.FullRowSelect = true;
             this.lstOnlineUsers.HideSelection = false;
             this.lstOnlineUsers.Location = new System.Drawing.Point(35, 159);
             this.lstOnlineUsers.Name = "lstOnlineUsers";
             this.lstOnlineUsers.Size = new System.Drawing.Size(475, 259);
             this.lstOnlineUsers.TabIndex = 12;
             this.lstOnlineUsers.UseCompatibleStateImageBehavior = false;
+            this.lstOnlineUsers.View = System.Windows.Forms.View.Details;
             this.lstOnlineUsers.SelectedIndexChanged += new System.EventHandler(this.lstOnlineUsers_SelectedIndexChanged);
             // 
             // lblOnlineUsers
@@ -136,7 +138,6 @@
             this.btnAdd.Size = new System.Drawing.Size(475, 37);
             this.btnAdd.TabIndex = 14;
             this.btnAdd.Text = "Thêm";
-            this.btnAdd.Visible = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // InviteMembers

@@ -22,7 +22,7 @@ namespace BasicChat {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    partial class FormChat {
+    public partial class FormChat {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
