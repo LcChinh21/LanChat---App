@@ -7,9 +7,7 @@ namespace BasicChat
     {
         private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.RichTextBox rtbChat;
-        private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Label lblCurrentUser;
-        private System.Windows.Forms.Label lblChatMode;
 
 
         protected override void Dispose(bool disposing)
@@ -25,9 +23,7 @@ namespace BasicChat
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormChat));
             this.rtbChat = new System.Windows.Forms.RichTextBox();
-            this.txtMessage = new System.Windows.Forms.TextBox();
             this.lblCurrentUser = new System.Windows.Forms.Label();
-            this.lblChatMode = new System.Windows.Forms.Label();
             this.Name1 = new System.Windows.Forms.Label();
             this.lblAdd = new System.Windows.Forms.Label();
             this.lblGroupChats = new System.Windows.Forms.Label();
@@ -47,6 +43,7 @@ namespace BasicChat
             this.btnSend = new System.Windows.Forms.PictureBox();
             this.pnlGroups = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlMenu = new System.Windows.Forms.Panel();
+            this.txtMessage = new Guna.UI2.WinForms.Guna2TextBox();
             this.pnlUsers.SuspendLayout();
             this.FlowUsers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).BeginInit();
@@ -67,22 +64,9 @@ namespace BasicChat
             this.rtbChat.Margin = new System.Windows.Forms.Padding(4);
             this.rtbChat.Name = "rtbChat";
             this.rtbChat.ReadOnly = true;
-            this.rtbChat.Size = new System.Drawing.Size(616, 531);
+            this.rtbChat.Size = new System.Drawing.Size(616, 501);
             this.rtbChat.TabIndex = 2;
             this.rtbChat.Text = "";
-            // 
-            // txtMessage
-            // 
-            this.txtMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(42)))), ((int)(((byte)(55)))));
-            this.txtMessage.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtMessage.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.txtMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMessage.Location = new System.Drawing.Point(228, 608);
-            this.txtMessage.Margin = new System.Windows.Forms.Padding(4);
-            this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(627, 27);
-            this.txtMessage.TabIndex = 3;
-            this.txtMessage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMessage_KeyPress);
             // 
             // lblCurrentUser
             // 
@@ -96,19 +80,6 @@ namespace BasicChat
             this.lblCurrentUser.Size = new System.Drawing.Size(108, 23);
             this.lblCurrentUser.TabIndex = 0;
             this.lblCurrentUser.Text = "Dang nhap: ";
-            // 
-            // lblChatMode
-            // 
-            this.lblChatMode.AutoSize = true;
-            this.lblChatMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
-            this.lblChatMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblChatMode.ForeColor = System.Drawing.Color.Green;
-            this.lblChatMode.Location = new System.Drawing.Point(468, 35);
-            this.lblChatMode.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblChatMode.Name = "lblChatMode";
-            this.lblChatMode.Size = new System.Drawing.Size(139, 16);
-            this.lblChatMode.TabIndex = 2;
-            this.lblChatMode.Text = "Che do: Chat Nhom";
             // 
             // Name1
             // 
@@ -160,7 +131,7 @@ namespace BasicChat
             // 
             // pnlUsers
             // 
-            this.pnlUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
+            this.pnlUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
             this.pnlUsers.Controls.Add(this.FlowUsers);
             this.pnlUsers.Controls.Add(this.lblOnlineUsers);
             this.pnlUsers.Controls.Add(this.HideUsersLists);
@@ -284,10 +255,10 @@ namespace BasicChat
             // pnlChat
             // 
             this.pnlChat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.pnlChat.Controls.Add(this.txtMessage);
+            this.pnlChat.Controls.Add(this.btnSend);
             this.pnlChat.Controls.Add(this.rtbChat);
             this.pnlChat.Controls.Add(this.pnlChatMode);
-            this.pnlChat.Controls.Add(this.btnSend);
-            this.pnlChat.Controls.Add(this.txtMessage);
             this.pnlChat.Controls.Add(this.pnlGroups);
             this.pnlChat.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlChat.Location = new System.Drawing.Point(0, 40);
@@ -301,7 +272,6 @@ namespace BasicChat
             this.pnlChatMode.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
             this.pnlChatMode.BorderRadius = 20;
             this.pnlChatMode.BorderThickness = 5;
-            this.pnlChatMode.Controls.Add(this.lblChatMode);
             this.pnlChatMode.Controls.Add(this.lblCurrentUser);
             this.pnlChatMode.Controls.Add(this.Name1);
             this.pnlChatMode.Dock = System.Windows.Forms.DockStyle.Top;
@@ -313,11 +283,11 @@ namespace BasicChat
             // 
             // btnSend
             // 
-            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(76)))));
+            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
             this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
-            this.btnSend.Location = new System.Drawing.Point(829, 609);
+            this.btnSend.Location = new System.Drawing.Point(819, 582);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(20, 25);
+            this.btnSend.Size = new System.Drawing.Size(26, 30);
             this.btnSend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.btnSend.TabIndex = 5;
             this.btnSend.TabStop = false;
@@ -345,6 +315,30 @@ namespace BasicChat
             this.pnlMenu.Size = new System.Drawing.Size(1066, 40);
             this.pnlMenu.TabIndex = 8;
             // 
+            // txtMessage
+            // 
+            this.txtMessage.AutoRoundedCorners = true;
+            this.txtMessage.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.txtMessage.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtMessage.DefaultText = "";
+            this.txtMessage.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtMessage.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtMessage.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtMessage.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtMessage.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(42)))), ((int)(((byte)(55)))));
+            this.txtMessage.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtMessage.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtMessage.ForeColor = System.Drawing.Color.White;
+            this.txtMessage.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtMessage.Location = new System.Drawing.Point(234, 578);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtMessage.Name = "txtMessage";
+            this.txtMessage.PlaceholderText = "";
+            this.txtMessage.SelectedText = "";
+            this.txtMessage.Size = new System.Drawing.Size(568, 38);
+            this.txtMessage.TabIndex = 8;
+            this.txtMessage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMessage_KeyPress);
+            // 
             // FormChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -368,7 +362,6 @@ namespace BasicChat
             ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).EndInit();
             this.pnlChat.ResumeLayout(false);
-            this.pnlChat.PerformLayout();
             this.pnlChatMode.ResumeLayout(false);
             this.pnlChatMode.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnSend)).EndInit();
@@ -398,5 +391,6 @@ namespace BasicChat
         private Panel pnlMenu;
         private Guna.UI2.WinForms.Guna2Panel pnlGroups;
         private PictureBox btnSend;
+        private Guna.UI2.WinForms.Guna2TextBox txtMessage;
     }
 }

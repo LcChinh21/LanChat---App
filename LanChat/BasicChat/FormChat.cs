@@ -320,9 +320,17 @@ namespace BasicChat
 
             _currentGroup = btn.Tag.ToString();
 
-            lblChatMode.Text = $"Dang chat nhom: {_currentGroup}";
+
             Name1.Text = _currentGroup;
             RenderCurrentGroup();
+            lstMember.BeginUpdate();
+            lstMember.Items.Clear();
+            foreach (var member in _groupMembers[_currentGroup])
+            {
+                lstMember.Items.Add(member);
+            }
+
+            lstMember.EndUpdate();
         }
 
         private void AppendGroupChat(string groupName, string text, Color color)
