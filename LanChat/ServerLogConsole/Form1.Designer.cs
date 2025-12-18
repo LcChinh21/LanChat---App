@@ -22,108 +22,121 @@ namespace ServerLogConsole
 
         private void InitializeComponent()
         {
-            this.rtbLog = new System.Windows.Forms.RichTextBox();
-            this.btnStart = new System.Windows.Forms.Button();
-            this.txtPort = new System.Windows.Forms.TextBox();
-            this.lblPort = new System.Windows.Forms.Label();
-            this.pnlTop = new System.Windows.Forms.Panel();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.lblStatus = new System.Windows.Forms.Label();
-            this.pnlTop.SuspendLayout();
-            this.SuspendLayout();
-
-            // pnlTop
-            this.pnlTop.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
-            this.pnlTop.Controls.Add(this.lblTitle);
-            this.pnlTop.Controls.Add(this.lblPort);
-            this.pnlTop.Controls.Add(this.txtPort);
-            this.pnlTop.Controls.Add(this.btnStart);
-            this.pnlTop.Controls.Add(this.lblStatus);
-            this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlTop.Location = new System.Drawing.Point(0, 0);
-            this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(600, 70);
-            this.pnlTop.TabIndex = 0;
-
-            // lblTitle
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(12, 10);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(150, 25);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "LanChat Server";
-
-            // lblPort
-            this.lblPort.AutoSize = true;
-            this.lblPort.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblPort.ForeColor = System.Drawing.Color.White;
-            this.lblPort.Location = new System.Drawing.Point(12, 42);
-            this.lblPort.Name = "lblPort";
-            this.lblPort.Size = new System.Drawing.Size(40, 19);
-            this.lblPort.TabIndex = 1;
-            this.lblPort.Text = "Port:";
-
-            // txtPort
-            this.txtPort.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtPort.Location = new System.Drawing.Point(55, 39);
-            this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(80, 25);
-            this.txtPort.TabIndex = 2;
-            this.txtPort.Text = "9999";
-
-            // btnStart
-            this.btnStart.BackColor = System.Drawing.Color.LimeGreen;
-            this.btnStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStart.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnStart.ForeColor = System.Drawing.Color.White;
-            this.btnStart.Location = new System.Drawing.Point(150, 35);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(120, 30);
-            this.btnStart.TabIndex = 3;
-            this.btnStart.Text = "Chay Server";
-            this.btnStart.UseVisualStyleBackColor = false;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-
-            // lblStatus
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblStatus.ForeColor = System.Drawing.Color.LightGray;
-            this.lblStatus.Location = new System.Drawing.Point(290, 42);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(0, 19);
-            this.lblStatus.TabIndex = 4;
-
+            rtbLog = new RichTextBox();
+            btnStart = new Button();
+            txtPort = new TextBox();
+            lblPort = new Label();
+            pnlTop = new Panel();
+            lblTitle = new Label();
+            lblStatus = new Label();
+            pnlTop.SuspendLayout();
+            SuspendLayout();
+            // 
             // rtbLog
-            this.rtbLog.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
-            this.rtbLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtbLog.Font = new System.Drawing.Font("Consolas", 10F);
-            this.rtbLog.ForeColor = System.Drawing.Color.White;
-            this.rtbLog.Location = new System.Drawing.Point(0, 70);
-            this.rtbLog.Name = "rtbLog";
-            this.rtbLog.ReadOnly = true;
-            this.rtbLog.Size = new System.Drawing.Size(600, 330);
-            this.rtbLog.TabIndex = 1;
-            this.rtbLog.Text = "";
-
+            // 
+            rtbLog.BackColor = Color.FromArgb(30, 30, 30);
+            rtbLog.BorderStyle = BorderStyle.None;
+            rtbLog.Dock = DockStyle.Fill;
+            rtbLog.Font = new Font("Consolas", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            rtbLog.ForeColor = Color.White;
+            rtbLog.Location = new Point(0, 93);
+            rtbLog.Margin = new Padding(3, 4, 3, 4);
+            rtbLog.Name = "rtbLog";
+            rtbLog.ReadOnly = true;
+            rtbLog.Size = new Size(686, 440);
+            rtbLog.TabIndex = 1;
+            rtbLog.Text = "";
+            // 
+            // btnStart
+            // 
+            btnStart.BackColor = Color.LimeGreen;
+            btnStart.FlatStyle = FlatStyle.Flat;
+            btnStart.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point);
+            btnStart.ForeColor = Color.White;
+            btnStart.Location = new Point(171, 47);
+            btnStart.Margin = new Padding(3, 4, 3, 4);
+            btnStart.Name = "btnStart";
+            btnStart.Size = new Size(137, 40);
+            btnStart.TabIndex = 3;
+            btnStart.Text = "Chay Server";
+            btnStart.UseVisualStyleBackColor = false;
+            btnStart.Click += btnStart_Click;
+            // 
+            // txtPort
+            // 
+            txtPort.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            txtPort.Location = new Point(63, 52);
+            txtPort.Margin = new Padding(3, 4, 3, 4);
+            txtPort.Name = "txtPort";
+            txtPort.Size = new Size(91, 30);
+            txtPort.TabIndex = 2;
+            txtPort.Text = "9000";
+            // 
+            // lblPort
+            // 
+            lblPort.AutoSize = true;
+            lblPort.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            lblPort.ForeColor = Color.White;
+            lblPort.Location = new Point(14, 56);
+            lblPort.Name = "lblPort";
+            lblPort.Size = new Size(45, 23);
+            lblPort.TabIndex = 1;
+            lblPort.Text = "Port:";
+            // 
+            // pnlTop
+            // 
+            pnlTop.BackColor = Color.FromArgb(45, 45, 48);
+            pnlTop.Controls.Add(lblTitle);
+            pnlTop.Controls.Add(lblPort);
+            pnlTop.Controls.Add(txtPort);
+            pnlTop.Controls.Add(btnStart);
+            pnlTop.Controls.Add(lblStatus);
+            pnlTop.Dock = DockStyle.Top;
+            pnlTop.Location = new Point(0, 0);
+            pnlTop.Margin = new Padding(3, 4, 3, 4);
+            pnlTop.Name = "pnlTop";
+            pnlTop.Size = new Size(686, 93);
+            pnlTop.TabIndex = 0;
+            // 
+            // lblTitle
+            // 
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point);
+            lblTitle.ForeColor = Color.White;
+            lblTitle.Location = new Point(14, 13);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(185, 32);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "LanChat Server";
+            // 
+            // lblStatus
+            // 
+            lblStatus.AutoSize = true;
+            lblStatus.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            lblStatus.ForeColor = Color.LightGray;
+            lblStatus.Location = new Point(331, 56);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(0, 23);
+            lblStatus.TabIndex = 4;
+            // 
             // Form1
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
-            this.ClientSize = new System.Drawing.Size(600, 400);
-            this.Controls.Add(this.rtbLog);
-            this.Controls.Add(this.pnlTop);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            this.Name = "Form1";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "LanChat Server";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
-            this.pnlTop.ResumeLayout(false);
-            this.pnlTop.PerformLayout();
-            this.ResumeLayout(false);
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(30, 30, 30);
+            ClientSize = new Size(686, 533);
+            Controls.Add(rtbLog);
+            Controls.Add(pnlTop);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(3, 4, 3, 4);
+            MaximizeBox = false;
+            Name = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "LanChat Server";
+            FormClosing += Form1_FormClosing;
+            pnlTop.ResumeLayout(false);
+            pnlTop.PerformLayout();
+            ResumeLayout(false);
         }
     }
 }

@@ -95,7 +95,7 @@ namespace BasicChat
                     }
                     else
                     {
-                        MessageBox.Show("Group da ton tai!");
+                        MessageBox.Show("Nhóm đã tồn tại!", "Thất bại", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                     break;
                 case MessageType.LOAD_GROUP_RESPONSE:
@@ -141,7 +141,7 @@ namespace BasicChat
             {
                 if (string.IsNullOrEmpty(_currentGroup))
                 {
-                    MessageBox.Show("Vui long chon nhom!");
+                    MessageBox.Show("Vui lòng chọn nhóm", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -157,14 +157,14 @@ namespace BasicChat
                 AppendGroupChat(
                     _currentGroup,
                     $"Ban: {message}",
-                    Color.Blue
+                    Color.White
                 );
             }
             else
             {
                 if (string.IsNullOrEmpty(_selectedUser))
                 {
-                    MessageBox.Show("Vui long chon nguoi nhan tu danh sach.");
+                    MessageBox.Show("Vui lòng chọn người để nhắn trong danh sách", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 

@@ -47,7 +47,7 @@ namespace BasicChat
                 bool connected = await _client.ConnectAsync(_serverIp, _serverPort);
                 if (!connected)
                 {
-                    MessageBox.Show("Khong the ket noi den server.");
+                    MessageBox.Show("Không thể kết nối đến server", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     btnRegister.Enabled = true;
                     return;
                 }
@@ -78,12 +78,12 @@ namespace BasicChat
 
                 if (msg.Success)
                 {
-                    MessageBox.Show("Dang ky thanh cong! Hay dang nhap.");
+                    MessageBox.Show("Đăng ký tài khoản thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Dang ky that bai. Ten dang nhap da ton tai.");
+                    MessageBox.Show("Đăng ký thất bại! Tên đăng nhập đã tồn tại", "Lỗi", MessageBoxButtons.OK ,MessageBoxIcon.Error);
                 }
             }
         }

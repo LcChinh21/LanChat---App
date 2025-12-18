@@ -340,7 +340,7 @@ namespace ServerLogConsole.Networking
                 Color.White
             );
 
-            Broadcast(message);
+            BroadcastExcept(message, clientInfo.Username);
         }
 
 

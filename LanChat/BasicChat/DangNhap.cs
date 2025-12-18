@@ -19,7 +19,7 @@ namespace BasicChat
             InitializeComponent();
             _client = new ClientSocket();
             _client.OnMessageReceived = HandleServerResponse;
-            _client.OnError = (err) => MessageBox.Show(err, "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            _client.OnError = (err) => MessageBox.Show(err, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private async void btnLogin_Click(object sender, EventArgs e)
@@ -46,7 +46,7 @@ namespace BasicChat
                 bool connected = await _client.ConnectAsync(_serverIp, _serverPort);
                 if (!connected)
                 {
-                    MessageBox.Show("Khong the ket noi den server. Hay chac chan server dang chay.");
+                    MessageBox.Show("Không thể kết nối đến server, hãy chắc chắn server đang chạy!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     btnLogin.Enabled = true;
                     return;
                 }
@@ -75,14 +75,14 @@ namespace BasicChat
 
                 if (msg.Success)
                 {
-                    MessageBox.Show("Dang nhap thanh cong!");
+                    MessageBox.Show("Đăng nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     FormChat chatForm = new FormChat(txtName.Text.Trim(), _client);
                     chatForm.Show();
                     this.Hide();
                 }
                 else
                 {
-                    MessageBox.Show("Sai ten dang nhap hoac mat khau.");
+                    MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     _client.Disconnect(); //Khi ??ng nh?p th?t b?i thì ?óng k?t n?i
                 }
             }
