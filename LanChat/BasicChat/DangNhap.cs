@@ -20,6 +20,14 @@ namespace BasicChat
             _client = new ClientSocket();
             _client.OnMessageReceived = HandleServerResponse;
             _client.OnError = (err) => MessageBox.Show(err, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+
+            lblExit.FillColor = System.Drawing.Color.Transparent;
+            lblExit.ForeColor = System.Drawing.Color.Red;
+
+
+            lblExit.HoverState.FillColor = System.Drawing.Color.Red;
+            lblExit.HoverState.ForeColor = System.Drawing.Color.White;
         }
 
         private async void btnLogin_Click(object sender, EventArgs e)

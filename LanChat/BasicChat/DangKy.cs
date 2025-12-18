@@ -19,7 +19,19 @@ namespace BasicChat
             _client = new ClientSocket(); //tạo client socket
             _client.OnMessageReceived = HandleServerResponse; //gán hàm xử lý tin nhắn từ server
             _client.OnError = (err) => MessageBox.Show(err, "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            Guna.UI2.WinForms.Guna2Button lblExit = this.Controls["lblExit"] as Guna.UI2.WinForms.Guna2Button;
+
+            if (lblExit != null)
+            {
+                lblExit.FillColor = System.Drawing.Color.Transparent;
+                lblExit.ForeColor = System.Drawing.Color.Red;
+
+                lblExit.HoverState.FillColor = System.Drawing.Color.Red;
+                lblExit.HoverState.ForeColor = System.Drawing.Color.White;
+            }
         }
+        
 
         private async void btnRegister_Click(object sender, EventArgs e)
         {
@@ -97,6 +109,11 @@ namespace BasicChat
         private void DangKy_FormClosing(object sender, FormClosingEventArgs e)
         {
             _client.Disconnect();
+        }
+
+        private void lblExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
