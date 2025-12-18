@@ -74,5 +74,31 @@ namespace BasicChat
                 Close();
             }
         }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            lstOnlineUsers.BeginUpdate();
+            lstOnlineUsers.Items.Clear();
+            string keyword = txtSearch.Text.Trim();
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                foreach (var user in groupmembers)
+                {
+                    lstOnlineUsers.Items.Add(user);
+                }
+            }
+            else
+            {
+                keyword = keyword.ToLower();
+                foreach (var user in groupmembers)
+                {
+                    if (user.ToLower().Contains(keyword))
+                    {
+                        lstOnlineUsers.Items.Add(user);
+                    }
+                }
+            }
+            lstOnlineUsers.EndUpdate();
+        }
     }
 }
