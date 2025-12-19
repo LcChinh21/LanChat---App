@@ -37,6 +37,7 @@
             this.lstOnlineUsers = new System.Windows.Forms.ListView();
             this.lblOnlineUsers = new System.Windows.Forms.Label();
             this.btnAdd = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.SuspendLayout();
             // 
             // lblName
@@ -142,6 +143,12 @@
             this.btnAdd.Text = "Thêm";
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
+            // guna2DragControl1
+            // 
+            this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2DragControl1.TargetControl = this;
+            this.guna2DragControl1.UseTransparentDrag = true;
+            // 
             // InviteMembers
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -173,5 +180,6 @@
         private System.Windows.Forms.Label lblOnlineUsers;
         private System.Windows.Forms.ListView lstOnlineUsers;
         private Guna.UI2.WinForms.Guna2Button btnAdd;
+        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
     }
 }

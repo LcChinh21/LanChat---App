@@ -69,5 +69,25 @@ namespace BasicChat {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Point similar to {X=225,Y=17}.
+        /// </summary>
+        public static System.Drawing.Point guna2AnimateWindow1_TrayLocation {
+            get {
+                object obj = ResourceManager.GetObject("guna2AnimateWindow1.TrayLocation", resourceCulture);
+                return ((System.Drawing.Point)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Point similar to {X=46,Y=18}.
+        /// </summary>
+        public static System.Drawing.Point guna2DragControl1_TrayLocation {
+            get {
+                object obj = ResourceManager.GetObject("guna2DragControl1.TrayLocation", resourceCulture);
+                return ((System.Drawing.Point)(obj));
+            }
+        }
     }
 }

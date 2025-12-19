@@ -20,7 +20,8 @@ namespace BasicChat.Networking
         GROUP_INVITE_REQUEST,
         GROUP_INVITE_RESPONSE,
         LOAD_GROUP_REQUEST,
-        LOAD_GROUP_RESPONSE
+        LOAD_GROUP_RESPONSE,
+        GROUP_REMOVE_MEMBER
     }
 
     public class ChatMessage

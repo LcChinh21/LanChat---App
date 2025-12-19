@@ -21,6 +21,7 @@ namespace BasicChat
 
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormChat));
             this.rtbChat = new System.Windows.Forms.RichTextBox();
             this.lblCurrentUser = new System.Windows.Forms.Label();
@@ -39,18 +40,20 @@ namespace BasicChat
             this.btnExit = new System.Windows.Forms.Button();
             this.lblAppName = new System.Windows.Forms.Label();
             this.pnlChat = new System.Windows.Forms.Panel();
-            this.pnlChatMode = new Guna.UI2.WinForms.Guna2Panel();
+            this.txtMessage = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnSend = new System.Windows.Forms.PictureBox();
+            this.pnlChatMode = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlGroups = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlMenu = new System.Windows.Forms.Panel();
-            this.txtMessage = new Guna.UI2.WinForms.Guna2TextBox();
+            this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
+            this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.pnlUsers.SuspendLayout();
             this.FlowUsers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).BeginInit();
             this.pnlChat.SuspendLayout();
-            this.pnlChatMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnSend)).BeginInit();
+            this.pnlChatMode.SuspendLayout();
             this.pnlGroups.SuspendLayout();
             this.pnlMenu.SuspendLayout();
             this.SuspendLayout();
@@ -266,55 +269,6 @@ namespace BasicChat
             this.pnlChat.Size = new System.Drawing.Size(855, 635);
             this.pnlChat.TabIndex = 10;
             // 
-            // pnlChatMode
-            // 
-            this.pnlChatMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.pnlChatMode.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.pnlChatMode.BorderRadius = 20;
-            this.pnlChatMode.BorderThickness = 5;
-            this.pnlChatMode.Controls.Add(this.lblCurrentUser);
-            this.pnlChatMode.Controls.Add(this.Name1);
-            this.pnlChatMode.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlChatMode.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
-            this.pnlChatMode.Location = new System.Drawing.Point(228, 0);
-            this.pnlChatMode.Name = "pnlChatMode";
-            this.pnlChatMode.Size = new System.Drawing.Size(627, 62);
-            this.pnlChatMode.TabIndex = 6;
-            // 
-            // btnSend
-            // 
-            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
-            this.btnSend.Location = new System.Drawing.Point(819, 582);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(26, 30);
-            this.btnSend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btnSend.TabIndex = 5;
-            this.btnSend.TabStop = false;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            // 
-            // pnlGroups
-            // 
-            this.pnlGroups.Controls.Add(this.lblAdd);
-            this.pnlGroups.Controls.Add(this.lblGroupChats);
-            this.pnlGroups.Controls.Add(this.flowGroups);
-            this.pnlGroups.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlGroups.Location = new System.Drawing.Point(0, 0);
-            this.pnlGroups.Name = "pnlGroups";
-            this.pnlGroups.Size = new System.Drawing.Size(228, 635);
-            this.pnlGroups.TabIndex = 7;
-            // 
-            // pnlMenu
-            // 
-            this.pnlMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(45)))), ((int)(((byte)(59)))));
-            this.pnlMenu.Controls.Add(this.btnExit);
-            this.pnlMenu.Controls.Add(this.lblAppName);
-            this.pnlMenu.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlMenu.Location = new System.Drawing.Point(0, 0);
-            this.pnlMenu.Name = "pnlMenu";
-            this.pnlMenu.Size = new System.Drawing.Size(1066, 40);
-            this.pnlMenu.TabIndex = 8;
-            // 
             // txtMessage
             // 
             this.txtMessage.AutoRoundedCorners = true;
@@ -339,6 +293,67 @@ namespace BasicChat
             this.txtMessage.TabIndex = 8;
             this.txtMessage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMessage_KeyPress);
             // 
+            // btnSend
+            // 
+            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
+            this.btnSend.Location = new System.Drawing.Point(819, 582);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(26, 30);
+            this.btnSend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnSend.TabIndex = 5;
+            this.btnSend.TabStop = false;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
+            // pnlChatMode
+            // 
+            this.pnlChatMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.pnlChatMode.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.pnlChatMode.BorderRadius = 20;
+            this.pnlChatMode.BorderThickness = 5;
+            this.pnlChatMode.Controls.Add(this.lblCurrentUser);
+            this.pnlChatMode.Controls.Add(this.Name1);
+            this.pnlChatMode.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlChatMode.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
+            this.pnlChatMode.Location = new System.Drawing.Point(228, 0);
+            this.pnlChatMode.Name = "pnlChatMode";
+            this.pnlChatMode.Size = new System.Drawing.Size(627, 62);
+            this.pnlChatMode.TabIndex = 6;
+            // 
+            // pnlGroups
+            // 
+            this.pnlGroups.Controls.Add(this.lblAdd);
+            this.pnlGroups.Controls.Add(this.lblGroupChats);
+            this.pnlGroups.Controls.Add(this.flowGroups);
+            this.pnlGroups.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlGroups.Location = new System.Drawing.Point(0, 0);
+            this.pnlGroups.Name = "pnlGroups";
+            this.pnlGroups.Size = new System.Drawing.Size(228, 635);
+            this.pnlGroups.TabIndex = 7;
+            // 
+            // pnlMenu
+            // 
+            this.pnlMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(45)))), ((int)(((byte)(59)))));
+            this.pnlMenu.Controls.Add(this.btnExit);
+            this.pnlMenu.Controls.Add(this.lblAppName);
+            this.pnlMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlMenu.Location = new System.Drawing.Point(0, 0);
+            this.pnlMenu.Name = "pnlMenu";
+            this.pnlMenu.Size = new System.Drawing.Size(1066, 40);
+            this.pnlMenu.TabIndex = 8;
+            // 
+            // guna2AnimateWindow1
+            // 
+            this.guna2AnimateWindow1.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
+            this.guna2AnimateWindow1.Interval = 200;
+            this.guna2AnimateWindow1.TargetForm = this;
+            // 
+            // guna2DragControl1
+            // 
+            this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2DragControl1.TargetControl = this.pnlMenu;
+            this.guna2DragControl1.UseTransparentDrag = true;
+            // 
             // FormChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -362,9 +377,9 @@ namespace BasicChat
             ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).EndInit();
             this.pnlChat.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.btnSend)).EndInit();
             this.pnlChatMode.ResumeLayout(false);
             this.pnlChatMode.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnSend)).EndInit();
             this.pnlGroups.ResumeLayout(false);
             this.pnlGroups.PerformLayout();
             this.pnlMenu.ResumeLayout(false);
@@ -392,5 +407,7 @@ namespace BasicChat
         private Guna.UI2.WinForms.Guna2Panel pnlGroups;
         private PictureBox btnSend;
         private Guna.UI2.WinForms.Guna2TextBox txtMessage;
+        private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
+        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
     }
 }

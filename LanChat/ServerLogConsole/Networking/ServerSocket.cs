@@ -429,6 +429,22 @@ namespace ServerLogConsole.Networking
                 _logAction($"Loi gui tin nhan: {ex.Message}", Color.Red);
             }
         }
+        private void SendToGroup(string groupName, ChatMessage msg)
+        {
+            lock (_groups)
+            {
+                if (!_groups.TryGetValue(groupName, out var members))
+                    return;
+
+                foreach (var username in members)
+                {
+                    if (_clients.TryGetValue(username, out var client))
+                    {
+                        SendToClient(client, msg);
+                    }
+                }
+            }
+        }
 
         private void DisconnectClient(ClientInfo clientInfo)
         {
@@ -583,6 +599,21 @@ namespace ServerLogConsole.Networking
                         _groups.Remove(groupName);
                 }
             }
+            var leaveAck = new ChatMessage
+            {
+                Type = MessageType.GROUP_LEAVE,
+                Success = true,
+                Content = groupName
+            };
+            SendToClient(clientInfo, leaveAck);
+
+            var leaveNotify = new ChatMessage
+            {
+                Type = MessageType.GROUP_REMOVE_MEMBER,
+                Sender = clientInfo.Username,
+                Receiver = groupName
+            };
+            SendToGroup(groupName, leaveNotify);
 
             _logAction(
                 $"{clientInfo.Username} left group {groupName}",

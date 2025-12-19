@@ -101,6 +101,12 @@ namespace BasicChat
                 case MessageType.LOAD_GROUP_RESPONSE:
                     LoadGroups(msg.GroupList);
                     break;
+                case MessageType.GROUP_LEAVE:
+                    if (msg.Success && msg.Sender == _currentUser) 
+                    {
+                        RemoveGroupButton(msg.Receiver);
+                    }
+                    break;
             }
         }
 
@@ -273,7 +279,20 @@ namespace BasicChat
                 InviteMembers frm = new InviteMembers(_client, addMsg, _groupMembers[groupName]);
                 frm.ShowDialog(this);
             });
-            menu.Items.Add("Rời nhóm", null, (s, e) => MessageBox.Show($"Leave {groupName}"));
+            menu.Items.Add("Rời nhóm", null, (s, e) =>
+            {
+                DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn rời nhóm", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if (result == DialogResult.Yes) 
+                {
+                    ChatMessage leaveMsg = new ChatMessage
+                    {
+                        Type = MessageType.GROUP_LEAVE,
+                        Sender = _currentUser,
+                        Receiver = groupName
+                    };
+                    _client.Send(leaveMsg);
+                }
+            });
 
             groupBtn.Paint += (s, e) =>
             {
@@ -331,6 +350,25 @@ namespace BasicChat
             }
 
             lstMember.EndUpdate();
+        }
+
+        private void RemoveGroupButton(string groupName)
+        {
+            Button removeBtn = null;
+            foreach (Control c in flowGroups.Controls)
+            {
+                if (c is Button btn && btn.Tag?.ToString() == groupName)
+                {
+                    removeBtn = btn;
+                    break;
+                }
+            }
+
+            if (removeBtn != null)
+            {
+                flowGroups.Controls.Remove(removeBtn);
+                removeBtn.Dispose();
+            }
         }
 
         private void AppendGroupChat(string groupName, string text, Color color)
