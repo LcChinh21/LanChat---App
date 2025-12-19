@@ -45,8 +45,11 @@ namespace BasicChat
             this.pnlChatMode = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlGroups = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlMenu = new System.Windows.Forms.Panel();
+<<<<<<< HEAD
             this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
+=======
+>>>>>>> 9b3aa039c1e6a5ec0eea0bb74998e3d64f76fd9b
             this.pnlUsers.SuspendLayout();
             this.FlowUsers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).BeginInit();
@@ -70,6 +73,7 @@ namespace BasicChat
             this.rtbChat.Size = new System.Drawing.Size(616, 501);
             this.rtbChat.TabIndex = 2;
             this.rtbChat.Text = "";
+            this.rtbChat.TextChanged += new System.EventHandler(this.rtbChat_TextChanged);
             // 
             // lblCurrentUser
             // 
@@ -342,6 +346,7 @@ namespace BasicChat
             this.pnlMenu.Size = new System.Drawing.Size(1066, 40);
             this.pnlMenu.TabIndex = 8;
             // 
+<<<<<<< HEAD
             // guna2AnimateWindow1
             // 
             this.guna2AnimateWindow1.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
@@ -354,6 +359,8 @@ namespace BasicChat
             this.guna2DragControl1.TargetControl = this.pnlMenu;
             this.guna2DragControl1.UseTransparentDrag = true;
             // 
+=======
+>>>>>>> 9b3aa039c1e6a5ec0eea0bb74998e3d64f76fd9b
             // FormChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);

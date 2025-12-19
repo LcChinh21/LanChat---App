@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "Nylash83wPI=",
   "success": true,
   "projectFilePath": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
+=======
+  "dgSpecHash": "jMZSZP6eWqw=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Admin\\Source\\Repos\\LanChat - App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
+>>>>>>> 9b3aa039c1e6a5ec0eea0bb74998e3d64f76fd9b
   "expectedPackageFiles": [
     "C:\\Users\\ACER\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\ACER\\.nuget\\packages\\google.protobuf\\3.32.0\\google.protobuf.3.32.0.nupkg.sha512",
@@ -34,9 +40,15 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'System.Data.SqlClient' 4.8.5 has a known high severity vulnerability, https://github.com/advisories/GHSA-98g6-xh36-x2p7",
+<<<<<<< HEAD
       "projectPath": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
       "warningLevel": 1,
       "filePath": "D:\\HocTap\\HK3\\LTTQ\\LanChat\\LanChat---App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
+=======
+      "projectPath": "C:\\Users\\Admin\\Source\\Repos\\LanChat - App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Admin\\Source\\Repos\\LanChat - App\\LanChat\\ServerLogConsole\\ServerLogConsole.csproj",
+>>>>>>> 9b3aa039c1e6a5ec0eea0bb74998e3d64f76fd9b
       "libraryId": "System.Data.SqlClient",
       "targetGraphs": [
         "net6.0-windows7.0"

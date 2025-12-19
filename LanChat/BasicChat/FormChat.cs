@@ -158,13 +158,6 @@ namespace BasicChat
                     Receiver = _currentGroup,   // BẮT BUỘC
                     Content = message
                 };
-
-                // append theo group
-                AppendGroupChat(
-                    _currentGroup,
-                    $"Ban: {message}",
-                    Color.White
-                );
             }
             else
             {
@@ -456,6 +449,11 @@ namespace BasicChat
         }
 
         private void pnlUsers_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void rtbChat_TextChanged(object sender, EventArgs e)
         {
 
         }
