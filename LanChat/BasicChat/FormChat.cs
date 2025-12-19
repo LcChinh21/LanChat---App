@@ -102,10 +102,22 @@ namespace BasicChat
                     LoadGroups(msg.GroupList);
                     break;
                 case MessageType.GROUP_LEAVE:
-                    if (msg.Success && msg.Sender == _currentUser) 
+                    if (_groupMembers.ContainsKey(msg.Receiver))
                     {
-                        RemoveGroupButton(msg.Receiver);
+                        _groupMembers[msg.Receiver].Remove(_currentUser);
+                        if (_groupMembers[msg.Receiver].Count == 0)
+                            _groupMembers.Remove(msg.Receiver);
                     }
+                    if (_currentGroup == msg.Receiver)
+                    {
+                        _currentGroup = null;
+                        rtbChat.Clear();
+                        lstMember.Items.Clear();
+                        Name1.Text = "";
+                    }
+                    RemoveGroupButton(msg.Receiver);
+                    _isGroupChat = false;
+                    UpdateChatMode();
                     break;
             }
         }
@@ -113,11 +125,13 @@ namespace BasicChat
         private void LoadGroups(Dictionary<string, List<string>> groups)
         {
             flowGroups.Controls.Clear();
-            _groupMembers = groups;
-
             foreach (var g in groups)
             {
-                CreateGroupButton(g.Key);
+                if (g.Value.Contains(_currentUser))
+                {
+                    _groupMembers[g.Key] = g.Value;
+                    CreateGroupButton(g.Key);
+                }
             }
         }
 
@@ -150,7 +164,7 @@ namespace BasicChat
                     MessageBox.Show("Vui lòng chọn nhóm", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-
+                AppendGroupChat(_currentGroup,$"Bạn: {message}",Color.White);
                 chatMsg = new ChatMessage
                 {
                     Type = MessageType.GROUP_MESSAGE,
@@ -347,20 +361,25 @@ namespace BasicChat
 
         private void RemoveGroupButton(string groupName)
         {
-            Button removeBtn = null;
+            if (flowGroups.InvokeRequired)
+            {
+                flowGroups.Invoke(new Action(() => RemoveGroupButton(groupName)));
+                return;
+            }
+
+            Button btnToRemove = null;
             foreach (Control c in flowGroups.Controls)
             {
-                if (c is Button btn && btn.Tag?.ToString() == groupName)
+                if (c is Button btn && btn.Text == groupName)
                 {
-                    removeBtn = btn;
+                    btnToRemove = btn;
                     break;
                 }
             }
-
-            if (removeBtn != null)
+            if (btnToRemove != null)
             {
-                flowGroups.Controls.Remove(removeBtn);
-                removeBtn.Dispose();
+                flowGroups.Controls.Remove(btnToRemove);
+                btnToRemove.Dispose();
             }
         }
 

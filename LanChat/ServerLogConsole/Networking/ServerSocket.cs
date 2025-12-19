@@ -603,7 +603,7 @@ namespace ServerLogConsole.Networking
             {
                 Type = MessageType.GROUP_LEAVE,
                 Success = true,
-                Content = groupName
+                Receiver = groupName
             };
             SendToClient(clientInfo, leaveAck);
 
