@@ -4,8 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using BasicChat.Networking;
 using System.Linq;
-using System.Configuration;
-using System.IO; 
+using System.IO;
 
 namespace BasicChat
 {
@@ -16,14 +15,13 @@ namespace BasicChat
         private string _selectedUser = null;
         private bool _isGroupChat = true;
         private string _currentGroup = null;
-        private List<string> _groupButtons = new List<string>();
         private Dictionary<string, List<(string text, Color color)>> _groupMessages
             = new Dictionary<string, List<(string, Color)>>();
         private Dictionary<string, List<string>> _groupMembers
             = new Dictionary<string, List<string>>();
-        private bool _isExpanded = false; 
-        private Size _oldSize;            
-        private Point _oldLocation;    
+        private bool _isExpanded = false;
+        private Size _oldSize;
+        private Point _oldLocation;
 
         public FormChat(string username, ClientSocket client)
         {
@@ -45,7 +43,6 @@ namespace BasicChat
 
         public void FormChat_Load(object sender, EventArgs e)
         {
-            // Load nhóm từ server khi form được tải
             ChatMessage loadGroupsMsg = new ChatMessage
             {
                 Type = MessageType.LOAD_GROUP_REQUEST,
@@ -65,24 +62,19 @@ namespace BasicChat
             {
                 _oldSize = this.Size;
                 _oldLocation = this.Location;
-
                 int newWidth = (int)(Screen.PrimaryScreen.WorkingArea.Width * 0.8);
                 int newHeight = (int)(Screen.PrimaryScreen.WorkingArea.Height * 0.8);
-
                 this.Size = new Size(newWidth, newHeight);
-
                 this.CenterToScreen();
-
                 _isExpanded = true;
-                btnResize.Text = "❐"; 
+                btnResize.Text = "❐";
             }
             else
             {
                 this.Size = _oldSize;
                 this.Location = _oldLocation;
-
                 _isExpanded = false;
-                btnResize.Text = "☐"; 
+                btnResize.Text = "☐";
             }
         }
 
@@ -153,27 +145,48 @@ namespace BasicChat
                     RemoveGroupButton(msg.Receiver);
                     _isGroupChat = false;
                     UpdateChatMode();
-                    break;          
+                    break;
                 case MessageType.FILE_SEND:
                     string[] parts = msg.Content.Split(new char[] { '|' }, 2);
-
                     if (parts.Length == 2)
                     {
                         string fileName = parts[0];
                         string fileBase64 = parts[1];
-
                         AppendChat($"[FILE] {msg.Sender} đã gửi một file: {fileName}", Color.Magenta);
-
                         DialogResult result = MessageBox.Show(
                             $"{msg.Sender} vừa gửi file '{fileName}'. Bạn có muốn tải về không?",
                             "Nhận File",
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question
                         );
-
                         if (result == DialogResult.Yes)
                         {
                             SaveFileToDisk(fileName, fileBase64);
+                        }
+                    }
+                    break;
+                case MessageType.HISTORY_RESPONSE:
+                    string target = msg.Receiver;
+                    if (msg.HistoryList != null)
+                    {
+                        bool isCurrent = (_isGroupChat && _currentGroup == target) || (!_isGroupChat && _selectedUser == target);
+
+                        if (_isGroupChat && target == _currentGroup)
+                        {
+                            rtbChat.Clear();
+                            _groupMessages[target] = new List<(string, Color)>();
+                            foreach (var m in msg.HistoryList)
+                            {
+                                AppendGroupChat(target, $"{m.Sender}: {m.Content}", Color.Gray);
+                            }
+                        }
+                        else if (!_isGroupChat && target == _selectedUser)
+                        {
+                            AppendChat($"--- Lịch sử tin nhắn với {target} ---", Color.Gray);
+                            foreach (var m in msg.HistoryList)
+                            {
+                                AppendChat($"[{m.Timestamp:HH:mm}] {m.Sender}: {m.Content}", Color.Gray);
+                            }
                         }
                     }
                     break;
@@ -195,14 +208,14 @@ namespace BasicChat
 
         private void UpdateUserList(string[] users)
         {
-            lstUsers.Items.Clear(); //xóa hết danh sách user hiện có
+            lstUsers.Items.Clear();
             if (users != null)
             {
                 foreach (string user in users)
                 {
                     if (!string.IsNullOrEmpty(user) && user != _currentUser)
                     {
-                        lstUsers.Items.Add(user); //cập nhật lại danh sách user
+                        lstUsers.Items.Add(user);
                     }
                 }
             }
@@ -222,12 +235,12 @@ namespace BasicChat
                     MessageBox.Show("Vui lòng chọn nhóm", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                AppendGroupChat(_currentGroup,$"Bạn: {message}",Color.White);
+                AppendGroupChat(_currentGroup, $"Bạn: {message}", Color.White);
                 chatMsg = new ChatMessage
                 {
                     Type = MessageType.GROUP_MESSAGE,
                     Sender = _currentUser,
-                    Receiver = _currentGroup,   // BẮT BUỘC
+                    Receiver = _currentGroup,
                     Content = message
                 };
             }
@@ -259,7 +272,7 @@ namespace BasicChat
         }
 
 
-        private void AppendChat(string text, Color color) //hiện chat trên rtb
+        private void AppendChat(string text, Color color)
         {
             if (rtbChat.InvokeRequired)
             {
@@ -279,6 +292,14 @@ namespace BasicChat
             {
                 _selectedUser = lstUsers.SelectedItem.ToString();
                 Name1.Text = _selectedUser;
+
+                _client.Send(new ChatMessage
+                {
+                    Type = MessageType.HISTORY_REQUEST,
+                    Sender = _currentUser,
+                    Receiver = _selectedUser,
+                    Content = "PRIVATE"
+                });
             }
         }
 
@@ -289,15 +310,14 @@ namespace BasicChat
                 lstMember.Visible = true;
                 lblGroupMembers.Visible = true;
             }
-            else 
+            else
             {
                 lstMember.Visible = false;
                 lblGroupMembers.Visible = false;
             }
-            //thêm cập nhật hiển thị member trong nhóm
         }
 
-        private void txtMessage_KeyPress(object sender, KeyPressEventArgs e) //enter tự động gửi
+        private void txtMessage_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
@@ -306,7 +326,7 @@ namespace BasicChat
             }
         }
 
-        private void FormChat_FormClosing(object sender, FormClosingEventArgs e) //đóng form thì ngắt kết nối
+        private void FormChat_FormClosing(object sender, FormClosingEventArgs e)
         {
             _client.Disconnect();
             Application.Exit();
@@ -317,7 +337,7 @@ namespace BasicChat
             foreach (Control c in flowGroups.Controls)
             {
                 if (c is Button btn && btn.Text == groupName)
-                    return; // đã tồn tại
+                    return;
             }
 
             Button groupBtn = new Button
@@ -347,7 +367,7 @@ namespace BasicChat
             menu.Items.Add("Rời nhóm", null, (s, e) =>
             {
                 DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn rời nhóm", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                if (result == DialogResult.Yes) 
+                if (result == DialogResult.Yes)
                 {
                     ChatMessage leaveMsg = new ChatMessage
                     {
@@ -363,21 +383,19 @@ namespace BasicChat
             {
                 string dots = "⋮";
                 SizeF size = e.Graphics.MeasureString(dots, groupBtn.Font);
-                float x = groupBtn.Width - size.Width - 10; // cách mép phải 10px
+                float x = groupBtn.Width - size.Width - 10;
                 float y = (groupBtn.Height - size.Height) / 2;
                 e.Graphics.DrawString(dots, groupBtn.Font, Brushes.White, x, y);
             };
 
             groupBtn.MouseClick += (s, e) =>
             {
-                // Nếu click vào 30px cuối bên phải -> hiện menu
                 if (e.X >= groupBtn.Width - 30)
                 {
                     menu.Show(groupBtn, new System.Drawing.Point(e.X, e.Y));
                 }
                 else
                 {
-                    // Click vào phần còn lại -> chọn nhóm
                     GroupButton_Click(groupBtn, EventArgs.Empty);
                 }
             };
@@ -390,7 +408,7 @@ namespace BasicChat
 
         private void GroupButton_Click(object sender, EventArgs e)
         {
-            if(_isGroupChat == false)
+            if (_isGroupChat == false)
             {
                 _isGroupChat = true;
                 UpdateChatMode();
@@ -407,11 +425,23 @@ namespace BasicChat
 
             Name1.Text = _currentGroup;
             RenderCurrentGroup();
+
+            _client.Send(new ChatMessage
+            {
+                Type = MessageType.HISTORY_REQUEST,
+                Sender = _currentUser,
+                Receiver = _currentGroup,
+                Content = "GROUP"
+            });
+
             lstMember.BeginUpdate();
             lstMember.Items.Clear();
-            foreach (var member in _groupMembers[_currentGroup])
+            if (_groupMembers.ContainsKey(_currentGroup))
             {
-                lstMember.Items.Add(member);
+                foreach (var member in _groupMembers[_currentGroup])
+                {
+                    lstMember.Items.Add(member);
+                }
             }
 
             lstMember.EndUpdate();
@@ -541,7 +571,6 @@ namespace BasicChat
                 string fileName = Path.GetFileName(filePath);
                 long fileSize = new FileInfo(filePath).Length;
 
-                // Giới hạn 10MB (10 * 1024 * 1024 bytes)
                 if (fileSize > 10 * 1024 * 1024)
                 {
                     MessageBox.Show("File quá lớn! Vui lòng gửi file dưới 10MB.", "Cảnh báo");
@@ -569,8 +598,6 @@ namespace BasicChat
                     }
 
                     _client.Send(msg);
-
-                    // Hiển thị lên chat 
                     AppendChat($"[Bạn đã gửi file]: {fileName}", Color.Blue);
                 }
                 catch (Exception ex)
@@ -590,15 +617,9 @@ namespace BasicChat
             {
                 try
                 {
-                    // Chuyển ngược chuỗi Base64 thành mảng byte
                     byte[] fileBytes = Convert.FromBase64String(base64Data);
-
-                    // Ghi mảng byte xuống đường dẫn người dùng chọn
                     File.WriteAllBytes(sfd.FileName, fileBytes);
-
                     MessageBox.Show("Lưu file thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Mở thư mục chứa file                 
                 }
                 catch (Exception ex)
                 {

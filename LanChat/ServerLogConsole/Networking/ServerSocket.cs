@@ -1,14 +1,11 @@
 ﻿using BasicChat.Networking;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ServerLogConsole.Networking
@@ -37,6 +34,9 @@ namespace ServerLogConsole.Networking
             _logAction = logAction;
             _clients = new Dictionary<string, ClientInfo>();
             _dbHelper = new DatabaseHelper();
+
+            // Ensure DB tables exist
+            _dbHelper.EnsureDatabase();
         }
 
         public void Start()
@@ -179,24 +179,80 @@ namespace ServerLogConsole.Networking
                 case MessageType.FILE_SEND:
                     HandleFile(clientInfo, message);
                     break;
+                case MessageType.ADD_MEMBER_REQUEST: // Optional explicit add
+                case MessageType.GROUP_INVITE_REQUEST:
+                    HandleGroupInvite(clientInfo, message);
+                    break;
+                case MessageType.SEARCH_USER_REQUEST:
+                    HandleSearchUser(clientInfo, message);
+                    break;
+                case MessageType.HISTORY_REQUEST:
+                    HandleHistoryRequest(clientInfo, message);
+                    break;
+            }
+        }
+
+        private void HandleSearchUser(ClientInfo client, ChatMessage message)
+        {
+            if (!client.IsAuthenticated) return;
+            var users = _dbHelper.SearchUsers(message.Content);
+            SendToClient(client, new ChatMessage
+            {
+                Type = MessageType.SEARCH_USER_RESPONSE,
+                UserList = users.ToArray()
+            });
+        }
+
+        private void HandleHistoryRequest(ClientInfo client, ChatMessage message)
+        {
+            if (!client.IsAuthenticated) return;
+
+            string target = message.Receiver; // GroupName or UserName
+            string mode = message.Content; // "GROUP" or "PRIVATE"
+
+            List<ChatMessage> history = null;
+            if (mode == "GROUP")
+            {
+                history = _dbHelper.GetGroupHistory(target);
+            }
+            else
+            {
+                history = _dbHelper.GetPrivateHistory(client.Username, target);
+            }
+
+            if (history != null && history.Count > 0)
+            {
+                var response = new ChatMessage
+                {
+                    Type = MessageType.HISTORY_RESPONSE,
+                    Receiver = target, // Echo back target so client knows which history it is
+                    Content = mode,
+                    HistoryList = history
+                };
+                SendToClient(client, response);
+                _logAction($"Gui history {mode} cho {client.Username} (target: {target}, count: {history.Count})", Color.Cyan);
             }
         }
 
         private void HandleLoadGroup(ClientInfo client)
         {
-            var groups = _dbHelper.GetAllGroupsWithMembers();
+            var allGroups = _dbHelper.GetAllGroupsWithMembers();
 
-            lock (_groups)
+            var userGroups = new Dictionary<string, List<string>>();
+
+            foreach (var g in allGroups)
             {
-                _groups = groups;
+                if (g.Value.Contains(client.Username))
+                    userGroups[g.Key] = g.Value;
             }
 
             SendToClient(client, new ChatMessage
             {
                 Type = MessageType.LOAD_GROUP_RESPONSE,
-                GroupList = groups
+                GroupList = userGroups
             });
         }
+
 
         private void HandleLogin(ClientInfo clientInfo, ChatMessage message)
         {
@@ -283,67 +339,72 @@ namespace ServerLogConsole.Networking
             string groupName = message.Content;
             if (!_groups.ContainsKey(groupName))
             {
-                ChatMessage errorMsg = new ChatMessage
+                var groups = _dbHelper.GetAllGroupsWithMembers();
+                if (groups.ContainsKey(groupName))
                 {
-                    Type = MessageType.GROUP_INVITE_RESPONSE,
-                    Success = false,
-                    Content = "Nhom khong ton tai"
-                };
-                SendToClient(clientInfo, errorMsg);
-                return;
-            }
-            lock (_clients)
-            {
-                if (!_clients.TryGetValue(invitee, out ClientInfo targetClient))
+                    lock (_groups) _groups[groupName] = groups[groupName];
+                }
+                else
                 {
-                    ChatMessage errorMsg = new ChatMessage
-                    {
-                        Type = MessageType.GROUP_INVITE_RESPONSE,
-                        Success = false,
-                        Content = "Nguoi duoc moi khong online"
-                    };
-                    SendToClient(clientInfo, errorMsg);
+                    SendToClient(clientInfo, new ChatMessage { Type = MessageType.GROUP_INVITE_RESPONSE, Success = false, Content = "Nhom khong ton tai" });
                     return;
                 }
-                ChatMessage inviteMsg = new ChatMessage
-                {
-                    Type = MessageType.GROUP_INVITE_REQUEST,
-                    Sender = inviter,
-                    Receiver = invitee,
-                    Content = groupName
-                };
-                SendToClient(targetClient, inviteMsg);
             }
-            _logAction($"[{groupName}] {inviter} moi {invitee} vao group", Color.Cyan);
+
+            // Add vao DB
+            _dbHelper.AddGroupMember(groupName, invitee);
+
+            // Update
+            lock (_groups)
+            {
+                if (!_groups[groupName].Contains(invitee))
+                    _groups[groupName].Add(invitee);
+            }
+
+            lock (_clients)
+            {
+                if (_clients.TryGetValue(invitee, out ClientInfo targetClient))
+                {
+                    ChatMessage inviteMsg = new ChatMessage
+                    {
+                        Type = MessageType.GROUP_INVITE_REQUEST,
+                        Sender = inviter,
+                        Receiver = invitee,
+                        Content = groupName
+                    };
+                    SendToClient(targetClient, inviteMsg);
+
+                    SendToClient(targetClient, new ChatMessage
+                    {
+                        Type = MessageType.LOAD_GROUP_RESPONSE,
+                        GroupList = new Dictionary<string, List<string>> { { groupName, _groups[groupName] } }
+                    });
+                }
+                else
+                {
+                    SendToClient(clientInfo, new ChatMessage { Type = MessageType.GROUP_INVITE_RESPONSE, Success = true, Content = $"Da them {invitee} vao nhom (Offline)" });
+                    return;
+                }
+            }
+            _logAction($"[{groupName}] {inviter} added {invitee} to group", Color.Cyan);
         }
+
         private void HandleGroupMessage(ClientInfo clientInfo, ChatMessage message)
         {
-            // Kiểm tra xác thực
-            // IsAuthenticated là true nếu người dùng đã đăng nhập thành công
-            if (!clientInfo.IsAuthenticated)
-                return;
-
-            // Dùng Receiver làm tên group
+            if (!clientInfo.IsAuthenticated) return;
             string groupName = message.Receiver;
-            // Nếu groupName rỗng thì không làm gì cả
-            if (string.IsNullOrEmpty(groupName))
-                return;
+            if (string.IsNullOrEmpty(groupName)) return;
 
-            // Lấy danh sách thành viên nhóm
+            _dbHelper.SaveMessage(message.Sender, message.Receiver, message.Content, true);
+
             List<string> members;
             lock (_groups)
             {
-                // Nếu nhóm không tồn tại thì thoát
                 if (!_groups.TryGetValue(groupName, out members))
                     return;
             }
 
-            // Ghi log tin nhắn nhóm
-            _logAction(
-                $"[Nhom:{groupName}] {message.Sender}: {message.Content}",
-                Color.White
-            );
-
+            _logAction($"[Nhom:{groupName}] {message.Sender}: {message.Content}", Color.White);
             BroadcastExcept(message, clientInfo.Username);
         }
 
@@ -351,9 +412,10 @@ namespace ServerLogConsole.Networking
         private void HandlePrivateMessage(ClientInfo clientInfo, ChatMessage message)
         {
             if (!clientInfo.IsAuthenticated) return;
-
             string receiver = message.Receiver;
             _logAction($"[Rieng] {message.Sender} -> {receiver}: {message.Content}", Color.Magenta);
+
+            _dbHelper.SaveMessage(message.Sender, message.Receiver, message.Content, false);
 
             lock (_clients)
             {
@@ -482,19 +544,13 @@ namespace ServerLogConsole.Networking
         }
         private void HandleCreateGroup(ClientInfo clientInfo, ChatMessage message)
         {
-            if (!clientInfo.IsAuthenticated)
-                return;
+            if (!clientInfo.IsAuthenticated) return;
 
             string groupName = message.Content?.Trim();
 
             if (string.IsNullOrEmpty(groupName))
             {
-                SendToClient(clientInfo, new ChatMessage
-                {
-                    Type = MessageType.CREATE_GROUP_RESPONSE,
-                    Success = false,
-                    Content = "Ten nhom khong hop le"
-                });
+                SendToClient(clientInfo, new ChatMessage { Type = MessageType.CREATE_GROUP_RESPONSE, Success = false, Content = "Ten nhom khong hop le" });
                 return;
             }
 
@@ -502,73 +558,44 @@ namespace ServerLogConsole.Networking
             {
                 if (_groups.ContainsKey(groupName))
                 {
-                    SendToClient(clientInfo, new ChatMessage
-                    {
-                        Type = MessageType.CREATE_GROUP_RESPONSE,
-                        Success = false,
-                        Content = "Nhom da ton tai"
-                    });
+                    SendToClient(clientInfo, new ChatMessage { Type = MessageType.CREATE_GROUP_RESPONSE, Success = false, Content = "Nhom da ton tai" });
                     return;
                 }
-
-                // Tạo group
                 _groups[groupName] = new List<string> { clientInfo.Username };
             }
 
-            // LƯU DATABASE
             try
             {
                 using (var conn = new MySql.Data.MySqlClient.MySqlConnection(_dbHelper.GetConnectionString()))
                 {
                     conn.Open();
-
-                    // Insert group
-                    var cmd = new MySql.Data.MySqlClient.MySqlCommand(
-                        "INSERT INTO ChatGroups (GroupName, CreatedBy) VALUES (@name, @by)",
-                        conn
-                    );
+                    var cmd = new MySql.Data.MySqlClient.MySqlCommand("INSERT INTO ChatGroups (GroupName, CreatedBy) VALUES (@name, @by)", conn);
                     cmd.Parameters.AddWithValue("@name", groupName);
                     cmd.Parameters.AddWithValue("@by", clientInfo.Username);
                     cmd.ExecuteNonQuery();
 
-                    // Join creator vào group
-                    var joinCmd = new MySql.Data.MySqlClient.MySqlCommand(
-                        @"INSERT INTO GroupMembers (GroupId, UserName)
-                  VALUES (LAST_INSERT_ID(), @user)",
-                        conn
-                    );
+                    var joinCmd = new MySql.Data.MySqlClient.MySqlCommand(@"INSERT INTO GroupMembers (GroupId, UserName) VALUES (LAST_INSERT_ID(), @user)", conn);
                     joinCmd.Parameters.AddWithValue("@user", clientInfo.Username);
                     joinCmd.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
             {
-                SendToClient(clientInfo, new ChatMessage
-                {
-                    Type = MessageType.CREATE_GROUP_RESPONSE,
-                    Success = false,
-                    Content = "Loi DB: " + ex.Message
-                });
+                SendToClient(clientInfo, new ChatMessage { Type = MessageType.CREATE_GROUP_RESPONSE, Success = false, Content = "Loi DB: " + ex.Message });
                 return;
             }
 
-            // ===== PHẢN HỒI THÀNH CÔNG =====
-            SendToClient(clientInfo, new ChatMessage
-            {
-                Type = MessageType.CREATE_GROUP_RESPONSE,
-                Success = true,
-                Content = groupName
-            });
+            SendToClient(clientInfo, new ChatMessage { Type = MessageType.CREATE_GROUP_RESPONSE, Success = true, Content = groupName });
         }
 
         private void HandleGroupJoin(ClientInfo clientInfo, ChatMessage message)
         {
-            if (!clientInfo.IsAuthenticated)
-                return;
+            if (!clientInfo.IsAuthenticated) return;
 
             string groupName = message.Receiver;
-            if (string.IsNullOrEmpty(groupName))
-                return;
+            if (string.IsNullOrEmpty(groupName)) return;
+
+            _dbHelper.AddGroupMember(groupName, clientInfo.Username);
 
             lock (_groups)
             {
@@ -579,57 +606,37 @@ namespace ServerLogConsole.Networking
                     _groups[groupName].Add(clientInfo.Username);
             }
 
-            _logAction(
-                $"{clientInfo.Username} joined group {groupName}",
-                Color.LightGreen
-            );
+            _logAction($"{clientInfo.Username} joined group {groupName}", Color.LightGreen);
         }
+
         private void HandleGroupLeave(ClientInfo clientInfo, ChatMessage message)
         {
-            if (!clientInfo.IsAuthenticated)
-                return;
+            if (!clientInfo.IsAuthenticated) return;
 
             string groupName = message.Receiver;
-            if (string.IsNullOrEmpty(groupName))
-                return;
+            if (string.IsNullOrEmpty(groupName)) return;
 
             lock (_groups)
             {
                 if (_groups.TryGetValue(groupName, out var members))
                 {
                     members.Remove(clientInfo.Username);
-
-                    if (members.Count == 0)
-                        _groups.Remove(groupName);
+                    if (members.Count == 0) _groups.Remove(groupName);
                 }
             }
-            var leaveAck = new ChatMessage
-            {
-                Type = MessageType.GROUP_LEAVE,
-                Success = true,
-                Receiver = groupName
-            };
+            var leaveAck = new ChatMessage { Type = MessageType.GROUP_LEAVE, Success = true, Receiver = groupName };
             SendToClient(clientInfo, leaveAck);
 
-            var leaveNotify = new ChatMessage
-            {
-                Type = MessageType.GROUP_REMOVE_MEMBER,
-                Sender = clientInfo.Username,
-                Receiver = groupName
-            };
+            var leaveNotify = new ChatMessage { Type = MessageType.GROUP_REMOVE_MEMBER, Sender = clientInfo.Username, Receiver = groupName };
             SendToGroup(groupName, leaveNotify);
 
-            _logAction(
-                $"{clientInfo.Username} left group {groupName}",
-                Color.Orange
-            );
+            _logAction($"{clientInfo.Username} left group {groupName}", Color.Orange);
         }
 
         private void HandleFile(ClientInfo clientInfo, ChatMessage message)
         {
             if (!clientInfo.IsAuthenticated) return;
 
-            // Kiểm tra xem là gửi nhóm hay gửi cá nhân
             bool isGroup = false;
             lock (_groups)
             {
@@ -639,7 +646,7 @@ namespace ServerLogConsole.Networking
             if (isGroup)
             {
                 _logAction($"[File Group: {message.Receiver}] {message.Sender} gui file.", Color.Cyan);
-                BroadcastExcept(message, clientInfo.Username); // Gửi cho mọi người trừ người gửi
+                BroadcastExcept(message, clientInfo.Username);
             }
             else
             {

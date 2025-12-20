@@ -17,28 +17,52 @@ namespace BasicChat
         private ChatMessage message;
         private List<string> groupmembers = new List<string>();
         public string GroupName { get; private set; }
+        private Action<ChatMessage> _originalHandler;
+
         public InviteMembers(ClientSocket client, ChatMessage msg, List<string> groupmembers)
         {
             InitializeComponent();
             _client = client;
             message = msg;
+            this.groupmembers = groupmembers;
+
+            // Chain handler for search response
+            _originalHandler = _client.OnMessageReceived;
+            _client.OnMessageReceived = (m) =>
+            {
+                _originalHandler?.Invoke(m);
+                if (m.Type == MessageType.SEARCH_USER_RESPONSE)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        lstOnlineUsers.BeginUpdate();
+                        lstOnlineUsers.Items.Clear();
+                        if (m.UserList != null)
+                        {
+                            foreach (var u in m.UserList)
+                            {
+                                if (!this.groupmembers.Contains(u))
+                                    lstOnlineUsers.Items.Add(u);
+                            }
+                        }
+                        lstOnlineUsers.EndUpdate();
+                    }));
+                }
+            };
+
             foreach (var user in _client.OnlineUsers)
             {
-                lstOnlineUsers.Items.Add(user);
-                lstOnlineUsers.Width = 475;
+                if (!groupmembers.Contains(user))
+                    lstOnlineUsers.Items.Add(user);
             }
-            for (int i = lstOnlineUsers.Items.Count - 1; i >= 0; i--)
-            {
-                if (groupmembers.Contains(lstOnlineUsers.Items[i].Text))
-                    lstOnlineUsers.Items.RemoveAt(i);
-            }
+            lstOnlineUsers.Width = 475;
+
             btnAdd.Visible = false;
-            this.groupmembers = groupmembers;
         }
 
         private void lstOnlineUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(lstOnlineUsers.SelectedItems.Count > 0)
+            if (lstOnlineUsers.SelectedItems.Count > 0)
             {
                 btnAdd.Visible = true;
             }
@@ -70,35 +94,36 @@ namespace BasicChat
                     };
                     _client.Send(inviteMsg);
                 }
-                //thêm hàm
                 Close();
             }
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            lstOnlineUsers.BeginUpdate();
-            lstOnlineUsers.Items.Clear();
             string keyword = txtSearch.Text.Trim();
             if (string.IsNullOrWhiteSpace(keyword))
             {
-                foreach (var user in groupmembers)
+                lstOnlineUsers.BeginUpdate();
+                lstOnlineUsers.Items.Clear();
+                foreach (var user in _client.OnlineUsers)
                 {
-                    lstOnlineUsers.Items.Add(user);
+                    if (!groupmembers.Contains(user))
+                        lstOnlineUsers.Items.Add(user);
                 }
+                lstOnlineUsers.EndUpdate();
             }
             else
             {
-                keyword = keyword.ToLower();
-                foreach (var user in groupmembers)
-                {
-                    if (user.ToLower().Contains(keyword))
-                    {
-                        lstOnlineUsers.Items.Add(user);
-                    }
-                }
+                _client.Send(new ChatMessage { Type = MessageType.SEARCH_USER_REQUEST, Content = keyword });
             }
-            lstOnlineUsers.EndUpdate();
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            // Restore original handler
+            if (_originalHandler != null)
+                _client.OnMessageReceived = _originalHandler;
+            base.OnFormClosing(e);
         }
     }
 }
