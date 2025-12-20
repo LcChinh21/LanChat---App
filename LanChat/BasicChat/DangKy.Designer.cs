@@ -34,6 +34,7 @@
             this.txtSeverIP = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnRegister = new Guna.UI2.WinForms.Guna2Button();
             this.guna2ShadowForm1 = new Guna.UI2.WinForms.Guna2ShadowForm(this.components);
+            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictrboxLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictrboxUser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictrboxPassword)).BeginInit();
@@ -46,10 +47,10 @@
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
             this.lblTitle.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.lblTitle.Location = new System.Drawing.Point(166, 124);
+            this.lblTitle.Location = new System.Drawing.Point(162, 99);
             this.lblTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(181, 48);
+            this.lblTitle.Size = new System.Drawing.Size(151, 41);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "ĐĂNG KÝ";
             // 
@@ -58,12 +59,12 @@
             this.lblBack.AutoSize = true;
             this.lblBack.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblBack.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.lblBack.Location = new System.Drawing.Point(170, 578);
+            this.lblBack.Location = new System.Drawing.Point(166, 462);
             this.lblBack.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblBack.Name = "lblBack";
-            this.lblBack.Size = new System.Drawing.Size(199, 20);
+            this.lblBack.Size = new System.Drawing.Size(133, 16);
             this.lblBack.TabIndex = 8;
-            this.lblBack.Text = "< Quay lại Form đăng nhập";
+            this.lblBack.Text = "< Quay lại đăng nhập";
             this.lblBack.Click += new System.EventHandler(this.lblBack_Click);
             // 
             // guna2DragControl1
@@ -77,9 +78,10 @@
             this.pictrboxLogo.Image = ((System.Drawing.Image)(resources.GetObject("pictrboxLogo.Image")));
             this.pictrboxLogo.ImageRotate = 0F;
             this.pictrboxLogo.InitialImage = null;
-            this.pictrboxLogo.Location = new System.Drawing.Point(218, 48);
+            this.pictrboxLogo.Location = new System.Drawing.Point(199, 38);
+            this.pictrboxLogo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictrboxLogo.Name = "pictrboxLogo";
-            this.pictrboxLogo.Size = new System.Drawing.Size(78, 73);
+            this.pictrboxLogo.Size = new System.Drawing.Size(69, 58);
             this.pictrboxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictrboxLogo.TabIndex = 11;
             this.pictrboxLogo.TabStop = false;
@@ -94,9 +96,10 @@
             this.lblExit.FillColor = System.Drawing.Color.Transparent;
             this.lblExit.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblExit.ForeColor = System.Drawing.Color.Red;
-            this.lblExit.Location = new System.Drawing.Point(433, 12);
+            this.lblExit.Location = new System.Drawing.Point(393, 3);
+            this.lblExit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lblExit.Name = "lblExit";
-            this.lblExit.Size = new System.Drawing.Size(69, 57);
+            this.lblExit.Size = new System.Drawing.Size(61, 46);
             this.lblExit.TabIndex = 12;
             this.lblExit.Text = "X";
             this.lblExit.Click += new System.EventHandler(this.lblExit_Click);
@@ -105,9 +108,10 @@
             // 
             this.pictrboxUser.Image = ((System.Drawing.Image)(resources.GetObject("pictrboxUser.Image")));
             this.pictrboxUser.ImageRotate = 0F;
-            this.pictrboxUser.Location = new System.Drawing.Point(62, 198);
+            this.pictrboxUser.Location = new System.Drawing.Point(55, 158);
+            this.pictrboxUser.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictrboxUser.Name = "pictrboxUser";
-            this.pictrboxUser.Size = new System.Drawing.Size(46, 41);
+            this.pictrboxUser.Size = new System.Drawing.Size(41, 33);
             this.pictrboxUser.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictrboxUser.TabIndex = 13;
             this.pictrboxUser.TabStop = false;
@@ -123,23 +127,24 @@
             this.txtUsername.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.txtUsername.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtUsername.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtUsername.ForeColor = System.Drawing.Color.Gray;
+            this.txtUsername.ForeColor = System.Drawing.Color.Black;
             this.txtUsername.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtUsername.Location = new System.Drawing.Point(126, 198);
-            this.txtUsername.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtUsername.Location = new System.Drawing.Point(112, 158);
+            this.txtUsername.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.PlaceholderText = "Nhập tên đăng nhập";
             this.txtUsername.SelectedText = "";
-            this.txtUsername.Size = new System.Drawing.Size(322, 47);
+            this.txtUsername.Size = new System.Drawing.Size(286, 38);
             this.txtUsername.TabIndex = 14;
             // 
             // pictrboxPassword
             // 
             this.pictrboxPassword.Image = ((System.Drawing.Image)(resources.GetObject("pictrboxPassword.Image")));
             this.pictrboxPassword.ImageRotate = 0F;
-            this.pictrboxPassword.Location = new System.Drawing.Point(62, 278);
+            this.pictrboxPassword.Location = new System.Drawing.Point(55, 222);
+            this.pictrboxPassword.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictrboxPassword.Name = "pictrboxPassword";
-            this.pictrboxPassword.Size = new System.Drawing.Size(46, 39);
+            this.pictrboxPassword.Size = new System.Drawing.Size(41, 31);
             this.pictrboxPassword.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictrboxPassword.TabIndex = 15;
             this.pictrboxPassword.TabStop = false;
@@ -155,24 +160,25 @@
             this.txtPassword.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.txtPassword.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtPassword.ForeColor = System.Drawing.Color.Gray;
+            this.txtPassword.ForeColor = System.Drawing.Color.Black;
             this.txtPassword.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtPassword.Location = new System.Drawing.Point(126, 278);
-            this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtPassword.Location = new System.Drawing.Point(112, 222);
+            this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '●';
             this.txtPassword.PlaceholderText = "Nhập mật khẩu";
             this.txtPassword.SelectedText = "";
-            this.txtPassword.Size = new System.Drawing.Size(322, 47);
+            this.txtPassword.Size = new System.Drawing.Size(286, 38);
             this.txtPassword.TabIndex = 16;
             // 
             // pictrboxEmail
             // 
             this.pictrboxEmail.Image = ((System.Drawing.Image)(resources.GetObject("pictrboxEmail.Image")));
             this.pictrboxEmail.ImageRotate = 0F;
-            this.pictrboxEmail.Location = new System.Drawing.Point(62, 356);
+            this.pictrboxEmail.Location = new System.Drawing.Point(55, 285);
+            this.pictrboxEmail.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictrboxEmail.Name = "pictrboxEmail";
-            this.pictrboxEmail.Size = new System.Drawing.Size(46, 46);
+            this.pictrboxEmail.Size = new System.Drawing.Size(41, 37);
             this.pictrboxEmail.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictrboxEmail.TabIndex = 17;
             this.pictrboxEmail.TabStop = false;
@@ -188,22 +194,24 @@
             this.txtEmail.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.txtEmail.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtEmail.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtEmail.ForeColor = System.Drawing.Color.Black;
             this.txtEmail.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtEmail.Location = new System.Drawing.Point(126, 356);
-            this.txtEmail.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtEmail.Location = new System.Drawing.Point(112, 285);
+            this.txtEmail.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.PlaceholderText = "Nhập địa chỉ email";
             this.txtEmail.SelectedText = "";
-            this.txtEmail.Size = new System.Drawing.Size(322, 46);
+            this.txtEmail.Size = new System.Drawing.Size(286, 37);
             this.txtEmail.TabIndex = 18;
             // 
             // pictrboxIPServer
             // 
             this.pictrboxIPServer.Image = ((System.Drawing.Image)(resources.GetObject("pictrboxIPServer.Image")));
             this.pictrboxIPServer.ImageRotate = 0F;
-            this.pictrboxIPServer.Location = new System.Drawing.Point(62, 431);
+            this.pictrboxIPServer.Location = new System.Drawing.Point(55, 345);
+            this.pictrboxIPServer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictrboxIPServer.Name = "pictrboxIPServer";
-            this.pictrboxIPServer.Size = new System.Drawing.Size(46, 40);
+            this.pictrboxIPServer.Size = new System.Drawing.Size(41, 32);
             this.pictrboxIPServer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictrboxIPServer.TabIndex = 19;
             this.pictrboxIPServer.TabStop = false;
@@ -219,29 +227,30 @@
             this.txtSeverIP.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.txtSeverIP.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtSeverIP.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtSeverIP.ForeColor = System.Drawing.Color.Gray;
+            this.txtSeverIP.ForeColor = System.Drawing.Color.Black;
             this.txtSeverIP.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtSeverIP.Location = new System.Drawing.Point(126, 431);
-            this.txtSeverIP.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtSeverIP.Location = new System.Drawing.Point(112, 345);
+            this.txtSeverIP.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtSeverIP.Name = "txtSeverIP";
             this.txtSeverIP.PlaceholderText = "Nhập IP Server";
             this.txtSeverIP.SelectedText = "";
-            this.txtSeverIP.Size = new System.Drawing.Size(322, 48);
+            this.txtSeverIP.Size = new System.Drawing.Size(286, 38);
             this.txtSeverIP.TabIndex = 20;
             // 
             // btnRegister
             // 
-            this.btnRegister.BorderRadius = 20;
+            this.btnRegister.BorderRadius = 15;
             this.btnRegister.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnRegister.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnRegister.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnRegister.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnRegister.FillColor = System.Drawing.Color.DodgerBlue;
-            this.btnRegister.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRegister.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnRegister.ForeColor = System.Drawing.Color.White;
-            this.btnRegister.Location = new System.Drawing.Point(126, 512);
+            this.btnRegister.Location = new System.Drawing.Point(112, 410);
+            this.btnRegister.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(270, 45);
+            this.btnRegister.Size = new System.Drawing.Size(240, 36);
             this.btnRegister.TabIndex = 21;
             this.btnRegister.Text = "ĐĂNG KÝ";
             this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
@@ -250,12 +259,20 @@
             // 
             this.guna2ShadowForm1.TargetForm = this;
             // 
+            // guna2BorderlessForm1
+            // 
+            this.guna2BorderlessForm1.BorderRadius = 20;
+            this.guna2BorderlessForm1.ContainerControl = this;
+            this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2BorderlessForm1.ResizeForm = false;
+            this.guna2BorderlessForm1.TransparentWhileDrag = true;
+            // 
             // DangKy
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(514, 622);
+            this.ClientSize = new System.Drawing.Size(457, 498);
             this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.txtSeverIP);
             this.Controls.Add(this.pictrboxIPServer);
@@ -270,7 +287,7 @@
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.lblBack);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "DangKy";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -297,5 +314,6 @@
         private Guna.UI2.WinForms.Guna2TextBox txtPassword;
         private Guna.UI2.WinForms.Guna2Button btnRegister;
         private Guna.UI2.WinForms.Guna2ShadowForm guna2ShadowForm1;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
     }
 }

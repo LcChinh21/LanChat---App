@@ -49,6 +49,8 @@ namespace BasicChat
             this.btnResize = new System.Windows.Forms.Button();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
+            this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
+            this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.pnlUsers.SuspendLayout();
             this.FlowUsers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).BeginInit();
@@ -76,6 +78,7 @@ namespace BasicChat
             this.rtbChat.Size = new System.Drawing.Size(693, 626);
             this.rtbChat.TabIndex = 2;
             this.rtbChat.Text = "";
+            this.rtbChat.TextChanged += new System.EventHandler(this.rtbChat_TextChanged);
             // 
             // lblCurrentUser
             // 
@@ -288,6 +291,42 @@ namespace BasicChat
             // 
             // txtMessage
             // 
+            this.txtMessage.AutoRoundedCorners = true;
+            this.txtMessage.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.txtMessage.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtMessage.DefaultText = "";
+            this.txtMessage.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtMessage.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtMessage.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtMessage.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtMessage.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(42)))), ((int)(((byte)(55)))));
+            this.txtMessage.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtMessage.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtMessage.ForeColor = System.Drawing.Color.White;
+            this.txtMessage.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtMessage.Location = new System.Drawing.Point(234, 578);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtMessage.Name = "txtMessage";
+            this.txtMessage.PlaceholderText = "";
+            this.txtMessage.SelectedText = "";
+            this.txtMessage.Size = new System.Drawing.Size(568, 38);
+            this.txtMessage.TabIndex = 8;
+            this.txtMessage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMessage_KeyPress);
+            // 
+            // btnSend
+            // 
+            this.btnSend.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
+            this.btnSend.Location = new System.Drawing.Point(819, 582);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(26, 30);
+            this.btnSend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnSend.TabIndex = 5;
+            this.btnSend.TabStop = false;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
+            // txtMessage
+            // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMessage.AutoRoundedCorners = true;
@@ -395,6 +434,7 @@ namespace BasicChat
             this.btnResize.Click += new System.EventHandler(this.btnResize_Click);
             // 
             // btnMinimize
+            // guna2AnimateWindow1
             // 
             this.btnMinimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
@@ -411,6 +451,15 @@ namespace BasicChat
             // guna2DragControl1
             // 
             this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2DragControl1.UseTransparentDrag = true;
+            this.guna2AnimateWindow1.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
+            this.guna2AnimateWindow1.Interval = 200;
+            this.guna2AnimateWindow1.TargetForm = this;
+            // 
+            // guna2DragControl1
+            // 
+            this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2DragControl1.TargetControl = this.pnlMenu;
             this.guna2DragControl1.UseTransparentDrag = true;
             // 
             // FormChat
@@ -471,5 +520,6 @@ namespace BasicChat
         private Button btnMinimize;
         private Button btnResize;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
+        private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
     }
 }

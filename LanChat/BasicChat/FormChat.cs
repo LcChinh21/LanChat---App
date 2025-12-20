@@ -136,6 +136,24 @@ namespace BasicChat
                 case MessageType.LOAD_GROUP_RESPONSE:
                     LoadGroups(msg.GroupList);
                     break;
+                case MessageType.GROUP_LEAVE:
+                    if (_groupMembers.ContainsKey(msg.Receiver))
+                    {
+                        _groupMembers[msg.Receiver].Remove(_currentUser);
+                        if (_groupMembers[msg.Receiver].Count == 0)
+                            _groupMembers.Remove(msg.Receiver);
+                    }
+                    if (_currentGroup == msg.Receiver)
+                    {
+                        _currentGroup = null;
+                        rtbChat.Clear();
+                        lstMember.Items.Clear();
+                        Name1.Text = "";
+                    }
+                    RemoveGroupButton(msg.Receiver);
+                    _isGroupChat = false;
+                    UpdateChatMode();
+                    break;          
                 case MessageType.FILE_SEND:
                     string[] parts = msg.Content.Split(new char[] { '|' }, 2);
 
@@ -165,11 +183,13 @@ namespace BasicChat
         private void LoadGroups(Dictionary<string, List<string>> groups)
         {
             flowGroups.Controls.Clear();
-            _groupMembers = groups;
-
             foreach (var g in groups)
             {
-                CreateGroupButton(g.Key);
+                if (g.Value.Contains(_currentUser))
+                {
+                    _groupMembers[g.Key] = g.Value;
+                    CreateGroupButton(g.Key);
+                }
             }
         }
 
@@ -202,7 +222,7 @@ namespace BasicChat
                     MessageBox.Show("Vui lòng chọn nhóm", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-
+                AppendGroupChat(_currentGroup,$"Bạn: {message}",Color.White);
                 chatMsg = new ChatMessage
                 {
                     Type = MessageType.GROUP_MESSAGE,
@@ -210,13 +230,6 @@ namespace BasicChat
                     Receiver = _currentGroup,   // BẮT BUỘC
                     Content = message
                 };
-
-                // append theo group
-                AppendGroupChat(
-                    _currentGroup,
-                    $"Ban: {message}",
-                    Color.White
-                );
             }
             else
             {
@@ -331,7 +344,20 @@ namespace BasicChat
                 InviteMembers frm = new InviteMembers(_client, addMsg, _groupMembers[groupName]);
                 frm.ShowDialog(this);
             });
-            menu.Items.Add("Rời nhóm", null, (s, e) => MessageBox.Show($"Leave {groupName}"));
+            menu.Items.Add("Rời nhóm", null, (s, e) =>
+            {
+                DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn rời nhóm", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if (result == DialogResult.Yes) 
+                {
+                    ChatMessage leaveMsg = new ChatMessage
+                    {
+                        Type = MessageType.GROUP_LEAVE,
+                        Sender = _currentUser,
+                        Receiver = groupName
+                    };
+                    _client.Send(leaveMsg);
+                }
+            });
 
             groupBtn.Paint += (s, e) =>
             {
@@ -389,6 +415,30 @@ namespace BasicChat
             }
 
             lstMember.EndUpdate();
+        }
+
+        private void RemoveGroupButton(string groupName)
+        {
+            if (flowGroups.InvokeRequired)
+            {
+                flowGroups.Invoke(new Action(() => RemoveGroupButton(groupName)));
+                return;
+            }
+
+            Button btnToRemove = null;
+            foreach (Control c in flowGroups.Controls)
+            {
+                if (c is Button btn && btn.Text == groupName)
+                {
+                    btnToRemove = btn;
+                    break;
+                }
+            }
+            if (btnToRemove != null)
+            {
+                flowGroups.Controls.Remove(btnToRemove);
+                btnToRemove.Dispose();
+            }
         }
 
         private void AppendGroupChat(string groupName, string text, Color color)
@@ -555,6 +605,11 @@ namespace BasicChat
                     MessageBox.Show("Lỗi khi lưu file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void rtbChat_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
