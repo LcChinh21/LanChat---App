@@ -60,11 +60,6 @@
     <Compile Include="CreateGroupForm.Designer.cs">
       <DependentUpon>CreateGroupForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormChat1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FormChat.resx</DependentUpon>
-    </Compile>
     <Compile Include="InviteMembers.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,9 +108,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormChat.resx">
       <DependentUpon>FormChat.cs</DependentUpon>
-      <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>FormChat1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="InviteMembers.resx">
       <DependentUpon>InviteMembers.cs</DependentUpon>

@@ -21,7 +21,8 @@ namespace BasicChat.Networking
         GROUP_INVITE_REQUEST,
         GROUP_INVITE_RESPONSE,
         LOAD_GROUP_REQUEST,
-        LOAD_GROUP_RESPONSE
+        LOAD_GROUP_RESPONSE,
+        FILE_SEND 
     }
 
     public class ChatMessage

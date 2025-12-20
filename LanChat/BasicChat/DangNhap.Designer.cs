@@ -31,6 +31,7 @@
             this.txtSeverIP = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnLogin = new Guna.UI2.WinForms.Guna2Button();
             this.guna2ShadowForm1 = new Guna.UI2.WinForms.Guna2ShadowForm(this.components);
+            this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictrboxLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictrboxUser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictrboxPassword)).BeginInit();
@@ -210,6 +211,11 @@
             // 
             this.guna2ShadowForm1.TargetForm = this;
             // 
+            // guna2DragControl1
+            // 
+            this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2DragControl1.UseTransparentDrag = true;
+            // 
             // DangNhap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -252,5 +258,6 @@
         private Guna.UI2.WinForms.Guna2TextBox txtSeverIP;
         private Guna.UI2.WinForms.Guna2Button btnLogin;
         private Guna.UI2.WinForms.Guna2ShadowForm guna2ShadowForm1;
+        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
     }
 }

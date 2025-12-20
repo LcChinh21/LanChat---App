@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using BasicChat.Networking;
 using System.Linq;
 using System.Configuration;
+using System.IO; 
 
 namespace BasicChat
 {
@@ -20,7 +21,9 @@ namespace BasicChat
             = new Dictionary<string, List<(string, Color)>>();
         private Dictionary<string, List<string>> _groupMembers
             = new Dictionary<string, List<string>>();
-
+        private bool _isExpanded = false; 
+        private Size _oldSize;            
+        private Point _oldLocation;    
 
         public FormChat(string username, ClientSocket client)
         {
@@ -49,6 +52,38 @@ namespace BasicChat
                 Sender = _currentUser
             };
             _client.Send(loadGroupsMsg);
+        }
+
+        private void btnMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void btnResize_Click(object sender, EventArgs e)
+        {
+            if (_isExpanded == false)
+            {
+                _oldSize = this.Size;
+                _oldLocation = this.Location;
+
+                int newWidth = (int)(Screen.PrimaryScreen.WorkingArea.Width * 0.8);
+                int newHeight = (int)(Screen.PrimaryScreen.WorkingArea.Height * 0.8);
+
+                this.Size = new Size(newWidth, newHeight);
+
+                this.CenterToScreen();
+
+                _isExpanded = true;
+                btnResize.Text = "❐"; 
+            }
+            else
+            {
+                this.Size = _oldSize;
+                this.Location = _oldLocation;
+
+                _isExpanded = false;
+                btnResize.Text = "☐"; 
+            }
         }
 
         private void HandleMessage(ChatMessage msg)
@@ -100,6 +135,29 @@ namespace BasicChat
                     break;
                 case MessageType.LOAD_GROUP_RESPONSE:
                     LoadGroups(msg.GroupList);
+                    break;
+                case MessageType.FILE_SEND:
+                    string[] parts = msg.Content.Split(new char[] { '|' }, 2);
+
+                    if (parts.Length == 2)
+                    {
+                        string fileName = parts[0];
+                        string fileBase64 = parts[1];
+
+                        AppendChat($"[FILE] {msg.Sender} đã gửi một file: {fileName}", Color.Magenta);
+
+                        DialogResult result = MessageBox.Show(
+                            $"{msg.Sender} vừa gửi file '{fileName}'. Bạn có muốn tải về không?",
+                            "Nhận File",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question
+                        );
+
+                        if (result == DialogResult.Yes)
+                        {
+                            SaveFileToDisk(fileName, fileBase64);
+                        }
+                    }
                     break;
             }
         }
@@ -420,6 +478,83 @@ namespace BasicChat
         private void pnlUsers_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btnSendFile_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Chọn file để gửi";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = ofd.FileName;
+                string fileName = Path.GetFileName(filePath);
+                long fileSize = new FileInfo(filePath).Length;
+
+                // Giới hạn 10MB (10 * 1024 * 1024 bytes)
+                if (fileSize > 10 * 1024 * 1024)
+                {
+                    MessageBox.Show("File quá lớn! Vui lòng gửi file dưới 10MB.", "Cảnh báo");
+                    return;
+                }
+
+                try
+                {
+                    byte[] fileBytes = File.ReadAllBytes(filePath);
+                    string fileData = Convert.ToBase64String(fileBytes);
+                    string contentToSend = $"{fileName}|{fileData}";
+
+                    ChatMessage msg = new ChatMessage
+                    {
+                        Type = MessageType.FILE_SEND,
+                        Sender = _currentUser,
+                        Receiver = _isGroupChat ? _currentGroup : _selectedUser,
+                        Content = contentToSend
+                    };
+
+                    if (string.IsNullOrEmpty(msg.Receiver))
+                    {
+                        MessageBox.Show("Vui lòng chọn người nhận hoặc nhóm trước khi gửi!");
+                        return;
+                    }
+
+                    _client.Send(msg);
+
+                    // Hiển thị lên chat 
+                    AppendChat($"[Bạn đã gửi file]: {fileName}", Color.Blue);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi đọc file: " + ex.Message);
+                }
+            }
+        }
+
+        private void SaveFileToDisk(string defaultFileName, string base64Data)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.FileName = defaultFileName;
+            sfd.Filter = "All Files|*.*";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Chuyển ngược chuỗi Base64 thành mảng byte
+                    byte[] fileBytes = Convert.FromBase64String(base64Data);
+
+                    // Ghi mảng byte xuống đường dẫn người dùng chọn
+                    File.WriteAllBytes(sfd.FileName, fileBytes);
+
+                    MessageBox.Show("Lưu file thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Mở thư mục chứa file                 
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi lưu file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

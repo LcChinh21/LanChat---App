@@ -175,6 +175,10 @@ namespace ServerLogConsole.Networking
                 case MessageType.LOAD_GROUP_REQUEST:
                     HandleLoadGroup(clientInfo);
                     break;
+
+                case MessageType.FILE_SEND:
+                    HandleFile(clientInfo, message);
+                    break;
             }
         }
 
@@ -590,5 +594,33 @@ namespace ServerLogConsole.Networking
             );
         }
 
+        private void HandleFile(ClientInfo clientInfo, ChatMessage message)
+        {
+            if (!clientInfo.IsAuthenticated) return;
+
+            // Kiểm tra xem là gửi nhóm hay gửi cá nhân
+            bool isGroup = false;
+            lock (_groups)
+            {
+                if (_groups.ContainsKey(message.Receiver)) isGroup = true;
+            }
+
+            if (isGroup)
+            {
+                _logAction($"[File Group: {message.Receiver}] {message.Sender} gui file.", Color.Cyan);
+                BroadcastExcept(message, clientInfo.Username); // Gửi cho mọi người trừ người gửi
+            }
+            else
+            {
+                _logAction($"[File Private] {message.Sender} -> {message.Receiver}", Color.Cyan);
+                lock (_clients)
+                {
+                    if (_clients.TryGetValue(message.Receiver, out ClientInfo targetClient))
+                    {
+                        SendToClient(targetClient, message);
+                    }
+                }
+            }
+        }
     }
 }
