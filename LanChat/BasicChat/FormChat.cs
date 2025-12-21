@@ -96,12 +96,46 @@ namespace BasicChat
             switch (msg.Type)
             {
                 case MessageType.GROUP_MESSAGE:
-                    AppendGroupChat(
-                        msg.Receiver,
-                        $"{msg.Sender}: {msg.Content}",
-                        Color.Cyan
-                    );
-                    break;
+                    {
+                        // Đảm bảo chạy trên UI thread
+                        if (InvokeRequired)
+                        {
+                            Invoke(new Action(() => HandleMessage(msg)));
+                            return;
+                        }
+
+                        string groupName;
+                        string text;
+
+                        // 🔹 Trường hợp server gửi: "GroupName|Message"
+                        if (!string.IsNullOrEmpty(msg.Content) && msg.Content.Contains("|"))
+                        {
+                            var parts = msg.Content.Split(new char[] { '|' }, 2);
+
+                            groupName = parts[0];
+                            text = parts.Length > 1 ? parts[1] : string.Empty;
+                        }
+                        else
+                        {
+                            // 🔹 Trường hợp server gửi chuẩn: Receiver = GroupName
+                            groupName = msg.Receiver;
+                            text = msg.Content;
+                        }
+
+                        if (string.IsNullOrEmpty(groupName))
+                            break;
+
+                        AppendGroupChat(
+                            groupName,
+                            $"{msg.Sender}: {text}",
+                            Color.Cyan
+                        );
+
+                        break;
+                    }
+
+
+
 
                 case MessageType.PRIVATE_MESSAGE:
                     string privateText = $"[Rieng tu {msg.Sender}]: {msg.Content}";
@@ -224,7 +258,11 @@ namespace BasicChat
                         if (_isGroupChat && target == _currentGroup)
                         {
                             rtbChat.Clear();
-                            _groupMessages[target] = new List<(string, Color)>();
+                            if (!_groupMessages.ContainsKey(target))
+                                _groupMessages[target] = new List<(string, Color)>();
+
+                            _groupMessages[target].Clear(); // chỉ clear khi user click group
+
                             foreach (var m in msg.HistoryList)
                             {
                                 AppendGroupChat(target, $"{m.Sender}: {m.Content}", Color.LightGray);
@@ -241,6 +279,19 @@ namespace BasicChat
                     break;
             }
         }
+
+        private void HighlightGroupButton(string groupName)
+        {
+            foreach (Control c in flowGroups.Controls)
+            {
+                if (c is Button b && b.Tag.ToString() == groupName)
+                {
+                    b.BackColor = Color.OrangeRed; // hoặc đổi icon 🔔
+                    break;
+                }
+            }
+        }
+
 
         private void LoadGroups(Dictionary<string, List<string>> groups)
         {

@@ -420,21 +420,50 @@ namespace ServerLogConsole.Networking
 
         private void HandleGroupMessage(ClientInfo clientInfo, ChatMessage message)
         {
-            if (!clientInfo.IsAuthenticated) return;
-            string groupName = message.Receiver;
-            if (string.IsNullOrEmpty(groupName)) return;
+            if (!clientInfo.IsAuthenticated)
+                return;
 
-            _dbHelper.SaveMessage(message.Sender, message.Receiver, message.Content, true);
+            string groupName = message.Receiver;
+            if (string.IsNullOrEmpty(groupName))
+                return;
+
+            _dbHelper.SaveMessage(message.Sender, groupName, message.Content, true);
 
             List<string> members;
+
             lock (_groups)
             {
                 if (!_groups.TryGetValue(groupName, out members))
-                    return;
+                {
+                    var allGroups = _dbHelper.GetAllGroupsWithMembers();
+                    if (!allGroups.TryGetValue(groupName, out members))
+                        return;
+
+                    _groups[groupName] = new List<string>(members);
+                }
             }
 
-            _logAction($"[Nhom:{groupName}] {message.Sender}: {message.Content}", Color.White);
-            SendToGroup(message.Receiver, message, clientInfo.Username);
+            _logAction(
+                $"[Nhom:{groupName}] {message.Sender}: {message.Content}",
+                Color.White
+            );
+
+            foreach (var username in members)
+            {
+                if (username == clientInfo.Username)
+                    continue;
+
+                if (_clients.TryGetValue(username, out var client))
+                {
+                    SendToClient(client, new ChatMessage
+                    {
+                        Type = MessageType.GROUP_MESSAGE,
+                        Sender = message.Sender,
+                        Receiver = groupName, 
+                        Content = message.Content
+                    });
+                }
+            }
         }
 
 
