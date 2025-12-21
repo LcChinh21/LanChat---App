@@ -83,7 +83,7 @@ namespace BasicChat
 
                 if (msg.Success)
                 {
-                    MessageBox.Show("Đăng nhập thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
                     FormChat chatForm = new FormChat(txtName.Text.Trim(), _client);
                     chatForm.Show();
                     this.Hide();

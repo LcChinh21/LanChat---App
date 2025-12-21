@@ -342,6 +342,7 @@ namespace BasicChat
             {
                 return;
             }
+            rtbChat.Clear();
             _isGroupChat = false;
             UpdateChatMode();
             if (lstUsers.SelectedItem != null)
