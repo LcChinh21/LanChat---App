@@ -142,7 +142,11 @@ namespace BasicChat
             this.flowGroups.Location = new System.Drawing.Point(0, 0);
             this.flowGroups.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowGroups.Name = "flowGroups";
+<<<<<<< HEAD
             this.flowGroups.Size = new System.Drawing.Size(285, 794);
+=======
+            this.flowGroups.Size = new System.Drawing.Size(228, 635);
+>>>>>>> dac65187245c7d8d80cbec8a8054a6386dfc92d0
             this.flowGroups.TabIndex = 3;
             this.flowGroups.WrapContents = false;
             // 
@@ -151,10 +155,16 @@ namespace BasicChat
             this.pnlTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(59)))));
             this.pnlTitle.Controls.Add(this.lblAdd);
             this.pnlTitle.Controls.Add(this.lblGroupChats);
+<<<<<<< HEAD
             this.pnlTitle.Location = new System.Drawing.Point(3, 4);
             this.pnlTitle.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlTitle.Name = "pnlTitle";
             this.pnlTitle.Size = new System.Drawing.Size(253, 45);
+=======
+            this.pnlTitle.Location = new System.Drawing.Point(3, 3);
+            this.pnlTitle.Name = "pnlTitle";
+            this.pnlTitle.Size = new System.Drawing.Size(225, 36);
+>>>>>>> dac65187245c7d8d80cbec8a8054a6386dfc92d0
             this.pnlTitle.TabIndex = 10;
             // 
             // pnlUsers
@@ -240,10 +250,16 @@ namespace BasicChat
             // 
             this.HideUsersLists.ErrorImage = null;
             this.HideUsersLists.Image = global::BasicChat.Properties.Resources.chevron_direction_top_white_icon;
+<<<<<<< HEAD
             this.HideUsersLists.Location = new System.Drawing.Point(199, 15);
             this.HideUsersLists.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.HideUsersLists.Name = "HideUsersLists";
             this.HideUsersLists.Size = new System.Drawing.Size(29, 29);
+=======
+            this.HideUsersLists.Location = new System.Drawing.Point(177, 12);
+            this.HideUsersLists.Name = "HideUsersLists";
+            this.HideUsersLists.Size = new System.Drawing.Size(26, 23);
+>>>>>>> dac65187245c7d8d80cbec8a8054a6386dfc92d0
             this.HideUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.HideUsersLists.TabIndex = 5;
             this.HideUsersLists.TabStop = false;
@@ -252,10 +268,16 @@ namespace BasicChat
             // ShowUsersLists
             // 
             this.ShowUsersLists.Image = global::BasicChat.Properties.Resources.chevron_direction_bottom_white_icon;
+<<<<<<< HEAD
             this.ShowUsersLists.Location = new System.Drawing.Point(199, 16);
             this.ShowUsersLists.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.ShowUsersLists.Name = "ShowUsersLists";
             this.ShowUsersLists.Size = new System.Drawing.Size(29, 29);
+=======
+            this.ShowUsersLists.Location = new System.Drawing.Point(177, 13);
+            this.ShowUsersLists.Name = "ShowUsersLists";
+            this.ShowUsersLists.Size = new System.Drawing.Size(26, 23);
+>>>>>>> dac65187245c7d8d80cbec8a8054a6386dfc92d0
             this.ShowUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ShowUsersLists.TabIndex = 6;
             this.ShowUsersLists.TabStop = false;
@@ -308,7 +330,10 @@ namespace BasicChat
             // 
             // btnSend
             // 
+<<<<<<< HEAD
             this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+=======
+>>>>>>> dac65187245c7d8d80cbec8a8054a6386dfc92d0
             this.btnSend.BorderRadius = 10;
             this.btnSend.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnSend.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
@@ -317,10 +342,16 @@ namespace BasicChat
             this.btnSend.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnSend.ForeColor = System.Drawing.Color.White;
             this.btnSend.Image = global::BasicChat.Properties.Resources.send_white_icon;
+<<<<<<< HEAD
             this.btnSend.Location = new System.Drawing.Point(855, 729);
             this.btnSend.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(100, 48);
+=======
+            this.btnSend.Location = new System.Drawing.Point(760, 583);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(89, 38);
+>>>>>>> dac65187245c7d8d80cbec8a8054a6386dfc92d0
             this.btnSend.TabIndex = 10;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
@@ -328,10 +359,17 @@ namespace BasicChat
             // 
             this.btnSendFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSendFile.Image = ((System.Drawing.Image)(resources.GetObject("btnSendFile.Image")));
+<<<<<<< HEAD
             this.btnSendFile.Location = new System.Drawing.Point(807, 729);
             this.btnSendFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSendFile.Name = "btnSendFile";
             this.btnSendFile.Size = new System.Drawing.Size(42, 48);
+=======
+            this.btnSendFile.Location = new System.Drawing.Point(717, 583);
+            this.btnSendFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSendFile.Name = "btnSendFile";
+            this.btnSendFile.Size = new System.Drawing.Size(37, 38);
+>>>>>>> dac65187245c7d8d80cbec8a8054a6386dfc92d0
             this.btnSendFile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.btnSendFile.TabIndex = 9;
             this.btnSendFile.TabStop = false;
