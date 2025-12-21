@@ -39,6 +39,9 @@ namespace BasicChat
             };
             UpdateChatMode();
             this.Load += FormChat_Load;
+
+            this.Padding = new Padding(2);
+            this.BackColor = Color.FromArgb(24, 37, 51); 
         }
 
         public void FormChat_Load(object sender, EventArgs e)
@@ -62,22 +65,24 @@ namespace BasicChat
             {
                 _oldSize = this.Size;
                 _oldLocation = this.Location;
-                int newWidth = (int)(Screen.PrimaryScreen.WorkingArea.Width * 0.8);
-                int newHeight = (int)(Screen.PrimaryScreen.WorkingArea.Height * 0.8);
-                this.Size = new Size(newWidth, newHeight);
-                this.CenterToScreen();
+
+                this.Size = Screen.PrimaryScreen.WorkingArea.Size;
+                this.Location = Screen.PrimaryScreen.WorkingArea.Location;
+
                 _isExpanded = true;
+
                 btnResize.Text = "❐";
             }
             else
             {
                 this.Size = _oldSize;
                 this.Location = _oldLocation;
+
                 _isExpanded = false;
                 btnResize.Text = "☐";
             }
         }
-
+        
         private void HandleMessage(ChatMessage msg)
         {
             if (InvokeRequired)
@@ -147,22 +152,46 @@ namespace BasicChat
                     UpdateChatMode();
                     break;
                 case MessageType.FILE_SEND:
-                    string[] parts = msg.Content.Split(new char[] { '|' }, 2);
-                    if (parts.Length == 2)
+                    try
                     {
+                        // Thêm Log để debug xem chuỗi nhận về có đúng không
+                        Console.WriteLine("Nhận File Content độ dài: " + msg.Content.Length);
+
+                        // Giải mã lần 1: Base64 -> Raw String (FileName|Base64Data)
+                        string decodedPayload = System.Text.Encoding.UTF8.GetString(
+                            Convert.FromBase64String(msg.Content)
+                        );
+
+                        string[] parts = decodedPayload.Split(new char[] { '|' }, 2);
+
+                        if (parts.Length != 2)
+                        {
+                            MessageBox.Show("Lỗi giao thức file: Sai định dạng nội dung.", "Lỗi Nhận File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
                         string fileName = parts[0];
                         string fileBase64 = parts[1];
-                        AppendChat($"[FILE] {msg.Sender} đã gửi một file: {fileName}", Color.Magenta);
+
+                        // Hỏi người dùng (Logic cũ của bạn)
+                        // ... (Giữ nguyên phần MessageBox hỏi tải về và SaveFileToDisk) ...
+
+                        // Thêm đoạn này để test hiển thị
+                        AppendChat($"[FILE] {msg.Sender} đã gửi file: {fileName}", Color.Magenta);
+
                         DialogResult result = MessageBox.Show(
-                            $"{msg.Sender} vừa gửi file '{fileName}'. Bạn có muốn tải về không?",
-                            "Nhận File",
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Question
-                        );
+                            $"{msg.Sender} gửi file '{fileName}'. Tải về?", "Nhận File",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
                         if (result == DialogResult.Yes)
                         {
                             SaveFileToDisk(fileName, fileBase64);
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        // QUAN TRỌNG: Hiện lỗi để biết tại sao không nhận được
+                        MessageBox.Show("Lỗi khi xử lý file nhận được: " + ex.Message, "Debug Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     break;
                 case MessageType.HISTORY_RESPONSE:
@@ -580,15 +609,19 @@ namespace BasicChat
                 try
                 {
                     byte[] fileBytes = File.ReadAllBytes(filePath);
-                    string fileData = Convert.ToBase64String(fileBytes);
-                    string contentToSend = $"{fileName}|{fileData}";
+                    string fileData = Convert.ToBase64String(fileBytes); 
+                    string rawPayload = $"{fileName}|{fileData}";
+                    string safeContent = Convert.ToBase64String(
+                        System.Text.Encoding.UTF8.GetBytes(rawPayload)
+                    );
+
 
                     ChatMessage msg = new ChatMessage
                     {
                         Type = MessageType.FILE_SEND,
                         Sender = _currentUser,
                         Receiver = _isGroupChat ? _currentGroup : _selectedUser,
-                        Content = contentToSend
+                        Content = safeContent
                     };
 
                     if (string.IsNullOrEmpty(msg.Receiver))
@@ -631,6 +664,58 @@ namespace BasicChat
         private void rtbChat_TextChanged(object sender, EventArgs e)
         {
 
+        }
+        // --- ĐOẠN CODE TẠO HIỆU ỨNG RESIZE 4 CHIỀU ---
+
+        // Override hàm xử lý thông điệp của Windows
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_NCHITTEST = 0x0084;
+            const int HTCLIENT = 1;
+
+            // Các mã lệnh của Windows tương ứng với các vị trí con trỏ chuột
+            const int HTLEFT = 10;
+            const int HTRIGHT = 11;
+            const int HTTOP = 12;
+            const int HTTOPLEFT = 13;
+            const int HTTOPRIGHT = 14;
+            const int HTBOTTOM = 15;
+            const int HTBOTTOMLEFT = 16;
+            const int HTBOTTOMRIGHT = 17;
+
+            base.WndProc(ref m);
+
+            if (m.Msg == WM_NCHITTEST)
+            {
+                int resizeBorder = 10; // Độ dày vùng biên để bắt chuột (10px là vừa đẹp)
+                Point cursor = this.PointToClient(Cursor.Position);
+
+                // 1. Kiểm tra 4 GÓC trước (Ưu tiên góc để resize chéo)
+                if (cursor.X <= resizeBorder && cursor.Y <= resizeBorder)
+                    m.Result = (IntPtr)HTTOPLEFT;
+
+                else if (cursor.X >= this.ClientSize.Width - resizeBorder && cursor.Y <= resizeBorder)
+                    m.Result = (IntPtr)HTTOPRIGHT;
+
+                else if (cursor.X <= resizeBorder && cursor.Y >= this.ClientSize.Height - resizeBorder)
+                    m.Result = (IntPtr)HTBOTTOMLEFT;
+
+                else if (cursor.X >= this.ClientSize.Width - resizeBorder && cursor.Y >= this.ClientSize.Height - resizeBorder)
+                    m.Result = (IntPtr)HTBOTTOMRIGHT;
+
+                // 2. Kiểm tra 4 CẠNH
+                else if (cursor.X <= resizeBorder)
+                    m.Result = (IntPtr)HTLEFT;      // Cạnh Trái
+
+                else if (cursor.X >= this.ClientSize.Width - resizeBorder)
+                    m.Result = (IntPtr)HTRIGHT;     // Cạnh Phải
+
+                else if (cursor.Y <= resizeBorder)
+                    m.Result = (IntPtr)HTTOP;       // Cạnh Trên
+
+                else if (cursor.Y >= this.ClientSize.Height - resizeBorder)
+                    m.Result = (IntPtr)HTBOTTOM;    // Cạnh Dưới
+            }
         }
     }
 }

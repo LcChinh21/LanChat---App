@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -37,27 +38,60 @@ namespace BasicChat.Networking
             }
         }
 
+        private StringBuilder _receiveBuffer = new StringBuilder();
+
+        // Thay thế hàm StartReceiveLoop cũ bằng hàm này
         private void StartReceiveLoop()
         {
             Task.Run(async () =>
             {
                 var buffer = new byte[4096];
+                var byteBuffer = new List<byte>(); // Dùng List<byte> thay vì StringBuilder
+
+                // Chuỗi đánh dấu kết thúc tin nhắn
+                byte[] endMarker = Encoding.UTF8.GetBytes("<END>");
+
                 try
                 {
                     while (!_cts.Token.IsCancellationRequested)
                     {
+                        if (_stream == null) break;
+
                         int len = await _stream.ReadAsync(buffer, 0, buffer.Length, _cts.Token);
                         if (len <= 0) break;
 
-                        string data = Encoding.UTF8.GetString(buffer, 0, len);
-                        string[] messages = data.Split(new string[] { "<END>" }, StringSplitOptions.RemoveEmptyEntries);
-
-                        foreach (string msgStr in messages)
+                        // Thêm dữ liệu mới nhận vào buffer tạm
+                        for (int i = 0; i < len; i++)
                         {
-                            ChatMessage msg = ChatMessage.FromProtocolString(msgStr);
-                            if (msg != null)
+                            byteBuffer.Add(buffer[i]);
+                        }
+
+                        // Xử lý tách tin nhắn dựa trên <END>
+                        while (true)
+                        {
+                            int endIndex = FindBytes(byteBuffer, endMarker);
+
+                            if (endIndex != -1)
                             {
-                                OnMessageReceived?.Invoke(msg);
+                                // Tìm thấy <END>, trích xuất tin nhắn
+                                // Lấy từ đầu đến trước <END>
+                                byte[] msgBytes = byteBuffer.Take(endIndex).ToArray();
+                                string msgStr = Encoding.UTF8.GetString(msgBytes);
+
+                                // Xóa tin nhắn đã xử lý và marker <END> khỏi buffer
+                                byteBuffer.RemoveRange(0, endIndex + endMarker.Length);
+
+                                // Xử lý tin nhắn
+                                var msg = ChatMessage.FromProtocolString(msgStr);
+                                if (msg != null)
+                                {
+                                    OnMessageReceived?.Invoke(msg);
+                                }
+                            }
+                            else
+                            {
+                                // Chưa nhận đủ tin nhắn (chưa có <END>), đợi nhận tiếp
+                                break;
                             }
                         }
                     }
@@ -65,11 +99,30 @@ namespace BasicChat.Networking
                 catch (Exception ex)
                 {
                     if (!_cts.Token.IsCancellationRequested)
-                    {
-                        OnDisconnected?.Invoke("Mat ket noi: " + ex.Message);
-                    }
+                        OnDisconnected?.Invoke("Mất kết nối: " + ex.Message);
                 }
             }, _cts.Token);
+        }
+
+        // Hàm hỗ trợ tìm chuỗi byte
+        private int FindBytes(List<byte> src, byte[] find)
+        {
+            if (src.Count < find.Length) return -1;
+
+            for (int i = 0; i <= src.Count - find.Length; i++)
+            {
+                bool match = true;
+                for (int j = 0; j < find.Length; j++)
+                {
+                    if (src[i + j] != find[j])
+                    {
+                        match = false;
+                        break;
+                    }
+                }
+                if (match) return i;
+            }
+            return -1;
         }
 
         public void Send(ChatMessage message)
