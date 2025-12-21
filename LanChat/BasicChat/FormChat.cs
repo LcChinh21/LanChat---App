@@ -43,6 +43,7 @@ namespace BasicChat
 
             this.Padding = new Padding(2);
             this.BackColor = Color.FromArgb(24, 37, 51); 
+            lstMember.Width = 205;
         }
 
         public void FormChat_Load(object sender, EventArgs e)
@@ -342,8 +343,14 @@ namespace BasicChat
             {
                 return;
             }
+            if(_isGroupChat)
+            {
+                _isGroupChat = false;
+                foreach (Control c in flowGroups.Controls)
+                    if (c is Button b)
+                        b.BackColor = Color.FromArgb(39, 39, 58);
+            }
             rtbChat.Clear();
-            _isGroupChat = false;
             UpdateChatMode();
             if (lstUsers.SelectedItem != null)
             {

@@ -70,6 +70,7 @@ namespace BasicChat
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbChat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
             this.rtbChat.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbChat.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtbChat.ForeColor = System.Drawing.Color.White;
             this.rtbChat.Location = new System.Drawing.Point(235, 69);
             this.rtbChat.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
@@ -185,13 +186,14 @@ namespace BasicChat
             this.lstUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lstUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
             this.lstUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lstUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstUsers.ForeColor = System.Drawing.SystemColors.Menu;
             this.lstUsers.FormattingEnabled = true;
-            this.lstUsers.ItemHeight = 16;
+            this.lstUsers.ItemHeight = 20;
             this.lstUsers.Location = new System.Drawing.Point(4, 4);
             this.lstUsers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lstUsers.Name = "lstUsers";
-            this.lstUsers.Size = new System.Drawing.Size(204, 224);
+            this.lstUsers.Size = new System.Drawing.Size(204, 220);
             this.lstUsers.TabIndex = 1;
             this.lstUsers.SelectedIndexChanged += new System.EventHandler(this.lstUsers_SelectedIndexChanged);
             // 
@@ -200,7 +202,7 @@ namespace BasicChat
             this.lblGroupMembers.AutoSize = true;
             this.lblGroupMembers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.lblGroupMembers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(135)))), ((int)(((byte)(162)))), ((int)(((byte)(178)))));
-            this.lblGroupMembers.Location = new System.Drawing.Point(4, 232);
+            this.lblGroupMembers.Location = new System.Drawing.Point(4, 228);
             this.lblGroupMembers.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblGroupMembers.Name = "lblGroupMembers";
             this.lblGroupMembers.Size = new System.Drawing.Size(135, 20);
@@ -210,8 +212,10 @@ namespace BasicChat
             // lstMember
             // 
             this.lstMember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
+            this.lstMember.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstMember.ForeColor = System.Drawing.Color.White;
             this.lstMember.HideSelection = false;
-            this.lstMember.Location = new System.Drawing.Point(3, 255);
+            this.lstMember.Location = new System.Drawing.Point(3, 251);
             this.lstMember.Name = "lstMember";
             this.lstMember.Size = new System.Drawing.Size(205, 332);
             this.lstMember.TabIndex = 2;
