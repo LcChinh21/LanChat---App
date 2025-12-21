@@ -22,6 +22,7 @@ namespace BasicChat
         private bool _isExpanded = false;
         private Size _oldSize;
         private Point _oldLocation;
+        private string _currentChatTarget = null;
 
         public FormChat(string username, ClientSocket client)
         {
@@ -230,10 +231,9 @@ namespace BasicChat
                         }
                         else if (!_isGroupChat && target == _selectedUser)
                         {
-                            AppendChat($"--- Lịch sử tin nhắn với {target} ---", Color.LightGray);
                             foreach (var m in msg.HistoryList)
                             {
-                                AppendChat($"[{m.Timestamp:HH:mm}] {m.Sender}: {m.Content}", Color.LightGray);
+                                AppendChat($"{m.Sender}: {m.Content}", Color.LightGray);
                             }
                         }
                     }
@@ -276,23 +276,7 @@ namespace BasicChat
 
             ChatMessage chatMsg;
 
-            if (_isGroupChat)
-            {
-                if (string.IsNullOrEmpty(_currentGroup))
-                {
-                    MessageBox.Show("Vui lòng chọn nhóm", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                AppendGroupChat(_currentGroup, $"Bạn: {message}", Color.White);
-                chatMsg = new ChatMessage
-                {
-                    Type = MessageType.GROUP_MESSAGE,
-                    Sender = _currentUser,
-                    Receiver = _currentGroup,
-                    Content = message
-                };
-            }
-            else
+            if (!_isGroupChat)
             {
                 if (string.IsNullOrEmpty(_selectedUser))
                 {
@@ -312,6 +296,22 @@ namespace BasicChat
                     $"[Gui rieng cho {_selectedUser}]: {message}",
                     Color.Purple
                 );
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(_currentGroup))
+                {
+                    MessageBox.Show("Vui lòng chọn nhóm", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                AppendGroupChat(_currentGroup, $"Bạn: {message}", Color.White);
+                chatMsg = new ChatMessage
+                {
+                    Type = MessageType.GROUP_MESSAGE,
+                    Sender = _currentUser,
+                    Receiver = _currentGroup,
+                    Content = message
+                };
             }
 
             _client.Send(chatMsg);
@@ -336,8 +336,17 @@ namespace BasicChat
 
         private void lstUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lstUsers.SelectedItem == null)
+                return;
+            if (_currentChatTarget == lstUsers.SelectedItem.ToString())
+            {
+                return;
+            }
+            _isGroupChat = false;
+            UpdateChatMode();
             if (lstUsers.SelectedItem != null)
             {
+                _currentChatTarget = lstUsers.SelectedItem.ToString();
                 _selectedUser = lstUsers.SelectedItem.ToString();
                 Name1.Text = _selectedUser;
 
@@ -348,6 +357,7 @@ namespace BasicChat
                     Receiver = _selectedUser,
                     Content = "PRIVATE"
                 });
+
             }
         }
 
@@ -456,9 +466,12 @@ namespace BasicChat
 
         private void GroupButton_Click(object sender, EventArgs e)
         {
+            _currentChatTarget = (sender as Button).Tag.ToString();
+            _selectedUser = null;
             if (_isGroupChat == false)
             {
                 _isGroupChat = true;
+                lstUsers.SelectedIndex = -1;
                 UpdateChatMode();
             }
             foreach (Control c in flowGroups.Controls)
