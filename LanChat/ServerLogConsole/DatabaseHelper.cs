@@ -21,7 +21,7 @@ namespace ServerLogConsole
                 "Server=lanchat-mysql-lanchat.k.aivencloud.com;" +
                 "Database=LanChatDB;" +
                 "User=avnadmin;" +
-                "Password=;" +
+
                 "Port=15478;";
 
             _masterConnectionString = _connectionString;
