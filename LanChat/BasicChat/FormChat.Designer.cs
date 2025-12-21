@@ -72,7 +72,7 @@ namespace BasicChat
             this.rtbChat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
             this.rtbChat.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbChat.ForeColor = System.Drawing.Color.White;
-            this.rtbChat.Location = new System.Drawing.Point(228, 69);
+            this.rtbChat.Location = new System.Drawing.Point(235, 69);
             this.rtbChat.Margin = new System.Windows.Forms.Padding(4);
             this.rtbChat.Name = "rtbChat";
             this.rtbChat.ReadOnly = true;

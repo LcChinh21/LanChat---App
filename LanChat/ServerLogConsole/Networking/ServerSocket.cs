@@ -192,6 +192,17 @@ namespace ServerLogConsole.Networking
             }
         }
 
+        private void HandleGetAllUsers(ClientInfo client)
+        {
+            if (!client.IsAuthenticated) return;
+            var users = _dbHelper.GetAllUsers();
+            SendToClient(client, new ChatMessage
+            {
+                Type = MessageType.GET_ALL_USERS_RESPONSE,
+                UserList = users.ToArray()
+            });
+        }
+
         private void HandleSearchUser(ClientInfo client, ChatMessage message)
         {
             if (!client.IsAuthenticated) return;

@@ -31,7 +31,9 @@ namespace BasicChat.Networking
         HISTORY_REQUEST,
         HISTORY_RESPONSE,
         SEARCH_USER_REQUEST,
-        SEARCH_USER_RESPONSE
+        SEARCH_USER_RESPONSE,
+        GET_ALL_USERS_REQUEST,
+        GET_ALL_USERS_RESPONSE
     }
 
     public class ChatMessage

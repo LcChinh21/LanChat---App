@@ -22,6 +22,7 @@ namespace BasicChat
         public InviteMembers(ClientSocket client, ChatMessage msg, List<string> groupmembers)
         {
             InitializeComponent();
+            lstOnlineUsers.View = View.List;
             _client = client;
             message = msg;
             this.groupmembers = groupmembers;

@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿
+using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 using System.Collections.Generic;
@@ -17,11 +18,11 @@ namespace ServerLogConsole
         public DatabaseHelper()
         {
             _connectionString =
-                "Server=sql12.freesqldatabase.com;" +
-                "Database=sql12811813;" +
-                "User=sql12811813;" +
-                "Password=CcqIIHHKaH;" +
-                "Port=3306;";
+                "Server=lanchat-mysql-lanchat.k.aivencloud.com;" +
+                "Database=LanChatDB;" +
+                "User=avnadmin;" +
+                "Password=AVNS_5ytzbDnRb1mZrHTALwZ;" +
+                "Port=15478;";
 
             _masterConnectionString = _connectionString;
         }
@@ -287,6 +288,26 @@ namespace ServerLogConsole
                                 Type = MessageType.PRIVATE_MESSAGE
                             });
                         }
+                    }
+                }
+            }
+            catch { }
+            return list;
+        }
+
+        public List<string> GetAllUsers()
+        {
+            var list = new List<string>();
+            try
+            {
+                using (var conn = new MySqlConnection(_connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Username FROM Users ORDER BY Username";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    using (var r = cmd.ExecuteReader())
+                    {
+                        while (r.Read()) list.Add(r.GetString("Username"));
                     }
                 }
             }
