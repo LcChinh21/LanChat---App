@@ -128,6 +128,25 @@ namespace BasicChat
                 case MessageType.LOAD_GROUP_RESPONSE:
                     LoadGroups(msg.GroupList);
                     break;
+                case MessageType.ADD_MEMBER_RESPONSE:
+                    {
+                        string groupName = msg.Content;
+                        string newMember = msg.Receiver;
+
+                        if (!_groupMembers.ContainsKey(groupName))
+                        {
+                            _groupMembers[groupName] = new List<string>();
+                            CreateGroupButton(groupName);
+                        }
+
+                        if (!_groupMembers[groupName].Contains(newMember))
+                            _groupMembers[groupName].Add(newMember);
+
+                        if (_currentGroup == groupName)
+                            lstMember.Items.Add(newMember);
+
+                        break;
+                    }
                 case MessageType.GROUP_LEAVE:
                     if (_groupMembers.ContainsKey(msg.Receiver))
                     {

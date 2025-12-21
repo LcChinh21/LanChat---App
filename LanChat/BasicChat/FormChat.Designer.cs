@@ -29,15 +29,20 @@ namespace BasicChat
             this.lblAdd = new System.Windows.Forms.Label();
             this.lblGroupChats = new System.Windows.Forms.Label();
             this.flowGroups = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlTitle = new System.Windows.Forms.Panel();
             this.pnlUsers = new System.Windows.Forms.Panel();
             this.FlowUsers = new System.Windows.Forms.FlowLayoutPanel();
             this.lstUsers = new System.Windows.Forms.ListBox();
             this.lblGroupMembers = new System.Windows.Forms.Label();
             this.lstMember = new System.Windows.Forms.ListView();
             this.lblOnlineUsers = new System.Windows.Forms.Label();
+            this.HideUsersLists = new System.Windows.Forms.PictureBox();
+            this.ShowUsersLists = new System.Windows.Forms.PictureBox();
             this.btnExit = new System.Windows.Forms.Button();
             this.lblAppName = new System.Windows.Forms.Label();
             this.pnlChat = new System.Windows.Forms.Panel();
+            this.btnSend = new Guna.UI2.WinForms.Guna2Button();
+            this.btnSendFile = new System.Windows.Forms.PictureBox();
             this.txtMessage = new Guna.UI2.WinForms.Guna2TextBox();
             this.pnlChatMode = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlGroups = new Guna.UI2.WinForms.Guna2Panel();
@@ -46,22 +51,17 @@ namespace BasicChat
             this.btnResize = new System.Windows.Forms.Button();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
             this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
-            this.pnlTitle = new System.Windows.Forms.Panel();
-            this.btnSend = new Guna.UI2.WinForms.Guna2Button();
-            this.btnSendFile = new System.Windows.Forms.PictureBox();
-            this.HideUsersLists = new System.Windows.Forms.PictureBox();
-            this.ShowUsersLists = new System.Windows.Forms.PictureBox();
             this.flowGroups.SuspendLayout();
+            this.pnlTitle.SuspendLayout();
             this.pnlUsers.SuspendLayout();
             this.FlowUsers.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).BeginInit();
             this.pnlChat.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnSendFile)).BeginInit();
             this.pnlChatMode.SuspendLayout();
             this.pnlGroups.SuspendLayout();
             this.pnlMenu.SuspendLayout();
-            this.pnlTitle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnSendFile)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).BeginInit();
             this.SuspendLayout();
             // 
             // rtbChat
@@ -141,9 +141,19 @@ namespace BasicChat
             this.flowGroups.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowGroups.Location = new System.Drawing.Point(0, 0);
             this.flowGroups.Name = "flowGroups";
-            this.flowGroups.Size = new System.Drawing.Size(253, 635);
+            this.flowGroups.Size = new System.Drawing.Size(228, 635);
             this.flowGroups.TabIndex = 3;
             this.flowGroups.WrapContents = false;
+            // 
+            // pnlTitle
+            // 
+            this.pnlTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(59)))));
+            this.pnlTitle.Controls.Add(this.lblAdd);
+            this.pnlTitle.Controls.Add(this.lblGroupChats);
+            this.pnlTitle.Location = new System.Drawing.Point(3, 3);
+            this.pnlTitle.Name = "pnlTitle";
+            this.pnlTitle.Size = new System.Drawing.Size(225, 36);
+            this.pnlTitle.TabIndex = 10;
             // 
             // pnlUsers
             // 
@@ -220,6 +230,30 @@ namespace BasicChat
             this.lblOnlineUsers.Text = "Người dùng online:";
             this.lblOnlineUsers.Click += new System.EventHandler(this.lblOnlineUsers_Click);
             // 
+            // HideUsersLists
+            // 
+            this.HideUsersLists.ErrorImage = null;
+            this.HideUsersLists.Image = global::BasicChat.Properties.Resources.chevron_direction_top_white_icon;
+            this.HideUsersLists.Location = new System.Drawing.Point(177, 12);
+            this.HideUsersLists.Name = "HideUsersLists";
+            this.HideUsersLists.Size = new System.Drawing.Size(26, 23);
+            this.HideUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.HideUsersLists.TabIndex = 5;
+            this.HideUsersLists.TabStop = false;
+            this.HideUsersLists.Click += new System.EventHandler(this.HideUsersLists_Click);
+            // 
+            // ShowUsersLists
+            // 
+            this.ShowUsersLists.Image = global::BasicChat.Properties.Resources.chevron_direction_bottom_white_icon;
+            this.ShowUsersLists.Location = new System.Drawing.Point(177, 13);
+            this.ShowUsersLists.Name = "ShowUsersLists";
+            this.ShowUsersLists.Size = new System.Drawing.Size(26, 23);
+            this.ShowUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ShowUsersLists.TabIndex = 6;
+            this.ShowUsersLists.TabStop = false;
+            this.ShowUsersLists.Visible = false;
+            this.ShowUsersLists.Click += new System.EventHandler(this.ShowUsersLists_Click);
+            // 
             // btnExit
             // 
             this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -261,6 +295,35 @@ namespace BasicChat
             this.pnlChat.Name = "pnlChat";
             this.pnlChat.Size = new System.Drawing.Size(855, 635);
             this.pnlChat.TabIndex = 10;
+            // 
+            // btnSend
+            // 
+            this.btnSend.BorderRadius = 10;
+            this.btnSend.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSend.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSend.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSend.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSend.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSend.ForeColor = System.Drawing.Color.White;
+            this.btnSend.Image = global::BasicChat.Properties.Resources.send_white_icon;
+            this.btnSend.Location = new System.Drawing.Point(760, 583);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(89, 38);
+            this.btnSend.TabIndex = 10;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
+            // btnSendFile
+            // 
+            this.btnSendFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSendFile.Image = ((System.Drawing.Image)(resources.GetObject("btnSendFile.Image")));
+            this.btnSendFile.Location = new System.Drawing.Point(717, 583);
+            this.btnSendFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSendFile.Name = "btnSendFile";
+            this.btnSendFile.Size = new System.Drawing.Size(37, 38);
+            this.btnSendFile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.btnSendFile.TabIndex = 9;
+            this.btnSendFile.TabStop = false;
+            this.btnSendFile.Click += new System.EventHandler(this.btnSendFile_Click);
             // 
             // txtMessage
             // 
@@ -366,69 +429,6 @@ namespace BasicChat
             this.guna2AnimateWindow1.Interval = 200;
             this.guna2AnimateWindow1.TargetForm = this;
             // 
-            // pnlTitle
-            // 
-            this.pnlTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(59)))));
-            this.pnlTitle.Controls.Add(this.lblAdd);
-            this.pnlTitle.Controls.Add(this.lblGroupChats);
-            this.pnlTitle.Location = new System.Drawing.Point(3, 3);
-            this.pnlTitle.Name = "pnlTitle";
-            this.pnlTitle.Size = new System.Drawing.Size(225, 36);
-            this.pnlTitle.TabIndex = 10;
-            // 
-            // btnSend
-            // 
-            this.btnSend.BorderRadius = 10;
-            this.btnSend.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnSend.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnSend.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnSend.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnSend.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnSend.ForeColor = System.Drawing.Color.White;
-            this.btnSend.Image = global::BasicChat.Properties.Resources.send_white_icon;
-            this.btnSend.Location = new System.Drawing.Point(760, 583);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(89, 38);
-            this.btnSend.TabIndex = 10;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            // 
-            // btnSendFile
-            // 
-            this.btnSendFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendFile.Image = ((System.Drawing.Image)(resources.GetObject("btnSendFile.Image")));
-            this.btnSendFile.Location = new System.Drawing.Point(717, 583);
-            this.btnSendFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnSendFile.Name = "btnSendFile";
-            this.btnSendFile.Size = new System.Drawing.Size(37, 38);
-            this.btnSendFile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btnSendFile.TabIndex = 9;
-            this.btnSendFile.TabStop = false;
-            this.btnSendFile.Click += new System.EventHandler(this.btnSendFile_Click);
-            // 
-            // HideUsersLists
-            // 
-            this.HideUsersLists.ErrorImage = null;
-            this.HideUsersLists.Image = global::BasicChat.Properties.Resources.chevron_direction_top_white_icon;
-            this.HideUsersLists.Location = new System.Drawing.Point(177, 12);
-            this.HideUsersLists.Name = "HideUsersLists";
-            this.HideUsersLists.Size = new System.Drawing.Size(26, 23);
-            this.HideUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.HideUsersLists.TabIndex = 5;
-            this.HideUsersLists.TabStop = false;
-            this.HideUsersLists.Click += new System.EventHandler(this.HideUsersLists_Click);
-            // 
-            // ShowUsersLists
-            // 
-            this.ShowUsersLists.Image = global::BasicChat.Properties.Resources.chevron_direction_bottom_white_icon;
-            this.ShowUsersLists.Location = new System.Drawing.Point(177, 13);
-            this.ShowUsersLists.Name = "ShowUsersLists";
-            this.ShowUsersLists.Size = new System.Drawing.Size(26, 23);
-            this.ShowUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.ShowUsersLists.TabIndex = 6;
-            this.ShowUsersLists.TabStop = false;
-            this.ShowUsersLists.Visible = false;
-            this.ShowUsersLists.Click += new System.EventHandler(this.ShowUsersLists_Click);
-            // 
             // FormChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -446,21 +446,21 @@ namespace BasicChat
             this.Text = "LanChat";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormChat_FormClosing);
             this.flowGroups.ResumeLayout(false);
+            this.pnlTitle.ResumeLayout(false);
+            this.pnlTitle.PerformLayout();
             this.pnlUsers.ResumeLayout(false);
             this.pnlUsers.PerformLayout();
             this.FlowUsers.ResumeLayout(false);
             this.FlowUsers.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).EndInit();
             this.pnlChat.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.btnSendFile)).EndInit();
             this.pnlChatMode.ResumeLayout(false);
             this.pnlChatMode.PerformLayout();
             this.pnlGroups.ResumeLayout(false);
             this.pnlMenu.ResumeLayout(false);
             this.pnlMenu.PerformLayout();
-            this.pnlTitle.ResumeLayout(false);
-            this.pnlTitle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnSendFile)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).EndInit();
             this.ResumeLayout(false);
 
         }

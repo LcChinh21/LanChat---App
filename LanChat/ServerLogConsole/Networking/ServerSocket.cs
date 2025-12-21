@@ -385,11 +385,29 @@ namespace ServerLogConsole.Networking
                     };
                     SendToClient(targetClient, inviteMsg);
 
+                    // FIX: Send FULL group list to the invitee
+                    var allGroups = _dbHelper.GetAllGroupsWithMembers();
+                    var userGroups = new Dictionary<string, List<string>>();
+                    foreach (var g in allGroups)
+                    {
+                        if (g.Value.Contains(invitee))
+                            userGroups[g.Key] = g.Value;
+                    }
+
                     SendToClient(targetClient, new ChatMessage
                     {
                         Type = MessageType.LOAD_GROUP_RESPONSE,
-                        GroupList = new Dictionary<string, List<string>> { { groupName, _groups[groupName] } }
+                        GroupList = userGroups
                     });
+
+                    // FIX: Broadcast to existing group members that a new user was added
+                    var addMemberMsg = new ChatMessage
+                    {
+                        Type = MessageType.ADD_MEMBER_RESPONSE,
+                        Content = groupName,
+                        Receiver = invitee
+                    };
+                    SendToGroup(groupName, addMemberMsg, invitee);
                 }
                 else
                 {
