@@ -63,6 +63,26 @@ namespace BasicChat.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap chevron_direction_bottom_white_icon {
+            get {
+                object obj = ResourceManager.GetObject("chevron-direction-bottom-white-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap chevron_direction_top_white_icon {
+            get {
+                object obj = ResourceManager.GetObject("chevron-direction-top-white-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ic_send_128_28719 {
             get {
                 object obj = ResourceManager.GetObject("ic_send_128_28719", resourceCulture);
@@ -76,6 +96,16 @@ namespace BasicChat.Properties {
         internal static System.Drawing.Bitmap scrollarrowtodown_83796 {
             get {
                 object obj = ResourceManager.GetObject("scrollarrowtodown_83796", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap send_white_icon {
+            get {
+                object obj = ResourceManager.GetObject("send-white-icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
