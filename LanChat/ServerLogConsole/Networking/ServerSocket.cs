@@ -416,7 +416,7 @@ namespace ServerLogConsole.Networking
             }
 
             _logAction($"[Nhom:{groupName}] {message.Sender}: {message.Content}", Color.White);
-            BroadcastExcept(message, clientInfo.Username);
+            SendToGroup(message.Receiver, message, clientInfo.Username);
         }
 
 
@@ -657,7 +657,7 @@ namespace ServerLogConsole.Networking
             if (isGroup)
             {
                 _logAction($"[File Group: {message.Receiver}] {message.Sender} gui file.", Color.Cyan);
-                BroadcastExcept(message, clientInfo.Username);
+                SendToGroup(message.Receiver, message, clientInfo.Username);
             }
             else
             {
@@ -667,6 +667,23 @@ namespace ServerLogConsole.Networking
                     if (_clients.TryGetValue(message.Receiver, out ClientInfo targetClient))
                     {
                         SendToClient(targetClient, message);
+                    }
+                }
+            }
+        }
+
+        private void SendToGroup(string groupName, ChatMessage msg, string excludeUser)
+        {
+            lock (_groups)
+            {
+                if (!_groups.TryGetValue(groupName, out var members))
+                    return;
+
+                foreach (var username in members)
+                {
+                    if (username != excludeUser && _clients.TryGetValue(username, out var client))
+                    {
+                        SendToClient(client, msg);
                     }
                 }
             }

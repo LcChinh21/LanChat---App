@@ -81,22 +81,23 @@ namespace BasicChat
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (lstOnlineUsers.SelectedItems.Count <= 0) return;
-            else
+
+            foreach (ListViewItem item in lstOnlineUsers.SelectedItems)
             {
-                foreach (var user in lstOnlineUsers.SelectedItems)
+                string selectedUser = item.Text;
+
+                var inviteMsg = new ChatMessage
                 {
-                    string selectedUser = user.ToString();
-                    var inviteMsg = new ChatMessage
-                    {
-                        Type = MessageType.GROUP_INVITE_REQUEST,
-                        Sender = message.Sender,
-                        Receiver = selectedUser,
-                        Content = message.Content
-                    };
-                    _client.Send(inviteMsg);
-                }
-                Close();
+                    Type = MessageType.GROUP_INVITE_REQUEST,
+                    Sender = message.Sender,
+                    Receiver = selectedUser,
+                    Content = message.Content
+                };
+
+                _client.Send(inviteMsg);
             }
+
+            Close();
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)

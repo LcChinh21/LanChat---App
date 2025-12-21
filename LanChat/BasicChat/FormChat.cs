@@ -92,7 +92,7 @@ namespace BasicChat
                     AppendGroupChat(
                         msg.Receiver,
                         $"{msg.Sender}: {msg.Content}",
-                        Color.Black
+                        Color.Cyan
                     );
                     break;
 
@@ -177,15 +177,15 @@ namespace BasicChat
                             _groupMessages[target] = new List<(string, Color)>();
                             foreach (var m in msg.HistoryList)
                             {
-                                AppendGroupChat(target, $"{m.Sender}: {m.Content}", Color.Gray);
+                                AppendGroupChat(target, $"{m.Sender}: {m.Content}", Color.LightGray);
                             }
                         }
                         else if (!_isGroupChat && target == _selectedUser)
                         {
-                            AppendChat($"--- Lịch sử tin nhắn với {target} ---", Color.Gray);
+                            AppendChat($"--- Lịch sử tin nhắn với {target} ---", Color.LightGray);
                             foreach (var m in msg.HistoryList)
                             {
-                                AppendChat($"[{m.Timestamp:HH:mm}] {m.Sender}: {m.Content}", Color.Gray);
+                                AppendChat($"[{m.Timestamp:HH:mm}] {m.Sender}: {m.Content}", Color.LightGray);
                             }
                         }
                     }
