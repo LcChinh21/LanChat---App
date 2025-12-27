@@ -98,47 +98,73 @@ namespace ServerLogConsole.Networking
         private async Task HandleClient(ClientInfo clientInfo)
         {
             byte[] buffer = new byte[4096];
-            StringBuilder messageBuffer = new StringBuilder();
+            List<byte> byteBuffer = new List<byte>(); // Dùng List để xử lý nối chuỗi byte an toàn hơn
+            byte[] endMarker = Encoding.UTF8.GetBytes("<END>");
 
             try
             {
                 while (_isRunning && clientInfo.TcpClient.Connected)
                 {
+                    // Giữ nguyên await ReadAsync để không chặn luồng chính
                     int bytesRead = await clientInfo.Stream.ReadAsync(buffer, 0, buffer.Length);
-                    if (bytesRead == 0) break;
+                    if (bytesRead == 0) break; // Client ngắt kết nối
 
-                    string data = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    messageBuffer.Append(data);
+                    // Thêm dữ liệu vào buffer tạm
+                    for (int i = 0; i < bytesRead; i++) byteBuffer.Add(buffer[i]);
 
-                    string fullData = messageBuffer.ToString();
-                    string[] messages = fullData.Split(new string[] { "<END>" }, StringSplitOptions.RemoveEmptyEntries);
-
-                    messageBuffer.Clear();
-                    if (!fullData.EndsWith("<END>") && messages.Length > 0)
+                    // Xử lý tách tin nhắn (cơ chế <END>)
+                    while (true)
                     {
-                        messageBuffer.Append(messages[messages.Length - 1]);
-                        messages = messages.Take(messages.Length - 1).ToArray();
-                    }
-
-                    foreach (string msgStr in messages)
-                    {
-                        var message = ChatMessage.FromProtocolString(msgStr.Trim());
-                        if (message != null)
+                        int endIndex = FindBytes(byteBuffer, endMarker);
+                        if (endIndex != -1)
                         {
-                            ProcessMessage(clientInfo, message);
+                            byte[] msgBytes = byteBuffer.Take(endIndex).ToArray();
+                            string msgStr = Encoding.UTF8.GetString(msgBytes);
+
+                            // Xóa message cũ khỏi buffer
+                            byteBuffer.RemoveRange(0, endIndex + endMarker.Length);
+
+                            var message = ChatMessage.FromProtocolString(msgStr);
+                            if (message != null)
+                            {
+                                // Xử lý logic tin nhắn
+                                ProcessMessage(clientInfo, message);
+                            }
+                        }
+                        else
+                        {
+                            break; // Chưa đủ tin nhắn, đợi đọc tiếp
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logAction($"Loi xu ly client: {ex.Message}", Color.Red);
+                _logAction($"Lỗi kết nối client: {ex.Message}", Color.Red);
             }
             finally
             {
+                // --- QUAN TRỌNG: Luôn chạy vào đây khi client thoát ---
                 DisconnectClient(clientInfo);
             }
         }
+
+        // Hàm phụ trợ tìm kiếm byte (để tách tin nhắn)
+        private int FindBytes(List<byte> src, byte[] find)
+        {
+            if (src.Count < find.Length) return -1;
+            for (int i = 0; i <= src.Count - find.Length; i++)
+            {
+                bool match = true;
+                for (int j = 0; j < find.Length; j++)
+                {
+                    if (src[i + j] != find[j]) { match = false; break; }
+                }
+                if (match) return i;
+            }
+            return -1;
+        }
+
 
         private void ProcessMessage(ClientInfo clientInfo, ChatMessage message)
         {
@@ -179,7 +205,7 @@ namespace ServerLogConsole.Networking
                 case MessageType.FILE_SEND:
                     HandleFile(clientInfo, message);
                     break;
-                case MessageType.ADD_MEMBER_REQUEST: // Optional explicit add
+                case MessageType.ADD_MEMBER_REQUEST:
                 case MessageType.GROUP_INVITE_REQUEST:
                     HandleGroupInvite(clientInfo, message);
                     break;
@@ -189,6 +215,49 @@ namespace ServerLogConsole.Networking
                 case MessageType.HISTORY_REQUEST:
                     HandleHistoryRequest(clientInfo, message);
                     break;
+                case MessageType.UPDATE_PROFILE_REQUEST:
+                    HandleUpdateProfile(clientInfo, message);
+                    break;
+                case MessageType.GET_AVATAR_REQUEST:
+                    HandleGetAvatar(clientInfo, message);
+                    break;
+            }
+        }
+
+        private void HandleGetAvatar(ClientInfo clientInfo, ChatMessage message)
+        {
+            string targetUser = string.IsNullOrEmpty(message.Content) ? message.Sender : message.Content;
+
+            string avatarBase64 = _dbHelper.GetUserAvatar(targetUser);
+
+            SendToClient(clientInfo, new ChatMessage
+            {
+                Type = MessageType.GET_AVATAR_RESPONSE,
+                Sender = targetUser,
+
+                Content = avatarBase64,
+                Success = !string.IsNullOrEmpty(avatarBase64)
+            });
+        }
+
+        private void HandleUpdateProfile(ClientInfo clientInfo, ChatMessage message)
+        {
+            if (!clientInfo.IsAuthenticated) return;
+
+            bool isUpdated = _dbHelper.UpdateUserAvatar(message.Sender, message.Content);
+
+            var response = new ChatMessage
+            {
+                Type = MessageType.UPDATE_PROFILE_RESPONSE,
+                Success = isUpdated,
+                Content = isUpdated ? "Cập nhật Avatar thành công!" : ("Lỗi: " + _dbHelper.LastError)
+            };
+
+            SendToClient(clientInfo, response);
+
+            if (isUpdated)
+            {
+                _logAction($"User {message.Sender} updated profile avatar.", Color.Magenta);
             }
         }
 
@@ -218,8 +287,8 @@ namespace ServerLogConsole.Networking
         {
             if (!client.IsAuthenticated) return;
 
-            string target = message.Receiver; // GroupName or UserName
-            string mode = message.Content; // "GROUP" or "PRIVATE"
+            string target = message.Receiver;
+            string mode = message.Content;
 
             List<ChatMessage> history = null;
             if (mode == "GROUP")
@@ -236,7 +305,7 @@ namespace ServerLogConsole.Networking
                 var response = new ChatMessage
                 {
                     Type = MessageType.HISTORY_RESPONSE,
-                    Receiver = target, // Echo back target so client knows which history it is
+                    Receiver = target,
                     Content = mode,
                     HistoryList = history
                 };
@@ -312,6 +381,29 @@ namespace ServerLogConsole.Networking
             {
                 _logAction($"[FAIL] {username} dang nhap that bai", Color.Red);
             }
+            // ... (Đoạn code kiểm tra password OK) ...
+
+            // Thêm client vào danh sách quản lý
+            lock (_clients)
+            {
+                _clients[username] = clientInfo;
+            }
+
+            clientInfo.Username = username;
+            clientInfo.IsAuthenticated = true;
+            string allOnlineUsers = string.Join(",", _clients.Keys);
+            SendToClient(clientInfo, new ChatMessage
+            {
+                Type = MessageType.USER_LIST,
+                Content = allOnlineUsers
+            });
+            Broadcast(new ChatMessage
+            {
+                Type = MessageType.USER_JOINED,
+                Content = username
+            }); 
+
+            _logAction($"User {username} logged in.", Color.Green);
         }
 
         private void HandleRegister(ClientInfo clientInfo, ChatMessage message)
@@ -385,7 +477,6 @@ namespace ServerLogConsole.Networking
                     };
                     SendToClient(targetClient, inviteMsg);
 
-                    // FIX: Send FULL group list to the invitee
                     var allGroups = _dbHelper.GetAllGroupsWithMembers();
                     var userGroups = new Dictionary<string, List<string>>();
                     foreach (var g in allGroups)
@@ -400,7 +491,6 @@ namespace ServerLogConsole.Networking
                         GroupList = userGroups
                     });
 
-                    // FIX: Broadcast to existing group members that a new user was added
                     var addMemberMsg = new ChatMessage
                     {
                         Type = MessageType.ADD_MEMBER_RESPONSE,
@@ -417,6 +507,7 @@ namespace ServerLogConsole.Networking
             }
             _logAction($"[{groupName}] {inviter} added {invitee} to group", Color.Cyan);
         }
+
 
         private void HandleGroupMessage(ClientInfo clientInfo, ChatMessage message)
         {
@@ -511,15 +602,27 @@ namespace ServerLogConsole.Networking
             Broadcast(message);
         }
 
-        private void Broadcast(ChatMessage message)
+
+        private void Broadcast(ChatMessage msg)
         {
+            List<ClientInfo> activeClients;
+
             lock (_clients)
             {
-                foreach (var client in _clients.Values)
+                activeClients = _clients.Values.ToList();
+            }
+
+            foreach (var client in activeClients)
+            {
+                if (client.IsAuthenticated)
                 {
-                    if (client.IsAuthenticated)
+                    try
                     {
-                        SendToClient(client, message);
+                        SendToClient(client, msg);
+                    }
+                    catch
+                    {
+                        // Nếu lỗi gửi thì bỏ qua
                     }
                 }
             }
@@ -570,34 +673,29 @@ namespace ServerLogConsole.Networking
             }
         }
 
-        private void DisconnectClient(ClientInfo clientInfo)
+        private void DisconnectClient(ClientInfo client)
         {
-            try
-            {
-                clientInfo.TcpClient?.Close();
-            }
-            catch { }
+            if (client == null) return;
 
-            if (!string.IsNullOrEmpty(clientInfo.Username))
+            try { client.Stream?.Close(); } catch { }
+            try { client.TcpClient?.Close(); } catch { }
+
+            if (string.IsNullOrEmpty(client.Username)) return;
+
+            lock (_clients)
             {
-                lock (_clients)
+                if (_clients.ContainsKey(client.Username))
                 {
-                    if (_clients.ContainsKey(clientInfo.Username))
+                    _clients.Remove(client.Username);
+
+                    Broadcast(new ChatMessage
                     {
-                        _clients.Remove(clientInfo.Username);
-                    }
+                        Type = MessageType.USER_LEFT,
+                        Content = client.Username
+                    });
+
+                    _logAction?.Invoke($"User {client.Username} đã ngắt kết nối.", Color.Orange);
                 }
-
-                _logAction($"{clientInfo.Username} da ngat ket noi", Color.Orange);
-
-                var leftMsg = new ChatMessage
-                {
-                    Type = MessageType.USER_LEFT,
-                    Sender = clientInfo.Username
-                };
-                Broadcast(leftMsg);
-
-                BroadcastUserList();
             }
         }
         private void HandleCreateGroup(ClientInfo clientInfo, ChatMessage message)

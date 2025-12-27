@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using BasicChat.Networking;
-using System.Linq;
-using System.IO;
+using Guna.UI2.WinForms;
 
 namespace BasicChat
 {
@@ -15,14 +17,16 @@ namespace BasicChat
         private string _selectedUser = null;
         private bool _isGroupChat = true;
         private string _currentGroup = null;
-        private Dictionary<string, List<(string text, Color color)>> _groupMessages
-            = new Dictionary<string, List<(string, Color)>>();
-        private Dictionary<string, List<string>> _groupMembers
-            = new Dictionary<string, List<string>>();
-        private bool _isExpanded = false;
-        private Size _oldSize;
-        private Point _oldLocation;
-        private string _currentChatTarget = null;
+
+        private Dictionary<string, List<(string sender, string text, bool isMe, DateTime time)>> _groupMessages
+            = new Dictionary<string, List<(string, string, bool, DateTime)>>();
+
+        private Dictionary<string, List<string>> _groupMembers = new Dictionary<string, List<string>>();
+
+        private Color _colorSelected1 = Color.FromArgb(250, 48, 90);
+        private Color _colorSelected2 = Color.FromArgb(128, 36, 206);
+        private Color _colorUnselected = Color.FromArgb(23, 28, 41);
+        private Color _colorText = Color.White;
 
         public FormChat(string username, ClientSocket client)
         {
@@ -30,783 +34,615 @@ namespace BasicChat
             _currentUser = username;
             _client = client;
 
-            this.Text = "LanChat - Xin chao: " + _currentUser;
-            lblCurrentUser.Text = "Dang nhap: " + _currentUser;
+            _client.OnUserListChanged = () =>
+            {
+                this.Invoke((MethodInvoker)delegate
+                {
+                    if (_isGroupChat && !string.IsNullOrEmpty(_currentGroup))
+                    {
+                        UpdateRightPanelMembers();
+                    }
+                });
+            };
+
+            lblHeaderTitle.Text = $"Welcome, {_currentUser}";
 
             _client.OnMessageReceived = HandleMessage;
-            _client.OnDisconnected = (msg) =>
-            {
-                AppendChat("[He thong] " + msg, Color.Red);
-            };
-            UpdateChatMode();
-            this.Load += FormChat_Load;
+            _client.OnDisconnected = (msg) => Invoke((MethodInvoker)(() => MessageBox.Show(msg)));
 
-            this.Padding = new Padding(2);
-            this.BackColor = Color.FromArgb(24, 37, 51); 
-            lstMember.Width = 205;
+            pbAppIcon.Cursor = Cursors.Hand;
+            pbAppIcon.SizeMode = PictureBoxSizeMode.StretchImage;
+            pbAppIcon.Image = AvatarGenerator.Generate(_currentUser);
+            pbAppIcon.SizeMode = PictureBoxSizeMode.StretchImage;
+            pbAppIcon.Click += PbMyAvatar_Click;
+
+            _client.Send(new ChatMessage
+            {
+                Type = MessageType.GET_AVATAR_REQUEST,
+                Sender = _currentUser,
+                Content = _currentUser // Lấy ảnh của chính mình
+            });
+
+            this.Load += FormChat_Load;
         }
 
-        public void FormChat_Load(object sender, EventArgs e)
+        private void PbMyAvatar_Click(object sender, EventArgs e)
         {
-            ChatMessage loadGroupsMsg = new ChatMessage
+            Form shadow = new Form()
+            {
+                BackColor = Color.Black,
+                Opacity = 0.5,
+                ShowInTaskbar = false,
+                FormBorderStyle = FormBorderStyle.None,
+                WindowState = FormWindowState.Maximized,
+                StartPosition = FormStartPosition.Manual,
+                Location = this.Location,
+                Size = this.Size
+            };
+            shadow.Show();
+            FormProfile frm = new FormProfile(_client, _currentUser);
+            frm.ShowDialog();
+
+            shadow.Close();
+        }
+
+        private Image Base64ToImage(string base64String, string fallbackText)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(base64String))
+                {
+                    byte[] imageBytes = Convert.FromBase64String(base64String);
+                    using (MemoryStream ms = new MemoryStream(imageBytes))
+                    {
+                        return new Bitmap(ms); 
+                    }
+                }
+            }
+            catch
+            {
+                // Lỗi thì bỏ qua, xuống dưới tạo ảnh mặc định
+            }
+
+            return AvatarGenerator.Generate(fallbackText);
+        }
+
+        private void FormChat_Load(object sender, EventArgs e)
+        {
+            _client.Send(new ChatMessage
             {
                 Type = MessageType.LOAD_GROUP_REQUEST,
                 Sender = _currentUser
-            };
-            _client.Send(loadGroupsMsg);
+            });
+
+            _client.Send(new ChatMessage { Type = MessageType.GET_ALL_USERS_REQUEST });
         }
 
-        private void btnMinimize_Click(object sender, EventArgs e)
+        // Logic sắp xếp và làm mới danh sách
+        private void UpdateRightPanelMembers()
         {
-            this.WindowState = FormWindowState.Minimized;
-        }
+            flowMembers.Controls.Clear();
+            lblGroupNameRight.Text = _currentGroup;
 
-        private void btnResize_Click(object sender, EventArgs e)
-        {
-            if (_isExpanded == false)
+            // Kiểm tra xem nhóm hiện tại có danh sách thành viên chưa
+            if (_groupMembers.ContainsKey(_currentGroup))
             {
-                _oldSize = this.Size;
-                _oldLocation = this.Location;
+                var members = _groupMembers[_currentGroup];
+                lblMemberCount.Text = $"{members.Count} Members";
 
-                this.Size = Screen.PrimaryScreen.WorkingArea.Size;
-                this.Location = Screen.PrimaryScreen.WorkingArea.Location;
+                // Ai Online đưa lên đầu, Offline xuống dưới
+                var sortedMembers = members.OrderByDescending(u => _client.OnlineUsers.Contains(u)).ToList();
 
-                _isExpanded = true;
+                foreach (var member in sortedMembers)
+                {
+                    bool isOnline = _client.OnlineUsers.Contains(member);
+                    AddMemberToPanel(member, isOnline);
+                }
+            }
+        }
 
-                btnResize.Text = "❐";
+        private void RenderMemberInRightPanel(string memberName)
+        {
+            Guna2Panel pnlItem = new Guna2Panel { Size = new Size(180, 40), Dock = DockStyle.Top };
+
+            Guna2CirclePictureBox pbMemberAvatar = new Guna2CirclePictureBox
+            {
+                Size = new Size(30, 30),
+                Location = new Point(5, 5),
+                SizeMode = PictureBoxSizeMode.StretchImage, 
+                FillColor = Color.Gray, 
+                Tag = memberName
+            };
+
+            Label lblName = new Label
+            {
+                Text = memberName,
+                ForeColor = Color.White,
+                AutoSize = true,
+                Location = new Point(45, 12),
+                Font = new Font("Segoe UI", 9, FontStyle.Regular)
+            };
+
+            pnlItem.Controls.Add(pbMemberAvatar);
+            pnlItem.Controls.Add(lblName);
+
+            flowMembers.Controls.Add(pnlItem);
+
+            _client.Send(new ChatMessage
+            {
+                Type = MessageType.GET_AVATAR_REQUEST,
+                Sender = _currentUser,
+                Content = memberName   
+            });
+        }
+
+        private void AddMemberToPanel(string username, bool isOnline)
+        {
+            Guna2Panel pnlItem = new Guna2Panel();
+            pnlItem.Size = new Size(flowMembers.Width - 10, 45);
+            pnlItem.BorderRadius = 5;
+            pnlItem.BackColor = Color.Transparent;
+
+            Guna2CirclePictureBox pbAvatar = new Guna2CirclePictureBox();
+            pbAvatar.Size = new Size(30, 30);
+            pbAvatar.Location = new Point(5, 7);
+            pbAvatar.FillColor = _colorSelected2;
+            pbAvatar.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            pbAvatar.Tag = username;
+
+            pnlItem.Controls.Add(pbAvatar);
+
+            Label lblName = new Label();
+            lblName.Text = username;
+            lblName.ForeColor = Color.White;
+            lblName.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+            lblName.AutoSize = true;
+            lblName.Location = new Point(45, 12);
+            pnlItem.Controls.Add(lblName);
+
+            Guna2Shapes shapeStatus = new Guna2Shapes();
+            shapeStatus.Size = new Size(12, 12);
+            shapeStatus.PolygonSkip = 1;
+            shapeStatus.Rotate = 0F;
+            shapeStatus.Shape = Guna.UI2.WinForms.Enums.ShapeType.Ellipse;
+            shapeStatus.BorderColor = Color.Transparent;
+            shapeStatus.BorderThickness = 0;
+            shapeStatus.FillColor = isOnline ? Color.LimeGreen : Color.Gray;
+            shapeStatus.Location = new Point(pnlItem.Width - 25, 16);
+            pnlItem.Controls.Add(shapeStatus);
+
+            flowMembers.Controls.Add(pnlItem);
+
+            if (username == _currentUser)
+            {
+                if (pbAppIcon.Image != null)
+                    pbAvatar.Image = pbAppIcon.Image;
+                else
+                    pbAvatar.Image = AvatarGenerator.Generate(username); // Tạo tạm
             }
             else
             {
-                this.Size = _oldSize;
-                this.Location = _oldLocation;
+                pbAvatar.Image = AvatarGenerator.Generate(username);
 
-                _isExpanded = false;
-                btnResize.Text = "☐";
+                _client.Send(new ChatMessage
+                {
+                    Type = MessageType.GET_AVATAR_REQUEST,
+                    Sender = _currentUser,
+                    Content = username
+                });
             }
         }
-        
+
         private void HandleMessage(ChatMessage msg)
         {
-            if (InvokeRequired)
-            {
-                Invoke(new Action<ChatMessage>(HandleMessage), msg);
-                return;
-            }
-
+            if (InvokeRequired) { Invoke(new Action<ChatMessage>(HandleMessage), msg); return; }
+            if (msg.Type == MessageType.UPDATE_PROFILE_RESPONSE) return;
             switch (msg.Type)
             {
                 case MessageType.GROUP_MESSAGE:
-                    {
-                        // Đảm bảo chạy trên UI thread
-                        if (InvokeRequired)
-                        {
-                            Invoke(new Action(() => HandleMessage(msg)));
-                            return;
-                        }
+                    string grp = msg.Receiver;
+                    string content = msg.Content;
+                    if (content.Contains("|")) { var p = content.Split('|'); grp = p[0]; content = p.Length > 1 ? p[1] : ""; }
 
-                        string groupName;
-                        string text;
-
-                        // 🔹 Trường hợp server gửi: "GroupName|Message"
-                        if (!string.IsNullOrEmpty(msg.Content) && msg.Content.Contains("|"))
-                        {
-                            var parts = msg.Content.Split(new char[] { '|' }, 2);
-
-                            groupName = parts[0];
-                            text = parts.Length > 1 ? parts[1] : string.Empty;
-                        }
-                        else
-                        {
-                            // 🔹 Trường hợp server gửi chuẩn: Receiver = GroupName
-                            groupName = msg.Receiver;
-                            text = msg.Content;
-                        }
-
-                        if (string.IsNullOrEmpty(groupName))
-                            break;
-
-                        AppendGroupChat(
-                            groupName,
-                            $"{msg.Sender}: {text}",
-                            Color.Cyan
-                        );
-
-                        break;
-                    }
-
-
-
+                    AddMessageToStorage(grp, msg.Sender, content, msg.Sender == _currentUser);
+                    if (_currentGroup == grp)
+                        AddMessageBubble(msg.Sender, content, msg.Sender == _currentUser, DateTime.Now);
+                    break;
 
                 case MessageType.PRIVATE_MESSAGE:
-                    string privateText = $"[Rieng tu {msg.Sender}]: {msg.Content}";
-                    AppendChat(privateText, Color.Purple);
+                    string target = (msg.Sender == _currentUser) ? msg.Receiver : msg.Sender;
+                    AddMessageToStorage(target, msg.Sender, msg.Content, msg.Sender == _currentUser);
+
+                    // Nếu đang chat với người này thì hiện luôn
+                    if (!_isGroupChat && _selectedUser == target)
+                        AddMessageBubble(msg.Sender, msg.Content, msg.Sender == _currentUser, DateTime.Now);
                     break;
 
-                case MessageType.USER_LIST:
-                    UpdateUserList(msg.UserList);
-                    _client.OnlineUsers = new List<string>();
-                    _client.OnlineUsers.AddRange(msg.UserList);
+                case MessageType.LOAD_GROUP_RESPONSE:
+                    LoadGroups(msg.GroupList);
                     break;
 
-                case MessageType.USER_JOINED:
-                    AppendChat($"[He thong] {msg.Sender} da tham gia.", Color.Green);
-                    break;
-
-                case MessageType.USER_LEFT:
-                    AppendChat($"[He thong] {msg.Sender} da roi.", Color.Orange);
-                    break;
                 case MessageType.CREATE_GROUP_RESPONSE:
                     if (msg.Success)
                     {
                         _groupMembers[msg.Content] = new List<string> { _currentUser };
-                        CreateGroupButton(msg.Content);
+                        AddGroupItemUI(msg.Content, "New group created", DateTime.Now);
                     }
-                    else
-                    {
-                        MessageBox.Show("Nhóm đã tồn tại!", "Thất bại", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
+                    else MessageBox.Show("Group already exists!");
                     break;
-                case MessageType.LOAD_GROUP_RESPONSE:
-                    LoadGroups(msg.GroupList);
-                    break;
-                case MessageType.ADD_MEMBER_RESPONSE:
-                    {
-                        string groupName = msg.Content;
-                        string newMember = msg.Receiver;
 
-                        if (!_groupMembers.ContainsKey(groupName))
-                        {
-                            _groupMembers[groupName] = new List<string>();
-                            CreateGroupButton(groupName);
-                        }
-
-                        if (!_groupMembers[groupName].Contains(newMember))
-                            _groupMembers[groupName].Add(newMember);
-
-                        if (_currentGroup == groupName)
-                            lstMember.Items.Add(newMember);
-
-                        break;
-                    }
-                case MessageType.GROUP_LEAVE:
-                    if (_groupMembers.ContainsKey(msg.Receiver))
-                    {
-                        _groupMembers[msg.Receiver].Remove(_currentUser);
-                        if (_groupMembers[msg.Receiver].Count == 0)
-                            _groupMembers.Remove(msg.Receiver);
-                    }
-                    if (_currentGroup == msg.Receiver)
-                    {
-                        _currentGroup = null;
-                        rtbChat.Clear();
-                        lstMember.Items.Clear();
-                        Name1.Text = "";
-                    }
-                    RemoveGroupButton(msg.Receiver);
-                    _isGroupChat = false;
-                    UpdateChatMode();
-                    break;
-                case MessageType.FILE_SEND:
-                    try
-                    {
-                        // Thêm Log để debug xem chuỗi nhận về có đúng không
-                        Console.WriteLine("Nhận File Content độ dài: " + msg.Content.Length);
-
-                        // Giải mã lần 1: Base64 -> Raw String (FileName|Base64Data)
-                        string decodedPayload = System.Text.Encoding.UTF8.GetString(
-                            Convert.FromBase64String(msg.Content)
-                        );
-
-                        string[] parts = decodedPayload.Split(new char[] { '|' }, 2);
-
-                        if (parts.Length != 2)
-                        {
-                            MessageBox.Show("Lỗi giao thức file: Sai định dạng nội dung.", "Lỗi Nhận File", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-
-                        string fileName = parts[0];
-                        string fileBase64 = parts[1];
-
-                        // Hỏi người dùng (Logic cũ của bạn)
-                        // ... (Giữ nguyên phần MessageBox hỏi tải về và SaveFileToDisk) ...
-
-                        // Thêm đoạn này để test hiển thị
-                        AppendChat($"[FILE] {msg.Sender} đã gửi file: {fileName}", Color.Magenta);
-
-                        DialogResult result = MessageBox.Show(
-                            $"{msg.Sender} gửi file '{fileName}'. Tải về?", "Nhận File",
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                        if (result == DialogResult.Yes)
-                        {
-                            SaveFileToDisk(fileName, fileBase64);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // QUAN TRỌNG: Hiện lỗi để biết tại sao không nhận được
-                        MessageBox.Show("Lỗi khi xử lý file nhận được: " + ex.Message, "Debug Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    break;
                 case MessageType.HISTORY_RESPONSE:
-                    string target = msg.Receiver;
+                    string hTarget = msg.Receiver; 
                     if (msg.HistoryList != null)
                     {
-                        bool isCurrent = (_isGroupChat && _currentGroup == target) || (!_isGroupChat && _selectedUser == target);
+                        // Clear current view first if it matches
+                        if ((_isGroupChat && _currentGroup == hTarget) || (!_isGroupChat && _selectedUser == hTarget))
+                            flowMessages.Controls.Clear();
 
-                        if (_isGroupChat && target == _currentGroup)
+                        // Populate
+                        foreach (var m in msg.HistoryList)
                         {
-                            rtbChat.Clear();
-                            if (!_groupMessages.ContainsKey(target))
-                                _groupMessages[target] = new List<(string, Color)>();
-
-                            _groupMessages[target].Clear(); // chỉ clear khi user click group
-
-                            foreach (var m in msg.HistoryList)
-                            {
-                                AppendGroupChat(target, $"{m.Sender}: {m.Content}", Color.LightGray);
-                            }
-                        }
-                        else if (!_isGroupChat && target == _selectedUser)
-                        {
-                            foreach (var m in msg.HistoryList)
-                            {
-                                AppendChat($"{m.Sender}: {m.Content}", Color.LightGray);
-                            }
+                            bool isMe = m.Sender == _currentUser;
+                            AddMessageBubble(m.Sender, m.Content, isMe, m.Timestamp);
                         }
                     }
                     break;
-            }
-        }
-
-        private void HighlightGroupButton(string groupName)
-        {
-            foreach (Control c in flowGroups.Controls)
-            {
-                if (c is Button b && b.Tag.ToString() == groupName)
-                {
-                    b.BackColor = Color.OrangeRed; // hoặc đổi icon 🔔
+                case MessageType.ADD_MEMBER_RESPONSE:
+                    // Cập nhật lại danh sách member nếu đang mở group đó
+                    if (_currentGroup == msg.Content)
+                    {
+                        if (!_groupMembers.ContainsKey(msg.Content)) _groupMembers[msg.Content] = new List<string>();
+                        if (!_groupMembers[msg.Content].Contains(msg.Receiver)) _groupMembers[msg.Content].Add(msg.Receiver);
+                        UpdateRightSideBar(_currentGroup, true);
+                    }
                     break;
-                }
+                case MessageType.GET_ALL_USERS_RESPONSE:
+                    // Ở đây bạn có thể load user list vào UI nếu muốn (ví dụ tạo 1 tab Users riêng)
+                    // Hiện tại mình chỉ tập trung vào Groups như UI mẫu
+                    break;
+                case MessageType.FILE_SEND:
+                    ProcessReceivedFile(msg);
+                    break;
+                case MessageType.GET_AVATAR_RESPONSE:
+                    string ownerName = msg.Sender;
+                    string base64Data = msg.Content;
+
+                    if (string.IsNullOrEmpty(base64Data)) return;
+
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        Image img = Base64ToImage(base64Data, ownerName);
+                        if (img == null) return;
+
+                        if (ownerName == _currentUser)
+                        {
+                            pbAppIcon.Image = img;
+                        }
+                        foreach (Control pnl in flowMembers.Controls)
+                        {
+                            foreach (Control child in pnl.Controls)
+                            {
+                                if (child is Guna2CirclePictureBox pb &&
+                                    pb.Tag != null &&
+                                    pb.Tag.ToString() == ownerName)
+                                {
+                                    pb.Image = img; 
+                                    return;
+                                }
+                            }
+                        }
+                    });
+                    break;
             }
         }
 
+        private void AddMessageToStorage(string target, string sender, string content, bool isMe)
+        {
+            if (!_groupMessages.ContainsKey(target))
+                _groupMessages[target] = new List<(string, string, bool, DateTime)>();
+            _groupMessages[target].Add((sender, content, isMe, DateTime.Now));
+        }
 
         private void LoadGroups(Dictionary<string, List<string>> groups)
         {
             flowGroups.Controls.Clear();
+            _groupMembers = groups;
             foreach (var g in groups)
             {
-                if (g.Value.Contains(_currentUser))
-                {
-                    _groupMembers[g.Key] = g.Value;
-                    CreateGroupButton(g.Key);
-                }
+                AddGroupItemUI(g.Key, "Click to chat", DateTime.Now);
             }
         }
 
-        private void UpdateUserList(string[] users)
+        private void AddGroupItemUI(string name, string lastMsg, DateTime time)
         {
-            lstUsers.Items.Clear();
-            if (users != null)
+            Guna2GradientPanel pnl = new Guna2GradientPanel();
+            pnl.Size = new Size(190, 60);
+            pnl.BorderRadius = 15;
+            pnl.FillColor = _colorUnselected;
+            pnl.FillColor2 = _colorUnselected;
+            pnl.Cursor = Cursors.Hand;
+            pnl.Margin = new Padding(10, 5, 0, 5);
+            pnl.Tag = name;
+
+            Guna2CirclePictureBox pb = new Guna2CirclePictureBox();
+            pb.Size = new Size(35, 35);
+            pb.Location = new Point(10, 12);
+            pb.FillColor = Color.FromArgb(100, 88, 255);
+            pb.Image = AvatarGenerator.Generate(name);
+            pb.SizeMode = PictureBoxSizeMode.StretchImage;
+            pb.BackColor = Color.Transparent;
+
+            Label lblName = new Label();
+            lblName.Text = name;
+            lblName.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            lblName.ForeColor = Color.White;
+            lblName.Location = new Point(50, 10);
+            lblName.AutoSize = true;
+            lblName.BackColor = Color.Transparent;
+
+            Label lblMsg = new Label();
+            lblMsg.Text = lastMsg;
+            lblMsg.Font = new Font("Segoe UI", 7);
+            lblMsg.ForeColor = Color.Silver;
+            lblMsg.Location = new Point(50, 30);
+            lblMsg.AutoSize = true;
+            lblMsg.BackColor = Color.Transparent;
+
+            EventHandler clickEvent = (s, e) =>
             {
-                foreach (string user in users)
+                SelectGroup(name, pnl);    
+
+                UpdateRightPanelMembers();
+            };
+            pnl.Click += clickEvent;
+            lblName.Click += clickEvent;
+            lblMsg.Click += clickEvent;
+            pb.Click += clickEvent;
+
+            pnl.Controls.Add(lblName);
+            pnl.Controls.Add(lblMsg);
+            pnl.Controls.Add(pb);
+
+            flowGroups.Controls.Add(pnl);
+        }
+
+        private void SelectGroup(string groupName, Guna2GradientPanel selectedPnl)
+        {
+            foreach (Control c in flowGroups.Controls)
+            {
+                if (c is Guna2GradientPanel p)
                 {
-                    if (!string.IsNullOrEmpty(user) && user != _currentUser)
-                    {
-                        lstUsers.Items.Add(user);
-                    }
+                    p.FillColor = _colorUnselected;
+                    p.FillColor2 = _colorUnselected;
                 }
             }
+            selectedPnl.FillColor = _colorSelected1;
+            selectedPnl.FillColor2 = _colorSelected2;
+
+            _currentGroup = groupName;
+            _isGroupChat = true;
+            _selectedUser = null;
+            lblHeaderTitle.Text = $"# {groupName}";
+
+            UpdateRightSideBar(groupName, true);
+
+            _client.Send(new ChatMessage
+            {
+                Type = MessageType.HISTORY_REQUEST,
+                Sender = _currentUser,
+                Receiver = groupName,
+                Content = "GROUP"
+            });
+
+            flowMessages.Controls.Clear();
+        }
+
+        private void UpdateRightSideBar(string name, bool isGroup)
+        {
+            lblGroupNameRight.Text = name;
+            pbGroupIconRight.Image = AvatarGenerator.Generate(name);
+            pbGroupIconRight.SizeMode = PictureBoxSizeMode.StretchImage;
+            flowMembers.Controls.Clear();
+
+            if (isGroup && _groupMembers.ContainsKey(name))
+            {
+                List<string> members = _groupMembers[name];
+                lblMemberCount.Text = $"Members ({members.Count})";
+
+                foreach (var mem in members)
+                {
+                    // Tạo UI cho từng member
+                    Panel p = new Panel();
+                    p.Size = new Size(140, 40);
+
+                    Guna2CirclePictureBox pb = new Guna2CirclePictureBox();
+                    pb.Size = new Size(30, 30);
+                    pb.FillColor = Color.Teal;
+                    pb.Location = new Point(0, 5);
+
+                    Label l = new Label();
+                    l.Text = mem;
+                    l.ForeColor = Color.White;
+                    l.Location = new Point(35, 12);
+                    l.AutoSize = true;
+
+                    p.Controls.Add(pb);
+                    p.Controls.Add(l);
+                    flowMembers.Controls.Add(p);
+                }
+            }
+            else
+            {
+                lblMemberCount.Text = "Private Chat";
+            }
+        }
+        private void AddMessageBubble(string sender, string text, bool isMe, DateTime time)
+        {
+            Panel pnlContainer = new Panel();
+            pnlContainer.Width = flowMessages.ClientSize.Width - 25;
+            pnlContainer.Height = 0; 
+            pnlContainer.Padding = new Padding(0, 5, 0, 5);
+            pnlContainer.Margin = new Padding(0);
+            pnlContainer.BackColor = Color.Transparent;
+
+            Guna2Panel pnlBubble = new Guna2Panel();
+            pnlBubble.BorderRadius = 12;
+            pnlBubble.FillColor = isMe ? _colorSelected2 : Color.FromArgb(40, 42, 55);
+            pnlBubble.AutoSize = true;
+            pnlBubble.Padding = new Padding(12, 10, 12, 10);
+            pnlBubble.MaximumSize = new Size((int)(pnlContainer.Width * 0.7), 0); // Tối đa 70% chiều rộng
+
+            Label lblContent = new Label();
+            lblContent.Text = text;
+            lblContent.ForeColor = Color.White;
+            lblContent.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lblContent.AutoSize = true;
+            lblContent.MaximumSize = new Size(pnlContainer.Width - 60, 0); // Wrap text xuống dòng
+
+            lblContent.BackColor = pnlBubble.FillColor;
+
+            if (!isMe && _isGroupChat)
+            {
+                Label lblSender = new Label();
+                lblSender.Text = sender;
+                lblSender.ForeColor = Color.LightGray;
+                lblSender.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+                lblSender.AutoSize = true;
+                lblSender.BackColor = pnlBubble.FillColor;
+                lblSender.Location = new Point(12, 5);
+                pnlBubble.Controls.Add(lblSender);
+
+                lblContent.Location = new Point(12, 25);
+            }
+            else
+            {
+                lblContent.Location = new Point(12, 10);
+            }
+
+            pnlBubble.Controls.Add(lblContent);
+            pnlContainer.Controls.Add(pnlBubble);
+
+            if (isMe)
+            {
+                pnlBubble.Location = new Point(pnlContainer.Width - pnlBubble.Width, 0);
+                pnlContainer.Height = pnlBubble.Height + 10;
+            }
+            else
+            {
+                pnlBubble.Location = new Point(0, 0);
+                pnlContainer.Height = pnlBubble.Height + 10;
+            }
+
+            flowMessages.Controls.Add(pnlContainer);
+
+            flowMessages.ScrollControlIntoView(pnlContainer);
         }
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            string message = txtMessage.Text.Trim();
-            if (string.IsNullOrEmpty(message)) return;
+            string txt = txtMessage.Text.Trim();
+            if (string.IsNullOrEmpty(txt)) return;
 
-            ChatMessage chatMsg;
-
-            if (!_isGroupChat)
+            if (_isGroupChat && !string.IsNullOrEmpty(_currentGroup))
             {
-                if (string.IsNullOrEmpty(_selectedUser))
-                {
-                    MessageBox.Show("Vui lòng chọn người để nhắn trong danh sách", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                chatMsg = new ChatMessage
-                {
-                    Type = MessageType.PRIVATE_MESSAGE,
-                    Sender = _currentUser,
-                    Receiver = _selectedUser,
-                    Content = message
-                };
-
-                AppendChat(
-                    $"[Gui rieng cho {_selectedUser}]: {message}",
-                    Color.Purple
-                );
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(_currentGroup))
-                {
-                    MessageBox.Show("Vui lòng chọn nhóm", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                AppendGroupChat(_currentGroup, $"Bạn: {message}", Color.White);
-                chatMsg = new ChatMessage
+                _client.Send(new ChatMessage
                 {
                     Type = MessageType.GROUP_MESSAGE,
                     Sender = _currentUser,
                     Receiver = _currentGroup,
-                    Content = message
-                };
-            }
-
-            _client.Send(chatMsg);
-            txtMessage.Clear();
-            txtMessage.Focus();
-        }
-
-
-        private void AppendChat(string text, Color color)
-        {
-            if (rtbChat.InvokeRequired)
-            {
-                rtbChat.Invoke(new Action<string, Color>(AppendChat), text, color);
-                return;
-            }
-
-            rtbChat.SelectionStart = rtbChat.TextLength;
-            rtbChat.SelectionColor = color;
-            rtbChat.AppendText($"[{DateTime.Now:HH:mm}] {text}\n");
-            rtbChat.ScrollToCaret();
-        }
-
-        private void lstUsers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lstUsers.SelectedItem == null)
-                return;
-            if (_currentChatTarget == lstUsers.SelectedItem.ToString())
-            {
-                return;
-            }
-            if(_isGroupChat)
-            {
-                _isGroupChat = false;
-                foreach (Control c in flowGroups.Controls)
-                    if (c is Button b)
-                        b.BackColor = Color.FromArgb(39, 39, 58);
-            }
-            rtbChat.Clear();
-            UpdateChatMode();
-            if (lstUsers.SelectedItem != null)
-            {
-                _currentChatTarget = lstUsers.SelectedItem.ToString();
-                _selectedUser = lstUsers.SelectedItem.ToString();
-                Name1.Text = _selectedUser;
-
-                _client.Send(new ChatMessage
-                {
-                    Type = MessageType.HISTORY_REQUEST,
-                    Sender = _currentUser,
-                    Receiver = _selectedUser,
-                    Content = "PRIVATE"
+                    Content = txt
                 });
-
+                AddMessageBubble(_currentUser, txt, true, DateTime.Now);
             }
-        }
-
-        private void UpdateChatMode()
-        {
-            if (_isGroupChat)
-            {
-                lstMember.Visible = true;
-                lblGroupMembers.Visible = true;
-            }
-            else
-            {
-                lstMember.Visible = false;
-                lblGroupMembers.Visible = false;
-            }
+            txtMessage.Clear();
         }
 
         private void txtMessage_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
-                btnSend_Click(sender, e);
                 e.Handled = true;
+                btnSend_Click(null, null);
             }
+        }
+
+        private void lblAdd_Click(object sender, EventArgs e)
+        {
+            using (FormCreateGroup frm = new FormCreateGroup())
+            {
+                if (frm.ShowDialog(this) == DialogResult.OK)
+                {
+                    _client.Send(new ChatMessage
+                    {
+                        Type = MessageType.CREATE_GROUP_REQUEST,
+                        Sender = _currentUser,
+                        Content = frm.GroupName
+                    });
+                }
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         private void FormChat_FormClosing(object sender, FormClosingEventArgs e)
         {
             _client.Disconnect();
-            Application.Exit();
-        }
-
-        private void CreateGroupButton(string groupName)
-        {
-            foreach (Control c in flowGroups.Controls)
-            {
-                if (c is Button btn && btn.Text == groupName)
-                    return;
-            }
-
-            Button groupBtn = new Button
-            {
-                Text = groupName,
-                Width = 180,
-                Height = 40,
-                FlatStyle = FlatStyle.Flat,
-                BackColor = Color.FromArgb(36, 45, 59),
-                ForeColor = Color.White,
-                TextAlign = ContentAlignment.MiddleLeft,
-                Padding = new Padding(10, 0, 0, 0),
-                Tag = groupName
-            };
-
-            ContextMenuStrip menu = new ContextMenuStrip();
-            menu.Items.Add("Thêm thành viên", null, (s, e) =>
-            {
-                ChatMessage addMsg = new ChatMessage
-                {
-                    Sender = _currentUser,
-                    Content = groupName
-                };
-                InviteMembers frm = new InviteMembers(_client, addMsg, _groupMembers[groupName]);
-                frm.ShowDialog(this);
-            });
-            menu.Items.Add("Rời nhóm", null, (s, e) =>
-            {
-                DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn rời nhóm", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                if (result == DialogResult.Yes)
-                {
-                    ChatMessage leaveMsg = new ChatMessage
-                    {
-                        Type = MessageType.GROUP_LEAVE,
-                        Sender = _currentUser,
-                        Receiver = groupName
-                    };
-                    _client.Send(leaveMsg);
-                }
-            });
-
-            groupBtn.Paint += (s, e) =>
-            {
-                string dots = "⋮";
-                SizeF size = e.Graphics.MeasureString(dots, groupBtn.Font);
-                float x = groupBtn.Width - size.Width - 10;
-                float y = (groupBtn.Height - size.Height) / 2;
-                e.Graphics.DrawString(dots, groupBtn.Font, Brushes.White, x, y);
-            };
-
-            groupBtn.MouseClick += (s, e) =>
-            {
-                if (e.X >= groupBtn.Width - 30)
-                {
-                    menu.Show(groupBtn, new System.Drawing.Point(e.X, e.Y));
-                }
-                else
-                {
-                    GroupButton_Click(groupBtn, EventArgs.Empty);
-                }
-            };
-
-            groupBtn.FlatAppearance.BorderSize = 0;
-            groupBtn.Click += GroupButton_Click;
-
-            flowGroups.Controls.Add(groupBtn);
-        }
-
-        private void GroupButton_Click(object sender, EventArgs e)
-        {
-            _currentChatTarget = (sender as Button).Tag.ToString();
-            _selectedUser = null;
-            if (_isGroupChat == false)
-            {
-                _isGroupChat = true;
-                lstUsers.SelectedIndex = -1;
-                UpdateChatMode();
-            }
-            foreach (Control c in flowGroups.Controls)
-                if (c is Button b)
-                    b.BackColor = Color.FromArgb(39, 39, 58);
-
-            Button btn = sender as Button;
-            btn.BackColor = Color.FromArgb(0, 120, 215);
-
-            _currentGroup = btn.Tag.ToString();
-
-
-            Name1.Text = _currentGroup;
-            RenderCurrentGroup();
-
-            _client.Send(new ChatMessage
-            {
-                Type = MessageType.HISTORY_REQUEST,
-                Sender = _currentUser,
-                Receiver = _currentGroup,
-                Content = "GROUP"
-            });
-
-            lstMember.BeginUpdate();
-            lstMember.Items.Clear();
-            if (_groupMembers.ContainsKey(_currentGroup))
-            {
-                foreach (var member in _groupMembers[_currentGroup])
-                {
-                    lstMember.Items.Add(member);
-                }
-            }
-
-            lstMember.EndUpdate();
-        }
-
-        private void RemoveGroupButton(string groupName)
-        {
-            if (flowGroups.InvokeRequired)
-            {
-                flowGroups.Invoke(new Action(() => RemoveGroupButton(groupName)));
-                return;
-            }
-
-            Button btnToRemove = null;
-            foreach (Control c in flowGroups.Controls)
-            {
-                if (c is Button btn && btn.Text == groupName)
-                {
-                    btnToRemove = btn;
-                    break;
-                }
-            }
-            if (btnToRemove != null)
-            {
-                flowGroups.Controls.Remove(btnToRemove);
-                btnToRemove.Dispose();
-            }
-        }
-
-        private void AppendGroupChat(string groupName, string text, Color color)
-        {
-            if (string.IsNullOrEmpty(groupName))
-                return;
-
-            if (!_groupMessages.ContainsKey(groupName))
-                _groupMessages[groupName] = new List<(string, Color)>();
-
-            _groupMessages[groupName].Add(($"[{DateTime.Now:HH:mm}] {text}", color));
-
-            if (_currentGroup == groupName)
-                RenderCurrentGroup();
-        }
-        private void RenderCurrentGroup()
-        {
-            rtbChat.Clear();
-
-            if (string.IsNullOrEmpty(_currentGroup))
-                return;
-
-            if (!_groupMessages.ContainsKey(_currentGroup))
-                return;
-
-            foreach (var msg in _groupMessages[_currentGroup])
-            {
-                rtbChat.SelectionStart = rtbChat.TextLength;
-                rtbChat.SelectionColor = msg.color;
-                rtbChat.AppendText(msg.text + Environment.NewLine);
-            }
-
-            rtbChat.ScrollToCaret();
-        }
-
-        private void lblOnlineUsers_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblAdd_Click(object sender, EventArgs e)
-        {
-            var tempMsg = new ChatMessage
-            {
-                Sender = _currentUser
-            };
-
-            using (FormCreateGroup frm = new FormCreateGroup())
-            {
-                if (frm.ShowDialog(this) == DialogResult.OK)
-                {
-                    ChatMessage msg = new ChatMessage
-                    {
-                        Type = MessageType.CREATE_GROUP_REQUEST,
-                        Sender = _currentUser,
-                        Content = frm.GroupName
-                    };
-
-                    _client.Send(msg);
-                }
-            }
-        }
-
-
-        private void HideUsersLists_Click(object sender, EventArgs e)
-        {
-            if (ShowUsersLists.Visible)
-                return;
-            lstUsers.Visible = false;
-            ShowUsersLists.Visible = true;
-            HideUsersLists.Visible = false;
-        }
-
-        private void ShowUsersLists_Click(object sender, EventArgs e)
-        {
-            if (HideUsersLists.Visible)
-                return;
-            lstUsers.Visible = true;
-            ShowUsersLists.Visible = false;
-            HideUsersLists.Visible = true;
-        }
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void pnlUsers_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void btnSendFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Title = "Chọn file để gửi";
-
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                string filePath = ofd.FileName;
-                string fileName = Path.GetFileName(filePath);
-                long fileSize = new FileInfo(filePath).Length;
-
-                if (fileSize > 10 * 1024 * 1024)
-                {
-                    MessageBox.Show("File quá lớn! Vui lòng gửi file dưới 10MB.", "Cảnh báo");
-                    return;
-                }
-
                 try
                 {
-                    byte[] fileBytes = File.ReadAllBytes(filePath);
-                    string fileData = Convert.ToBase64String(fileBytes); 
-                    string rawPayload = $"{fileName}|{fileData}";
-                    string safeContent = Convert.ToBase64String(
-                        System.Text.Encoding.UTF8.GetBytes(rawPayload)
-                    );
+                    byte[] b = File.ReadAllBytes(ofd.FileName);
+                    if (b.Length > 10 * 1024 * 1024) { MessageBox.Show("File > 10MB"); return; }
+                    string b64 = Convert.ToBase64String(b);
+                    string payload = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{Path.GetFileName(ofd.FileName)}|{b64}"));
 
-
-                    ChatMessage msg = new ChatMessage
+                    _client.Send(new ChatMessage
                     {
                         Type = MessageType.FILE_SEND,
                         Sender = _currentUser,
                         Receiver = _isGroupChat ? _currentGroup : _selectedUser,
-                        Content = safeContent
-                    };
-
-                    if (string.IsNullOrEmpty(msg.Receiver))
-                    {
-                        MessageBox.Show("Vui lòng chọn người nhận hoặc nhóm trước khi gửi!");
-                        return;
-                    }
-
-                    _client.Send(msg);
-                    AppendChat($"[Bạn đã gửi file]: {fileName}", Color.Blue);
+                        Content = payload
+                    });
+                    AddMessageBubble(_currentUser, $"Sent file: {Path.GetFileName(ofd.FileName)}", true, DateTime.Now);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi khi đọc file: " + ex.Message);
-                }
+                catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
             }
         }
 
-        private void SaveFileToDisk(string defaultFileName, string base64Data)
+        private void ProcessReceivedFile(ChatMessage msg)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.FileName = defaultFileName;
-            sfd.Filter = "All Files|*.*";
-
-            if (sfd.ShowDialog() == DialogResult.OK)
+            try
             {
-                try
+                string decoded = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(msg.Content));
+                string[] parts = decoded.Split('|');
+                string fileName = parts[0];
+                string fileData = parts[1];
+
+                AddMessageBubble(msg.Sender, $"Sent file: {fileName}", false, DateTime.Now);
+
+                if (MessageBox.Show($"Download {fileName}?", "File Received", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    byte[] fileBytes = Convert.FromBase64String(base64Data);
-                    File.WriteAllBytes(sfd.FileName, fileBytes);
-                    MessageBox.Show("Lưu file thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi khi lưu file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.FileName = fileName;
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                        File.WriteAllBytes(sfd.FileName, Convert.FromBase64String(fileData));
                 }
             }
+            catch { }
         }
 
-        private void rtbChat_TextChanged(object sender, EventArgs e)
+        private void pbGroupIconRight_Click(object sender, EventArgs e)
         {
 
-        }
-        // --- ĐOẠN CODE TẠO HIỆU ỨNG RESIZE 4 CHIỀU ---
-
-        // Override hàm xử lý thông điệp của Windows
-        protected override void WndProc(ref Message m)
-        {
-            const int WM_NCHITTEST = 0x0084;
-            const int HTCLIENT = 1;
-
-            // Các mã lệnh của Windows tương ứng với các vị trí con trỏ chuột
-            const int HTLEFT = 10;
-            const int HTRIGHT = 11;
-            const int HTTOP = 12;
-            const int HTTOPLEFT = 13;
-            const int HTTOPRIGHT = 14;
-            const int HTBOTTOM = 15;
-            const int HTBOTTOMLEFT = 16;
-            const int HTBOTTOMRIGHT = 17;
-
-            base.WndProc(ref m);
-
-            if (m.Msg == WM_NCHITTEST)
-            {
-                int resizeBorder = 10; // Độ dày vùng biên để bắt chuột (10px là vừa đẹp)
-                Point cursor = this.PointToClient(Cursor.Position);
-
-                // 1. Kiểm tra 4 GÓC trước (Ưu tiên góc để resize chéo)
-                if (cursor.X <= resizeBorder && cursor.Y <= resizeBorder)
-                    m.Result = (IntPtr)HTTOPLEFT;
-
-                else if (cursor.X >= this.ClientSize.Width - resizeBorder && cursor.Y <= resizeBorder)
-                    m.Result = (IntPtr)HTTOPRIGHT;
-
-                else if (cursor.X <= resizeBorder && cursor.Y >= this.ClientSize.Height - resizeBorder)
-                    m.Result = (IntPtr)HTBOTTOMLEFT;
-
-                else if (cursor.X >= this.ClientSize.Width - resizeBorder && cursor.Y >= this.ClientSize.Height - resizeBorder)
-                    m.Result = (IntPtr)HTBOTTOMRIGHT;
-
-                // 2. Kiểm tra 4 CẠNH
-                else if (cursor.X <= resizeBorder)
-                    m.Result = (IntPtr)HTLEFT;      // Cạnh Trái
-
-                else if (cursor.X >= this.ClientSize.Width - resizeBorder)
-                    m.Result = (IntPtr)HTRIGHT;     // Cạnh Phải
-
-                else if (cursor.Y <= resizeBorder)
-                    m.Result = (IntPtr)HTTOP;       // Cạnh Trên
-
-                else if (cursor.Y >= this.ClientSize.Height - resizeBorder)
-                    m.Result = (IntPtr)HTBOTTOM;    // Cạnh Dưới
-            }
         }
     }
 }

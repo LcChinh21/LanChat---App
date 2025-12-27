@@ -1,14 +1,8 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-
-namespace BasicChat
+﻿namespace BasicChat
 {
     partial class FormChat
     {
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.RichTextBox rtbChat;
-        private System.Windows.Forms.Label lblCurrentUser;
-
 
         protected override void Dispose(bool disposing)
         {
@@ -19,481 +13,392 @@ namespace BasicChat
             base.Dispose(disposing);
         }
 
+        #region Windows Form Designer generated code
+
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormChat));
-            this.rtbChat = new System.Windows.Forms.RichTextBox();
-            this.lblCurrentUser = new System.Windows.Forms.Label();
-            this.Name1 = new System.Windows.Forms.Label();
-            this.lblAdd = new System.Windows.Forms.Label();
-            this.lblGroupChats = new System.Windows.Forms.Label();
+            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
+            this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnAddGroup = new Guna.UI2.WinForms.Guna2Button();
+            this.pbAppIcon = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            this.pnlRightInfo = new Guna.UI2.WinForms.Guna2Panel();
+            this.flowMembers = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblMemberCount = new System.Windows.Forms.Label();
+            this.lblGroupNameRight = new System.Windows.Forms.Label();
+            this.pbGroupIconRight = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            this.guna2ControlBox3 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
+            this.pnlHeaderContent = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblHeaderTitle = new System.Windows.Forms.Label();
+            this.txtSearchGroup = new Guna.UI2.WinForms.Guna2TextBox();
+            this.pnlGroupList = new Guna.UI2.WinForms.Guna2Panel();
             this.flowGroups = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnlTitle = new System.Windows.Forms.Panel();
-            this.pnlUsers = new System.Windows.Forms.Panel();
-            this.FlowUsers = new System.Windows.Forms.FlowLayoutPanel();
-            this.lstUsers = new System.Windows.Forms.ListBox();
-            this.lblGroupMembers = new System.Windows.Forms.Label();
-            this.lstMember = new System.Windows.Forms.ListView();
-            this.lblOnlineUsers = new System.Windows.Forms.Label();
-            this.HideUsersLists = new System.Windows.Forms.PictureBox();
-            this.ShowUsersLists = new System.Windows.Forms.PictureBox();
-            this.btnExit = new System.Windows.Forms.Button();
-            this.lblAppName = new System.Windows.Forms.Label();
-            this.pnlChat = new System.Windows.Forms.Panel();
+            this.pnlChatArea = new Guna.UI2.WinForms.Guna2Panel();
+            this.flowMessages = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlInput = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnSendFile = new Guna.UI2.WinForms.Guna2Button();
             this.btnSend = new Guna.UI2.WinForms.Guna2Button();
-            this.btnSendFile = new System.Windows.Forms.PictureBox();
             this.txtMessage = new Guna.UI2.WinForms.Guna2TextBox();
-            this.pnlChatMode = new Guna.UI2.WinForms.Guna2Panel();
-            this.pnlGroups = new Guna.UI2.WinForms.Guna2Panel();
-            this.pnlMenu = new System.Windows.Forms.Panel();
-            this.btnMinimize = new System.Windows.Forms.Button();
-            this.btnResize = new System.Windows.Forms.Button();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
-            this.guna2AnimateWindow1 = new Guna.UI2.WinForms.Guna2AnimateWindow(this.components);
-            this.pnlTitle.SuspendLayout();
-            this.pnlUsers.SuspendLayout();
-            this.FlowUsers.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).BeginInit();
-            this.pnlChat.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.btnSendFile)).BeginInit();
-            this.pnlChatMode.SuspendLayout();
-            this.pnlGroups.SuspendLayout();
-            this.pnlMenu.SuspendLayout();
+            this.pnlSidebar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbAppIcon)).BeginInit();
+            this.pnlRightInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbGroupIconRight)).BeginInit();
+            this.pnlHeader.SuspendLayout();
+            this.pnlHeaderContent.SuspendLayout();
+            this.pnlGroupList.SuspendLayout();
+            this.pnlChatArea.SuspendLayout();
+            this.pnlInput.SuspendLayout();
             this.SuspendLayout();
             // 
-            // rtbChat
+            // guna2BorderlessForm1
             // 
-            this.rtbChat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtbChat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
-            this.rtbChat.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbChat.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbChat.ForeColor = System.Drawing.Color.White;
-            this.rtbChat.Location = new System.Drawing.Point(235, 69);
-            this.rtbChat.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.rtbChat.Name = "rtbChat";
-            this.rtbChat.ReadOnly = true;
-            this.rtbChat.Size = new System.Drawing.Size(623, 501);
-            this.rtbChat.TabIndex = 2;
-            this.rtbChat.Text = "";
-            this.rtbChat.TextChanged += new System.EventHandler(this.rtbChat_TextChanged);
+            this.guna2BorderlessForm1.ContainerControl = this;
+            this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2BorderlessForm1.TransparentWhileDrag = true;
             // 
-            // lblCurrentUser
+            // pnlSidebar
             // 
-            this.lblCurrentUser.AutoSize = true;
-            this.lblCurrentUser.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
-            this.lblCurrentUser.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblCurrentUser.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(166)))), ((int)(((byte)(188)))));
-            this.lblCurrentUser.Location = new System.Drawing.Point(15, 8);
-            this.lblCurrentUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblCurrentUser.Name = "lblCurrentUser";
-            this.lblCurrentUser.Size = new System.Drawing.Size(103, 23);
-            this.lblCurrentUser.TabIndex = 0;
-            this.lblCurrentUser.Text = "Đăng nhập:";
+            this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
+            this.pnlSidebar.Controls.Add(this.btnAddGroup);
+            this.pnlSidebar.Controls.Add(this.pbAppIcon);
+            this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
+            this.pnlSidebar.Name = "pnlSidebar";
+            this.pnlSidebar.Size = new System.Drawing.Size(78, 600);
+            this.pnlSidebar.TabIndex = 0;
             // 
-            // Name1
+            // btnAddGroup
             // 
-            this.Name1.AutoSize = true;
-            this.Name1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
-            this.Name1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name1.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.Name1.Location = new System.Drawing.Point(14, 25);
-            this.Name1.Name = "Name1";
-            this.Name1.Size = new System.Drawing.Size(0, 29);
-            this.Name1.TabIndex = 3;
+            this.btnAddGroup.BorderRadius = 10;
+            this.btnAddGroup.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
+            this.btnAddGroup.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnAddGroup.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(191)))), ((int)(((byte)(229)))));
+            this.btnAddGroup.Location = new System.Drawing.Point(12, 70);
+            this.btnAddGroup.Name = "btnAddGroup";
+            this.btnAddGroup.Size = new System.Drawing.Size(50, 50);
+            this.btnAddGroup.TabIndex = 1;
+            this.btnAddGroup.Text = "+";
+            this.btnAddGroup.Click += new System.EventHandler(this.lblAdd_Click);
             // 
-            // lblAdd
+            // pbAppIcon
             // 
-            this.lblAdd.AutoSize = true;
-            this.lblAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
-            this.lblAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAdd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(191)))), ((int)(((byte)(229)))));
-            this.lblAdd.Location = new System.Drawing.Point(203, 5);
-            this.lblAdd.Name = "lblAdd";
-            this.lblAdd.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lblAdd.Size = new System.Drawing.Size(22, 22);
-            this.lblAdd.TabIndex = 4;
-            this.lblAdd.Text = "+";
-            this.lblAdd.Click += new System.EventHandler(this.lblAdd_Click);
+            this.pbAppIcon.FillColor = System.Drawing.Color.MediumSlateBlue;
+            this.pbAppIcon.ImageRotate = 0F;
+            this.pbAppIcon.Location = new System.Drawing.Point(16, 12);
+            this.pbAppIcon.Name = "pbAppIcon";
+            this.pbAppIcon.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.pbAppIcon.Size = new System.Drawing.Size(40, 40);
+            this.pbAppIcon.TabIndex = 0;
+            this.pbAppIcon.TabStop = false;
             // 
-            // lblGroupChats
+            // pnlRightInfo
             // 
-            this.lblGroupChats.AutoSize = true;
-            this.lblGroupChats.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
-            this.lblGroupChats.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblGroupChats.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(135)))), ((int)(((byte)(162)))), ((int)(((byte)(178)))));
-            this.lblGroupChats.Location = new System.Drawing.Point(1, 4);
-            this.lblGroupChats.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblGroupChats.Name = "lblGroupChats";
-            this.lblGroupChats.Size = new System.Drawing.Size(57, 20);
-            this.lblGroupChats.TabIndex = 1;
-            this.lblGroupChats.Text = "Nhóm:";
+            this.pnlRightInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
+            this.pnlRightInfo.Controls.Add(this.flowMembers);
+            this.pnlRightInfo.Controls.Add(this.lblMemberCount);
+            this.pnlRightInfo.Controls.Add(this.lblGroupNameRight);
+            this.pnlRightInfo.Controls.Add(this.pbGroupIconRight);
+            this.pnlRightInfo.Controls.Add(this.guna2ControlBox3);
+            this.pnlRightInfo.Controls.Add(this.guna2ControlBox2);
+            this.pnlRightInfo.Controls.Add(this.guna2ControlBox1);
+            this.pnlRightInfo.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlRightInfo.Location = new System.Drawing.Point(718, 0);
+            this.pnlRightInfo.Name = "pnlRightInfo";
+            this.pnlRightInfo.Size = new System.Drawing.Size(180, 600);
+            this.pnlRightInfo.TabIndex = 1;
+            // 
+            // flowMembers
+            // 
+            this.flowMembers.AutoScroll = true;
+            this.flowMembers.Location = new System.Drawing.Point(10, 160);
+            this.flowMembers.Name = "flowMembers";
+            this.flowMembers.Size = new System.Drawing.Size(160, 430);
+            this.flowMembers.TabIndex = 7;
+            // 
+            // lblMemberCount
+            // 
+            this.lblMemberCount.AutoSize = true;
+            this.lblMemberCount.ForeColor = System.Drawing.Color.Gray;
+            this.lblMemberCount.Location = new System.Drawing.Point(12, 135);
+            this.lblMemberCount.Name = "lblMemberCount";
+            this.lblMemberCount.Size = new System.Drawing.Size(82, 16);
+            this.lblMemberCount.TabIndex = 8;
+            this.lblMemberCount.Text = "Members (0)";
+            // 
+            // lblGroupNameRight
+            // 
+            this.lblGroupNameRight.AutoSize = true;
+            this.lblGroupNameRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
+            this.lblGroupNameRight.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lblGroupNameRight.Location = new System.Drawing.Point(60, 80);
+            this.lblGroupNameRight.Name = "lblGroupNameRight";
+            this.lblGroupNameRight.Size = new System.Drawing.Size(105, 18);
+            this.lblGroupNameRight.TabIndex = 6;
+            this.lblGroupNameRight.Text = "No Selection";
+            // 
+            // pbGroupIconRight
+            // 
+            this.pbGroupIconRight.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(125)))), ((int)(((byte)(93)))));
+            this.pbGroupIconRight.ImageRotate = 0F;
+            this.pbGroupIconRight.Location = new System.Drawing.Point(15, 70);
+            this.pbGroupIconRight.Name = "pbGroupIconRight";
+            this.pbGroupIconRight.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.pbGroupIconRight.Size = new System.Drawing.Size(40, 40);
+            this.pbGroupIconRight.TabIndex = 3;
+            this.pbGroupIconRight.TabStop = false;
+            this.pbGroupIconRight.Click += new System.EventHandler(this.pbGroupIconRight_Click);
+            // 
+            // guna2ControlBox3
+            // 
+            this.guna2ControlBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox3.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
+            this.guna2ControlBox3.FillColor = System.Drawing.Color.Transparent;
+            this.guna2ControlBox3.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox3.Location = new System.Drawing.Point(30, 0);
+            this.guna2ControlBox3.Name = "guna2ControlBox3";
+            this.guna2ControlBox3.Size = new System.Drawing.Size(45, 29);
+            this.guna2ControlBox3.TabIndex = 9;
+            // 
+            // guna2ControlBox2
+            // 
+            this.guna2ControlBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox2.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MaximizeBox;
+            this.guna2ControlBox2.FillColor = System.Drawing.Color.Transparent;
+            this.guna2ControlBox2.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox2.Location = new System.Drawing.Point(81, 0);
+            this.guna2ControlBox2.Name = "guna2ControlBox2";
+            this.guna2ControlBox2.Size = new System.Drawing.Size(45, 29);
+            this.guna2ControlBox2.TabIndex = 10;
+            // 
+            // guna2ControlBox1
+            // 
+            this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.Transparent;
+            this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox1.Location = new System.Drawing.Point(132, 0);
+            this.guna2ControlBox1.Name = "guna2ControlBox1";
+            this.guna2ControlBox1.Size = new System.Drawing.Size(45, 29);
+            this.guna2ControlBox1.TabIndex = 11;
+            this.guna2ControlBox1.Click += new System.EventHandler(this.btnExit_Click);
+            // 
+            // pnlHeader
+            // 
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
+            this.pnlHeader.Controls.Add(this.pnlHeaderContent);
+            this.pnlHeader.Controls.Add(this.txtSearchGroup);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(78, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(640, 50);
+            this.pnlHeader.TabIndex = 2;
+            // 
+            // pnlHeaderContent
+            // 
+            this.pnlHeaderContent.Controls.Add(this.lblHeaderTitle);
+            this.pnlHeaderContent.Location = new System.Drawing.Point(210, 0);
+            this.pnlHeaderContent.Name = "pnlHeaderContent";
+            this.pnlHeaderContent.Size = new System.Drawing.Size(430, 50);
+            this.pnlHeaderContent.TabIndex = 1;
+            // 
+            // lblHeaderTitle
+            // 
+            this.lblHeaderTitle.AutoSize = true;
+            this.lblHeaderTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblHeaderTitle.ForeColor = System.Drawing.Color.White;
+            this.lblHeaderTitle.Location = new System.Drawing.Point(15, 15);
+            this.lblHeaderTitle.Name = "lblHeaderTitle";
+            this.lblHeaderTitle.Size = new System.Drawing.Size(207, 28);
+            this.lblHeaderTitle.TabIndex = 0;
+            this.lblHeaderTitle.Text = "Welcome to LanChat";
+            // 
+            // txtSearchGroup
+            // 
+            this.txtSearchGroup.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
+            this.txtSearchGroup.BorderRadius = 10;
+            this.txtSearchGroup.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtSearchGroup.DefaultText = "";
+            this.txtSearchGroup.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
+            this.txtSearchGroup.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtSearchGroup.ForeColor = System.Drawing.Color.White;
+            this.txtSearchGroup.Location = new System.Drawing.Point(10, 10);
+            this.txtSearchGroup.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtSearchGroup.Name = "txtSearchGroup";
+            this.txtSearchGroup.PlaceholderText = "Search...";
+            this.txtSearchGroup.SelectedText = "";
+            this.txtSearchGroup.Size = new System.Drawing.Size(190, 30);
+            this.txtSearchGroup.TabIndex = 0;
+            // 
+            // pnlGroupList
+            // 
+            this.pnlGroupList.Controls.Add(this.flowGroups);
+            this.pnlGroupList.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlGroupList.Location = new System.Drawing.Point(78, 50);
+            this.pnlGroupList.Name = "pnlGroupList";
+            this.pnlGroupList.Size = new System.Drawing.Size(210, 550);
+            this.pnlGroupList.TabIndex = 3;
             // 
             // flowGroups
             // 
             this.flowGroups.AutoScroll = true;
-            this.flowGroups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
-            this.flowGroups.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.flowGroups.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(50)))));
+            this.flowGroups.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowGroups.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowGroups.Location = new System.Drawing.Point(0, 33);
+            this.flowGroups.Location = new System.Drawing.Point(0, 0);
             this.flowGroups.Name = "flowGroups";
-            this.flowGroups.Size = new System.Drawing.Size(228, 602);
-            this.flowGroups.TabIndex = 3;
+            this.flowGroups.Size = new System.Drawing.Size(210, 550);
+            this.flowGroups.TabIndex = 0;
             this.flowGroups.WrapContents = false;
             // 
-            // pnlTitle
+            // pnlChatArea
             // 
-            this.pnlTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(59)))));
-            this.pnlTitle.Controls.Add(this.lblAdd);
-            this.pnlTitle.Controls.Add(this.lblGroupChats);
-            this.pnlTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlTitle.Location = new System.Drawing.Point(0, 0);
-            this.pnlTitle.Name = "pnlTitle";
-            this.pnlTitle.Size = new System.Drawing.Size(228, 36);
-            this.pnlTitle.TabIndex = 10;
+            this.pnlChatArea.Controls.Add(this.flowMessages);
+            this.pnlChatArea.Controls.Add(this.pnlInput);
+            this.pnlChatArea.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlChatArea.Location = new System.Drawing.Point(288, 50);
+            this.pnlChatArea.Name = "pnlChatArea";
+            this.pnlChatArea.Size = new System.Drawing.Size(430, 550);
+            this.pnlChatArea.TabIndex = 4;
             // 
-            // pnlUsers
+            // flowMessages
             // 
-            this.pnlUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(59)))));
-            this.pnlUsers.Controls.Add(this.FlowUsers);
-            this.pnlUsers.Controls.Add(this.lblOnlineUsers);
-            this.pnlUsers.Controls.Add(this.HideUsersLists);
-            this.pnlUsers.Controls.Add(this.ShowUsersLists);
-            this.pnlUsers.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlUsers.Location = new System.Drawing.Point(855, 40);
-            this.pnlUsers.Name = "pnlUsers";
-            this.pnlUsers.Size = new System.Drawing.Size(211, 635);
-            this.pnlUsers.TabIndex = 6;
-            this.pnlUsers.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlUsers_Paint);
+            this.flowMessages.AutoScroll = true;
+            this.flowMessages.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
+            this.flowMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowMessages.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowMessages.Location = new System.Drawing.Point(0, 0);
+            this.flowMessages.Name = "flowMessages";
+            this.flowMessages.Size = new System.Drawing.Size(430, 500);
+            this.flowMessages.TabIndex = 0;
+            this.flowMessages.WrapContents = false;
             // 
-            // FlowUsers
+            // pnlInput
             // 
-            this.FlowUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(40)))), ((int)(((byte)(59)))));
-            this.FlowUsers.Controls.Add(this.lstUsers);
-            this.FlowUsers.Controls.Add(this.lblGroupMembers);
-            this.FlowUsers.Controls.Add(this.lstMember);
-            this.FlowUsers.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.FlowUsers.Location = new System.Drawing.Point(0, 45);
-            this.FlowUsers.Name = "FlowUsers";
-            this.FlowUsers.Size = new System.Drawing.Size(211, 590);
-            this.FlowUsers.TabIndex = 7;
-            // 
-            // lstUsers
-            // 
-            this.lstUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lstUsers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
-            this.lstUsers.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lstUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lstUsers.ForeColor = System.Drawing.SystemColors.Menu;
-            this.lstUsers.FormattingEnabled = true;
-            this.lstUsers.ItemHeight = 20;
-            this.lstUsers.Location = new System.Drawing.Point(4, 4);
-            this.lstUsers.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.lstUsers.Name = "lstUsers";
-            this.lstUsers.Size = new System.Drawing.Size(204, 220);
-            this.lstUsers.TabIndex = 1;
-            this.lstUsers.SelectedIndexChanged += new System.EventHandler(this.lstUsers_SelectedIndexChanged);
-            // 
-            // lblGroupMembers
-            // 
-            this.lblGroupMembers.AutoSize = true;
-            this.lblGroupMembers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblGroupMembers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(135)))), ((int)(((byte)(162)))), ((int)(((byte)(178)))));
-            this.lblGroupMembers.Location = new System.Drawing.Point(4, 228);
-            this.lblGroupMembers.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblGroupMembers.Name = "lblGroupMembers";
-            this.lblGroupMembers.Size = new System.Drawing.Size(135, 20);
-            this.lblGroupMembers.TabIndex = 7;
-            this.lblGroupMembers.Text = "Thành viên nhóm:";
-            // 
-            // lstMember
-            // 
-            this.lstMember.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
-            this.lstMember.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lstMember.ForeColor = System.Drawing.Color.White;
-            this.lstMember.HideSelection = false;
-            this.lstMember.Location = new System.Drawing.Point(3, 251);
-            this.lstMember.Name = "lstMember";
-            this.lstMember.Size = new System.Drawing.Size(205, 332);
-            this.lstMember.TabIndex = 2;
-            this.lstMember.UseCompatibleStateImageBehavior = false;
-            // 
-            // lblOnlineUsers
-            // 
-            this.lblOnlineUsers.AutoSize = true;
-            this.lblOnlineUsers.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblOnlineUsers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(135)))), ((int)(((byte)(162)))), ((int)(((byte)(178)))));
-            this.lblOnlineUsers.Location = new System.Drawing.Point(7, 11);
-            this.lblOnlineUsers.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblOnlineUsers.Name = "lblOnlineUsers";
-            this.lblOnlineUsers.Size = new System.Drawing.Size(144, 20);
-            this.lblOnlineUsers.TabIndex = 0;
-            this.lblOnlineUsers.Text = "Người dùng online:";
-            this.lblOnlineUsers.Click += new System.EventHandler(this.lblOnlineUsers_Click);
-            // 
-            // HideUsersLists
-            // 
-            this.HideUsersLists.ErrorImage = null;
-            this.HideUsersLists.Image = global::BasicChat.Properties.Resources.chevron_direction_top_white_icon;
-            this.HideUsersLists.Location = new System.Drawing.Point(177, 12);
-            this.HideUsersLists.Name = "HideUsersLists";
-            this.HideUsersLists.Size = new System.Drawing.Size(26, 23);
-            this.HideUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.HideUsersLists.TabIndex = 5;
-            this.HideUsersLists.TabStop = false;
-            this.HideUsersLists.Click += new System.EventHandler(this.HideUsersLists_Click);
-            // 
-            // ShowUsersLists
-            // 
-            this.ShowUsersLists.Image = global::BasicChat.Properties.Resources.chevron_direction_bottom_white_icon;
-            this.ShowUsersLists.Location = new System.Drawing.Point(177, 13);
-            this.ShowUsersLists.Name = "ShowUsersLists";
-            this.ShowUsersLists.Size = new System.Drawing.Size(26, 23);
-            this.ShowUsersLists.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.ShowUsersLists.TabIndex = 6;
-            this.ShowUsersLists.TabStop = false;
-            this.ShowUsersLists.Visible = false;
-            this.ShowUsersLists.Click += new System.EventHandler(this.ShowUsersLists_Click);
-            // 
-            // btnExit
-            // 
-            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(30)))), ((int)(((byte)(45)))));
-            this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(243)))));
-            this.btnExit.Location = new System.Drawing.Point(1010, 0);
-            this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(56, 40);
-            this.btnExit.TabIndex = 2;
-            this.btnExit.Text = "X";
-            this.btnExit.UseVisualStyleBackColor = false;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            // 
-            // lblAppName
-            // 
-            this.lblAppName.AutoSize = true;
-            this.lblAppName.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAppName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(122)))), ((int)(((byte)(135)))));
-            this.lblAppName.Location = new System.Drawing.Point(4, 4);
-            this.lblAppName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblAppName.Name = "lblAppName";
-            this.lblAppName.Size = new System.Drawing.Size(108, 29);
-            this.lblAppName.TabIndex = 1;
-            this.lblAppName.Text = "LanChat";
-            // 
-            // pnlChat
-            // 
-            this.pnlChat.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(27)))), ((int)(((byte)(41)))));
-            this.pnlChat.Controls.Add(this.btnSend);
-            this.pnlChat.Controls.Add(this.btnSendFile);
-            this.pnlChat.Controls.Add(this.txtMessage);
-            this.pnlChat.Controls.Add(this.rtbChat);
-            this.pnlChat.Controls.Add(this.pnlChatMode);
-            this.pnlChat.Controls.Add(this.pnlGroups);
-            this.pnlChat.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlChat.Location = new System.Drawing.Point(0, 40);
-            this.pnlChat.Name = "pnlChat";
-            this.pnlChat.Size = new System.Drawing.Size(855, 635);
-            this.pnlChat.TabIndex = 10;
-            // 
-            // btnSend
-            // 
-            this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSend.BorderRadius = 10;
-            this.btnSend.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnSend.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnSend.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnSend.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnSend.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnSend.ForeColor = System.Drawing.Color.White;
-            this.btnSend.Image = global::BasicChat.Properties.Resources.send_white_icon;
-            this.btnSend.Location = new System.Drawing.Point(760, 583);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(89, 38);
-            this.btnSend.TabIndex = 10;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            this.pnlInput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
+            this.pnlInput.Controls.Add(this.btnSendFile);
+            this.pnlInput.Controls.Add(this.btnSend);
+            this.pnlInput.Controls.Add(this.txtMessage);
+            this.pnlInput.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlInput.Location = new System.Drawing.Point(0, 500);
+            this.pnlInput.Name = "pnlInput";
+            this.pnlInput.Size = new System.Drawing.Size(430, 50);
+            this.pnlInput.TabIndex = 1;
             // 
             // btnSendFile
             // 
-            this.btnSendFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendFile.Image = ((System.Drawing.Image)(resources.GetObject("btnSendFile.Image")));
-            this.btnSendFile.Location = new System.Drawing.Point(717, 583);
-            this.btnSendFile.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSendFile.BorderRadius = 15;
+            this.btnSendFile.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnSendFile.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSendFile.ForeColor = System.Drawing.Color.White;
+            this.btnSendFile.Location = new System.Drawing.Point(6, 8);
             this.btnSendFile.Name = "btnSendFile";
-            this.btnSendFile.Size = new System.Drawing.Size(37, 38);
-            this.btnSendFile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.btnSendFile.TabIndex = 9;
-            this.btnSendFile.TabStop = false;
+            this.btnSendFile.Size = new System.Drawing.Size(35, 36);
+            this.btnSendFile.TabIndex = 0;
+            this.btnSendFile.Text = "📎";
             this.btnSendFile.Click += new System.EventHandler(this.btnSendFile_Click);
+            // 
+            // btnSend
+            // 
+            this.btnSend.BorderRadius = 15;
+            this.btnSend.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSend.ForeColor = System.Drawing.Color.White;
+            this.btnSend.Location = new System.Drawing.Point(365, 8);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(50, 36);
+            this.btnSend.TabIndex = 1;
+            this.btnSend.Text = "➤";
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // txtMessage
             // 
-            this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMessage.AutoRoundedCorners = true;
-            this.txtMessage.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.txtMessage.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(50)))));
+            this.txtMessage.BorderRadius = 15;
             this.txtMessage.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtMessage.DefaultText = "";
-            this.txtMessage.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtMessage.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtMessage.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtMessage.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtMessage.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(38)))), ((int)(((byte)(55)))));
-            this.txtMessage.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtMessage.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(45)))), ((int)(((byte)(65)))));
             this.txtMessage.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtMessage.ForeColor = System.Drawing.Color.White;
-            this.txtMessage.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtMessage.Location = new System.Drawing.Point(234, 583);
+            this.txtMessage.Location = new System.Drawing.Point(47, 8);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.PlaceholderText = "Nhập tin nhắn...";
+            this.txtMessage.PlaceholderText = "Type a message...";
             this.txtMessage.SelectedText = "";
-            this.txtMessage.Size = new System.Drawing.Size(477, 38);
-            this.txtMessage.TabIndex = 8;
+            this.txtMessage.Size = new System.Drawing.Size(310, 36);
+            this.txtMessage.TabIndex = 2;
             this.txtMessage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMessage_KeyPress);
-            // 
-            // pnlChatMode
-            // 
-            this.pnlChatMode.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
-            this.pnlChatMode.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
-            this.pnlChatMode.BorderThickness = 5;
-            this.pnlChatMode.Controls.Add(this.lblCurrentUser);
-            this.pnlChatMode.Controls.Add(this.Name1);
-            this.pnlChatMode.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlChatMode.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
-            this.pnlChatMode.Location = new System.Drawing.Point(228, 0);
-            this.pnlChatMode.Name = "pnlChatMode";
-            this.pnlChatMode.Size = new System.Drawing.Size(627, 62);
-            this.pnlChatMode.TabIndex = 6;
-            // 
-            // pnlGroups
-            // 
-            this.pnlGroups.Controls.Add(this.pnlTitle);
-            this.pnlGroups.Controls.Add(this.flowGroups);
-            this.pnlGroups.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlGroups.Location = new System.Drawing.Point(0, 0);
-            this.pnlGroups.Name = "pnlGroups";
-            this.pnlGroups.Size = new System.Drawing.Size(228, 635);
-            this.pnlGroups.TabIndex = 7;
-            // 
-            // pnlMenu
-            // 
-            this.pnlMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
-            this.pnlMenu.Controls.Add(this.btnMinimize);
-            this.pnlMenu.Controls.Add(this.btnResize);
-            this.pnlMenu.Controls.Add(this.btnExit);
-            this.pnlMenu.Controls.Add(this.lblAppName);
-            this.pnlMenu.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlMenu.Location = new System.Drawing.Point(0, 0);
-            this.pnlMenu.Name = "pnlMenu";
-            this.pnlMenu.Size = new System.Drawing.Size(1066, 40);
-            this.pnlMenu.TabIndex = 8;
-            // 
-            // btnMinimize
-            // 
-            this.btnMinimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnMinimize.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnMinimize.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMinimize.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(243)))));
-            this.btnMinimize.Location = new System.Drawing.Point(887, -2);
-            this.btnMinimize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Size = new System.Drawing.Size(56, 43);
-            this.btnMinimize.TabIndex = 4;
-            this.btnMinimize.Text = "—";
-            this.btnMinimize.UseVisualStyleBackColor = true;
-            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
-            // 
-            // btnResize
-            // 
-            this.btnResize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnResize.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnResize.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnResize.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(243)))));
-            this.btnResize.Location = new System.Drawing.Point(948, 0);
-            this.btnResize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnResize.Name = "btnResize";
-            this.btnResize.Size = new System.Drawing.Size(56, 40);
-            this.btnResize.TabIndex = 3;
-            this.btnResize.Text = "☐";
-            this.btnResize.UseVisualStyleBackColor = true;
-            this.btnResize.Click += new System.EventHandler(this.btnResize_Click);
             // 
             // guna2DragControl1
             // 
             this.guna2DragControl1.DockIndicatorTransparencyValue = 0.6D;
-            this.guna2DragControl1.TargetControl = this.pnlMenu;
+            this.guna2DragControl1.TargetControl = this.pnlHeader;
             this.guna2DragControl1.UseTransparentDrag = true;
-            // 
-            // guna2AnimateWindow1
-            // 
-            this.guna2AnimateWindow1.AnimationType = Guna.UI2.WinForms.Guna2AnimateWindow.AnimateWindowType.AW_BLEND;
-            this.guna2AnimateWindow1.Interval = 200;
-            this.guna2AnimateWindow1.TargetForm = this;
             // 
             // FormChat
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.ClientSize = new System.Drawing.Size(1066, 675);
-            this.Controls.Add(this.pnlChat);
-            this.Controls.Add(this.pnlUsers);
-            this.Controls.Add(this.pnlMenu);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
+            this.ClientSize = new System.Drawing.Size(898, 600);
+            this.Controls.Add(this.pnlChatArea);
+            this.Controls.Add(this.pnlGroupList);
+            this.Controls.Add(this.pnlHeader);
+            this.Controls.Add(this.pnlRightInfo);
+            this.Controls.Add(this.pnlSidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.MaximizeBox = false;
             this.Name = "FormChat";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LanChat";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormChat_FormClosing);
-            this.pnlTitle.ResumeLayout(false);
-            this.pnlTitle.PerformLayout();
-            this.pnlUsers.ResumeLayout(false);
-            this.pnlUsers.PerformLayout();
-            this.FlowUsers.ResumeLayout(false);
-            this.FlowUsers.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.HideUsersLists)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ShowUsersLists)).EndInit();
-            this.pnlChat.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.btnSendFile)).EndInit();
-            this.pnlChatMode.ResumeLayout(false);
-            this.pnlChatMode.PerformLayout();
-            this.pnlGroups.ResumeLayout(false);
-            this.pnlMenu.ResumeLayout(false);
-            this.pnlMenu.PerformLayout();
+            this.pnlSidebar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbAppIcon)).EndInit();
+            this.pnlRightInfo.ResumeLayout(false);
+            this.pnlRightInfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbGroupIconRight)).EndInit();
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeaderContent.ResumeLayout(false);
+            this.pnlHeaderContent.PerformLayout();
+            this.pnlGroupList.ResumeLayout(false);
+            this.pnlChatArea.ResumeLayout(false);
+            this.pnlInput.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
-        private System.Windows.Forms.Label lblGroupChats;
+
+        #endregion
+
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private Guna.UI2.WinForms.Guna2Panel pnlSidebar;
+        private Guna.UI2.WinForms.Guna2Panel pnlRightInfo;
+        private Guna.UI2.WinForms.Guna2Panel pnlHeader;
+        private Guna.UI2.WinForms.Guna2Panel pnlGroupList;
+        private Guna.UI2.WinForms.Guna2Panel pnlChatArea;
+
+        // Sidebar controls
+        private Guna.UI2.WinForms.Guna2CirclePictureBox pbAppIcon;
+        private Guna.UI2.WinForms.Guna2Button btnAddGroup;
+
+        // Group List
+        private Guna.UI2.WinForms.Guna2TextBox txtSearchGroup;
         private System.Windows.Forms.FlowLayoutPanel flowGroups;
-        private System.Windows.Forms.Label lblAdd;
-        private System.Windows.Forms.Label Name1;
-        private System.Windows.Forms.Panel pnlUsers;
-        private System.Windows.Forms.FlowLayoutPanel FlowUsers;
-        private System.Windows.Forms.ListView lstMember;
-        private System.Windows.Forms.Label lblGroupMembers;
-        private System.Windows.Forms.ListBox lstUsers;
-        private System.Windows.Forms.Label lblOnlineUsers;
-        private System.Windows.Forms.PictureBox ShowUsersLists;
-        private System.Windows.Forms.PictureBox HideUsersLists;
-        private System.Windows.Forms.Panel pnlChat;
-        private System.Windows.Forms.Label lblAppName;
-        private System.Windows.Forms.Button btnExit;
-        private Guna.UI2.WinForms.Guna2Panel pnlChatMode;
-        private Panel pnlMenu;
-        private Guna.UI2.WinForms.Guna2Panel pnlGroups;
+
+        // Chat Area
+        private Guna.UI2.WinForms.Guna2Panel pnlInput;
         private Guna.UI2.WinForms.Guna2TextBox txtMessage;
-        private PictureBox btnSendFile;
-        private Button btnMinimize;
-        private Button btnResize;
-        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
-        private Guna.UI2.WinForms.Guna2AnimateWindow guna2AnimateWindow1;
-        private Panel pnlTitle;
         private Guna.UI2.WinForms.Guna2Button btnSend;
+        private Guna.UI2.WinForms.Guna2Button btnSendFile;
+        private System.Windows.Forms.FlowLayoutPanel flowMessages;
+        private Guna.UI2.WinForms.Guna2Panel pnlHeaderContent;
+        private System.Windows.Forms.Label lblHeaderTitle;
+
+        // Right Info
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox2;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox3;
+        private Guna.UI2.WinForms.Guna2CirclePictureBox pbGroupIconRight;
+        private System.Windows.Forms.Label lblGroupNameRight;
+        private System.Windows.Forms.FlowLayoutPanel flowMembers;
+        private System.Windows.Forms.Label lblMemberCount;
+        private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
     }
 }

@@ -180,6 +180,53 @@ namespace ServerLogConsole
             return result;
         }
 
+        public bool UpdateUserAvatar(string username, string base64Avatar)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(_connectionString))
+                {
+                    conn.Open();
+                    string query = "UPDATE Users SET Avatar = @avatar WHERE Username = @user";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@avatar", base64Avatar);
+                        cmd.Parameters.AddWithValue("@user", username);
+                        return cmd.ExecuteNonQuery() > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _lastError = ex.Message;
+                return false;
+            }
+        }
+
+        public string GetUserAvatar(string username)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(_connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Avatar FROM Users WHERE Username = @user";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@user", username);
+                        object result = cmd.ExecuteScalar();
+
+                        if (result != null && result != DBNull.Value)
+                        {
+                            return result.ToString();
+                        }
+                    }
+                }
+            }
+            catch { }
+            return "";
+        }
+
         public bool AddGroupMember(string groupName, string username)
         {
             try

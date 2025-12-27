@@ -33,7 +33,11 @@ namespace BasicChat.Networking
         SEARCH_USER_REQUEST,
         SEARCH_USER_RESPONSE,
         GET_ALL_USERS_REQUEST,
-        GET_ALL_USERS_RESPONSE
+        GET_ALL_USERS_RESPONSE,
+        UPDATE_PROFILE_REQUEST,
+        UPDATE_PROFILE_RESPONSE,
+        GET_AVATAR_REQUEST,
+        GET_AVATAR_RESPONSE
     }
 
     public class ChatMessage
