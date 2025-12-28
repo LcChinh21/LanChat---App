@@ -1,9 +1,10 @@
 ﻿
+using BasicChat.Networking;
 using MySql.Data.MySqlClient;
 using System;
-using System.Data;
 using System.Collections.Generic;
-using BasicChat.Networking;
+using System.Data;
+using System.Text;
 
 namespace ServerLogConsole
 {
@@ -260,24 +261,60 @@ namespace ServerLogConsole
             }
         }
 
+        // Trong DatabaseHelper.cs
+        // Trong DatabaseHelper.cs
+
         public void SaveMessage(string sender, string receiver, string content, bool isGroup)
         {
+            // Debug: In ra để xem dữ liệu đầu vào có đúng không
+            Console.WriteLine($"[DB START] Save: {sender} -> {receiver} (Group: {isGroup}) | Len: {content?.Length}");
+
             try
             {
                 using (var conn = new MySqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new MySqlCommand("INSERT INTO Messages (Sender, Receiver, Content, IsGroup, CreatedAt) VALUES (@s, @r, @c, @g, @t)", conn);
-                    cmd.Parameters.AddWithValue("@s", sender);
-                    cmd.Parameters.AddWithValue("@r", receiver);
-                    cmd.Parameters.AddWithValue("@c", content);
-                    cmd.Parameters.AddWithValue("@g", isGroup ? 1 : 0);
-                    cmd.Parameters.AddWithValue("@t", DateTime.Now);
-                    cmd.ExecuteNonQuery();
+                    string query = "";
+
+                    if (isGroup)
+                    {
+                        // Bảng Messages (Lưu ý tên cột phải khớp với Bước 1)
+                        query = "INSERT INTO Messages (Sender, GroupName, Content, SentTime) VALUES (@s, @r, @c, NOW())";
+                    }
+                    else
+                    {
+                        // Bảng PrivateMessages
+                        query = "INSERT INTO PrivateMessages (Sender, Receiver, Content, SentTime) VALUES (@s, @r, @c, NOW())";
+                    }
+
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@s", sender);
+                        cmd.Parameters.AddWithValue("@r", receiver);
+                        cmd.Parameters.AddWithValue("@c", content);
+
+                        int rows = cmd.ExecuteNonQuery();
+
+                        if (rows > 0)
+                            Console.WriteLine("[DB SUCCESS] Đã lưu thành công!");
+                        else
+                            Console.WriteLine("[DB WARNING] Lệnh chạy nhưng không lưu dòng nào.");
+                    }
                 }
             }
-            catch (Exception ex) { _lastError = ex.Message; }
+            catch (MySqlException sqlEx)
+            {
+                // Lỗi liên quan đến SQL (sai tên bảng, sai cú pháp, packet quá lớn)
+                Console.WriteLine($"[SQL ERROR] Mã lỗi: {sqlEx.Number} - {sqlEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                // Lỗi khác (kết nối mạng, v.v.)
+                Console.WriteLine($"[SYSTEM ERROR] {ex.Message}");
+            }
         }
+
+        // Trong DatabaseHelper.cs
 
         public List<ChatMessage> GetGroupHistory(string groupName)
         {
@@ -287,26 +324,84 @@ namespace ServerLogConsole
                 using (var conn = new MySqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new MySqlCommand("SELECT Sender, Content, CreatedAt FROM Messages WHERE Receiver=@r AND IsGroup=1 ORDER BY CreatedAt ASC LIMIT 50", conn);
-                    cmd.Parameters.AddWithValue("@r", groupName);
-                    using (var r = cmd.ExecuteReader())
+
+                    // [QUAN TRỌNG] Đọc từ bảng 'Messages' (nơi bạn đang lưu tin nhóm)
+                    // Lấy 50 tin nhắn gần nhất
+                    string query = "SELECT Sender, Content, SentTime FROM Messages WHERE GroupName = @g ORDER BY SentTime ASC LIMIT 50";
+
+                    using (var cmd = new MySqlCommand(query, conn))
                     {
-                        while (r.Read())
+                        cmd.Parameters.AddWithValue("@g", groupName);
+                        using (var r = cmd.ExecuteReader())
                         {
-                            list.Add(new ChatMessage
+                            while (r.Read())
                             {
-                                Sender = r.GetString("Sender"),
-                                Content = r.GetString("Content"),
-                                Timestamp = r.GetDateTime("CreatedAt"),
-                                Type = MessageType.GROUP_MESSAGE
-                            });
+                                // Tạo object ChatMessage để trả về
+                                var msg = new ChatMessage
+                                {
+                                    Type = MessageType.GROUP_MESSAGE, // Đánh dấu là tin nhóm
+                                    Sender = r.GetString("Sender"),
+                                    Receiver = groupName,
+                                    Content = r.GetString("Content"), // Lấy nội dung gốc (Text hoặc Base64 file)
+                                    Timestamp = r.GetDateTime("SentTime")
+                                };
+                                list.Add(msg);
+                            }
                         }
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi GetGroupHistory: " + ex.Message);
+            }
             return list;
         }
+
+        // Lấy lịch sử tin nhắn riêng giữa user1 và user2
+        // Trong DatabaseHelper.cs
+
+        // Trong DatabaseHelper.cs
+
+        public List<string> GetRecentChatUsers(string currentUser)
+        {
+            var list = new List<string>();
+            try
+            {
+                using (var conn = new MySqlConnection(_connectionString))
+                {
+                    conn.Open();
+
+                    // Câu lệnh SQL "thần thánh":
+                    // 1. Lấy người nhận (nếu mình là người gửi)
+                    // 2. Lấy người gửi (nếu mình là người nhận)
+                    // 3. Dùng UNION để gộp lại và loại bỏ trùng lặp (DISTINCT)
+                    string query = @"
+                SELECT DISTINCT Receiver AS ContactName FROM PrivateMessages WHERE Sender = @me
+                UNION
+                SELECT DISTINCT Sender AS ContactName FROM PrivateMessages WHERE Receiver = @me";
+
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@me", currentUser);
+
+                        using (var r = cmd.ExecuteReader())
+                        {
+                            while (r.Read())
+                            {
+                                list.Add(r.GetString("ContactName"));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi GetRecentChatUsers: " + ex.Message);
+            }
+            return list;
+        }
+        // Trong DatabaseHelper.cs
 
         public List<ChatMessage> GetPrivateHistory(string user1, string user2)
         {
@@ -316,29 +411,41 @@ namespace ServerLogConsole
                 using (var conn = new MySqlConnection(_connectionString))
                 {
                     conn.Open();
-                    var cmd = new MySqlCommand(
-                        "SELECT Sender, Receiver, Content, CreatedAt FROM Messages WHERE IsGroup=0 AND " +
-                        "((Sender=@u1 AND Receiver=@u2) OR (Sender=@u2 AND Receiver=@u1)) " +
-                        "ORDER BY CreatedAt ASC LIMIT 50", conn);
-                    cmd.Parameters.AddWithValue("@u1", user1);
-                    cmd.Parameters.AddWithValue("@u2", user2);
-                    using (var r = cmd.ExecuteReader())
+                    // Lấy tin nhắn 2 chiều: (Tôi gửi cho Bạn) HOẶC (Bạn gửi cho Tôi)
+                    // Sắp xếp theo thời gian tăng dần (Cũ nhất -> Mới nhất)
+                    string query = @"
+                SELECT Sender, Content, SentTime 
+                FROM PrivateMessages 
+                WHERE (Sender = @u1 AND Receiver = @u2) 
+                   OR (Sender = @u2 AND Receiver = @u1)
+                ORDER BY SentTime ASC LIMIT 50";
+
+                    using (var cmd = new MySqlCommand(query, conn))
                     {
-                        while (r.Read())
+                        cmd.Parameters.AddWithValue("@u1", user1);
+                        cmd.Parameters.AddWithValue("@u2", user2);
+
+                        using (var r = cmd.ExecuteReader())
                         {
-                            list.Add(new ChatMessage
+                            while (r.Read())
                             {
-                                Sender = r.GetString("Sender"),
-                                Receiver = r.GetString("Receiver"),
-                                Content = r.GetString("Content"),
-                                Timestamp = r.GetDateTime("CreatedAt"),
-                                Type = MessageType.PRIVATE_MESSAGE
-                            });
+                                list.Add(new ChatMessage
+                                {
+                                    Type = MessageType.PRIVATE_MESSAGE,
+                                    Sender = r.GetString("Sender"),
+                                    Receiver = user2, // (Tạm để user2, Client sẽ tự check isMe)
+                                    Content = r.GetString("Content"),
+                                    Timestamp = r.GetDateTime("SentTime")
+                                });
+                            }
                         }
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi GetPrivateHistory: " + ex.Message);
+            }
             return list;
         }
 
@@ -384,5 +491,59 @@ namespace ServerLogConsole
             catch { }
             return list;
         }
+        public bool IsGroupExists(string groupName)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(_connectionString))
+                {
+                    conn.Open();
+                    // Kiểm tra trong bảng chứa thành viên nhóm (GroupMembers) hoặc bảng danh sách nhóm (Groups)
+                    // Giả sử bạn có bảng GroupMembers (lưu ai thuộc nhóm nào)
+                    string query = "SELECT COUNT(*) FROM GroupMembers WHERE GroupName = @g";
+
+                    // HOẶC nếu bạn không có bảng GroupMembers mà chỉ có bảng Messages:
+                    // string query = "SELECT COUNT(*) FROM Messages WHERE GroupName = @g"; 
+
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@g", groupName);
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        return count > 0;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        // Trong DatabaseHelper.cs
+
+        public bool IsUserExisting(string username)
+        {
+            try
+            {
+                using (var conn = new MySqlConnection(_connectionString))
+                {
+                    conn.Open();
+                    // Kiểm tra trong bảng Users xem có ai tên như vậy không
+                    string query = "SELECT COUNT(*) FROM Users WHERE Username = @u";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        long count = (long)cmd.ExecuteScalar();
+                        return count > 0;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
+    // Trong DatabaseHelper.cs
+    
+
 }

@@ -54,7 +54,7 @@ namespace BasicChat.Networking
 
         public Dictionary<string, List<string>> GroupList = new Dictionary<string, List<string>>();
 
-        public List<ChatMessage> HistoryList { get; set; } = new List<ChatMessage>();
+        public List<ChatMessage> HistoryList { get; set; } = new List<ChatMessage>();   
 
         public ChatMessage()
         {

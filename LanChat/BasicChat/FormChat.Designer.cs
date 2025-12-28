@@ -18,11 +18,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormChat));
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnTabUser = new Guna.UI2.WinForms.Guna2Button();
+            this.btnTabGroup = new Guna.UI2.WinForms.Guna2Button();
             this.btnAddGroup = new Guna.UI2.WinForms.Guna2Button();
             this.pbAppIcon = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.pnlRightInfo = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnInvite = new Guna.UI2.WinForms.Guna2Button();
             this.flowMembers = new System.Windows.Forms.FlowLayoutPanel();
             this.lblMemberCount = new System.Windows.Forms.Label();
             this.lblGroupNameRight = new System.Windows.Forms.Label();
@@ -63,6 +67,8 @@
             // pnlSidebar
             // 
             this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
+            this.pnlSidebar.Controls.Add(this.btnTabUser);
+            this.pnlSidebar.Controls.Add(this.btnTabGroup);
             this.pnlSidebar.Controls.Add(this.btnAddGroup);
             this.pnlSidebar.Controls.Add(this.pbAppIcon);
             this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
@@ -71,13 +77,39 @@
             this.pnlSidebar.Size = new System.Drawing.Size(78, 600);
             this.pnlSidebar.TabIndex = 0;
             // 
+            // btnTabUser
+            // 
+            this.btnTabUser.BorderRadius = 10;
+            this.btnTabUser.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
+            this.btnTabUser.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnTabUser.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(191)))), ((int)(((byte)(229)))));
+            this.btnTabUser.Image = ((System.Drawing.Image)(resources.GetObject("btnTabUser.Image")));
+            this.btnTabUser.Location = new System.Drawing.Point(12, 135);
+            this.btnTabUser.Name = "btnTabUser";
+            this.btnTabUser.Size = new System.Drawing.Size(50, 50);
+            this.btnTabUser.TabIndex = 3;
+            this.btnTabUser.Click += new System.EventHandler(this.btnTabUser_Click);
+            // 
+            // btnTabGroup
+            // 
+            this.btnTabGroup.BorderRadius = 10;
+            this.btnTabGroup.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
+            this.btnTabGroup.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnTabGroup.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(191)))), ((int)(((byte)(229)))));
+            this.btnTabGroup.Image = ((System.Drawing.Image)(resources.GetObject("btnTabGroup.Image")));
+            this.btnTabGroup.Location = new System.Drawing.Point(12, 70);
+            this.btnTabGroup.Name = "btnTabGroup";
+            this.btnTabGroup.Size = new System.Drawing.Size(50, 50);
+            this.btnTabGroup.TabIndex = 2;
+            this.btnTabGroup.Click += new System.EventHandler(this.btnTabGroup_Click);
+            // 
             // btnAddGroup
             // 
             this.btnAddGroup.BorderRadius = 10;
             this.btnAddGroup.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
             this.btnAddGroup.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnAddGroup.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(191)))), ((int)(((byte)(229)))));
-            this.btnAddGroup.Location = new System.Drawing.Point(12, 70);
+            this.btnAddGroup.Location = new System.Drawing.Point(12, 204);
             this.btnAddGroup.Name = "btnAddGroup";
             this.btnAddGroup.Size = new System.Drawing.Size(50, 50);
             this.btnAddGroup.TabIndex = 1;
@@ -98,6 +130,7 @@
             // pnlRightInfo
             // 
             this.pnlRightInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
+            this.pnlRightInfo.Controls.Add(this.btnInvite);
             this.pnlRightInfo.Controls.Add(this.flowMembers);
             this.pnlRightInfo.Controls.Add(this.lblMemberCount);
             this.pnlRightInfo.Controls.Add(this.lblGroupNameRight);
@@ -110,6 +143,19 @@
             this.pnlRightInfo.Name = "pnlRightInfo";
             this.pnlRightInfo.Size = new System.Drawing.Size(180, 600);
             this.pnlRightInfo.TabIndex = 1;
+            // 
+            // btnInvite
+            // 
+            this.btnInvite.BorderRadius = 15;
+            this.btnInvite.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(39)))), ((int)(((byte)(58)))));
+            this.btnInvite.Font = new System.Drawing.Font("Segoe UI", 4.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnInvite.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(191)))), ((int)(((byte)(229)))));
+            this.btnInvite.Location = new System.Drawing.Point(135, 125);
+            this.btnInvite.Name = "btnInvite";
+            this.btnInvite.Size = new System.Drawing.Size(33, 33);
+            this.btnInvite.TabIndex = 2;
+            this.btnInvite.Text = "+";
+            this.btnInvite.Click += new System.EventHandler(this.btnInvite_Click_1);
             // 
             // flowMembers
             // 
@@ -400,5 +446,8 @@
         private System.Windows.Forms.FlowLayoutPanel flowMembers;
         private System.Windows.Forms.Label lblMemberCount;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
+        private Guna.UI2.WinForms.Guna2Button btnInvite;
+        private Guna.UI2.WinForms.Guna2Button btnTabUser;
+        private Guna.UI2.WinForms.Guna2Button btnTabGroup;
     }
 }

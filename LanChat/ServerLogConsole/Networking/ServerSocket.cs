@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ServerLogConsole.Networking
 {
@@ -221,6 +222,9 @@ namespace ServerLogConsole.Networking
                 case MessageType.GET_AVATAR_REQUEST:
                     HandleGetAvatar(clientInfo, message);
                     break;
+                case MessageType.GET_ALL_USERS_REQUEST:
+                    HandleGetAllUsers(clientInfo, message);
+                    break;
             }
         }
 
@@ -261,15 +265,26 @@ namespace ServerLogConsole.Networking
             }
         }
 
-        private void HandleGetAllUsers(ClientInfo client)
+        // Trong ServerSocket.cs -> HandleGetAllUsers (hoặc đoạn xử lý tương ứng)
+
+        private void HandleGetAllUsers(ClientInfo client, ChatMessage message)
         {
-            if (!client.IsAuthenticated) return;
-            var users = _dbHelper.GetAllUsers();
-            SendToClient(client, new ChatMessage
+            // [CODE CŨ]: var users = _dbHelper.GetAllUsers();  <-- Xóa dòng này
+            Console.WriteLine($"[DEBUG] Server nhận yêu cầu lấy User từ: {client.Username}");
+            // [CODE MỚI]: Chỉ lấy những người đã từng chat với client này
+            var users = _dbHelper.GetRecentChatUsers(client.Username);
+
+            // Gửi trả về Client (Phần này giữ nguyên)
+            string userListString = string.Join(",", users);
+
+            var response = new ChatMessage
             {
                 Type = MessageType.GET_ALL_USERS_RESPONSE,
-                UserList = users.ToArray()
-            });
+                Receiver = client.Username,
+                Content = userListString
+            };
+
+            SendToClient(client, response);
         }
 
         private void HandleSearchUser(ClientInfo client, ChatMessage message)
@@ -283,34 +298,43 @@ namespace ServerLogConsole.Networking
             });
         }
 
+        // Trong ServerSocket.cs -> HandleHistoryRequest
+
         private void HandleHistoryRequest(ClientInfo client, ChatMessage message)
         {
             if (!client.IsAuthenticated) return;
 
-            string target = message.Receiver;
-            string mode = message.Content;
+            string target = message.Receiver; // Tên Nhóm hoặc Tên User kia
+            string mode = message.Content;    // "GROUP" hoặc "PRIVATE"
 
             List<ChatMessage> history = null;
+
             if (mode == "GROUP")
             {
+                // Gọi hàm vừa sửa ở Bước 1
                 history = _dbHelper.GetGroupHistory(target);
+
+                // Debug: In ra xem server có đọc được tin nào không
+                Console.WriteLine($"[History Group] Load {target}: {history.Count} tin nhắn.");
             }
             else
             {
+                // Hàm này của bạn đã chạy ổn (Private)
                 history = _dbHelper.GetPrivateHistory(client.Username, target);
             }
 
+            // Gửi phản hồi về Client
             if (history != null && history.Count > 0)
             {
                 var response = new ChatMessage
                 {
                     Type = MessageType.HISTORY_RESPONSE,
                     Receiver = target,
-                    Content = mode,
-                    HistoryList = history
+                    Content = mode,      // Để Client biết đây là history của Group hay Private
+                    HistoryList = history // Gán danh sách vào đây
                 };
+
                 SendToClient(client, response);
-                _logAction($"Gui history {mode} cho {client.Username} (target: {target}, count: {history.Count})", Color.Cyan);
             }
         }
 
@@ -789,16 +813,30 @@ namespace ServerLogConsole.Networking
             _logAction($"{clientInfo.Username} left group {groupName}", Color.Orange);
         }
 
+        // Trong ServerSocket.cs
+
         private void HandleFile(ClientInfo clientInfo, ChatMessage message)
         {
             if (!clientInfo.IsAuthenticated) return;
 
-            bool isGroup = false;
-            lock (_groups)
-            {
-                if (_groups.ContainsKey(message.Receiver)) isGroup = true;
-            }
+            // --- SỬA ĐOẠN NÀY ---
 
+            // 1. Kiểm tra xem người nhận có phải là 1 User trong DB không?
+            bool isUser = _dbHelper.IsUserExisting(message.Receiver);
+
+            // 2. Nếu KHÔNG phải User -> Suy ra đó là Group
+            // (Vì gửi tin chỉ có thể là gửi cho User hoặc gửi cho Group)
+            bool isGroup = !isUser;
+
+            // Debug: In ra để kiểm tra
+            Console.WriteLine($"[Check] Gửi tới: {message.Receiver} | Là User? {isUser} -> Là Group? {isGroup}");
+
+            // --------------------
+
+            // 3. LƯU VÀO DB (Giờ biến isGroup đã chính xác 100%)
+            _dbHelper.SaveMessage(message.Sender, message.Receiver, message.Content, isGroup);
+
+            // 4. Điều hướng gửi tin
             if (isGroup)
             {
                 _logAction($"[File Group: {message.Receiver}] {message.Sender} gui file.", Color.Cyan);
@@ -816,6 +854,8 @@ namespace ServerLogConsole.Networking
                 }
             }
         }
+
+
 
         private void SendToGroup(string groupName, ChatMessage msg, string excludeUser)
         {

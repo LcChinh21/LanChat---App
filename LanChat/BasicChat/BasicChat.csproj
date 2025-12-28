@@ -65,6 +65,12 @@
     <Compile Include="CreateGroupForm.Designer.cs">
       <DependentUpon>CreateGroupForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormNewConversation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormNewConversation.Designer.cs">
+      <DependentUpon>FormNewConversation.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormProfile.cs">
       <SubType>Form</SubType>
     </Compile>
