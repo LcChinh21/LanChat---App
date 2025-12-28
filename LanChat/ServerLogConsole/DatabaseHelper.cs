@@ -449,6 +449,8 @@ namespace ServerLogConsole
             return list;
         }
 
+        // Trong DatabaseHelper.cs
+
         public List<string> GetAllUsers()
         {
             var list = new List<string>();
@@ -457,15 +459,21 @@ namespace ServerLogConsole
                 using (var conn = new MySqlConnection(_connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT Username FROM Users ORDER BY Username";
+                    string query = "SELECT Username FROM Users"; // Lấy hết username
                     using (var cmd = new MySqlCommand(query, conn))
                     using (var r = cmd.ExecuteReader())
                     {
-                        while (r.Read()) list.Add(r.GetString("Username"));
+                        while (r.Read())
+                        {
+                            list.Add(r.GetString("Username"));
+                        }
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi GetAllUsers: " + ex.Message);
+            }
             return list;
         }
 

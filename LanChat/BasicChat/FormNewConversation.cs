@@ -72,10 +72,11 @@ namespace BasicChat
 
         private void RequestUserList()
         {
+            // Trong RequestUserList() của FormNewConversation.cs
             _client.Send(new ChatMessage
             {
                 Type = MessageType.GET_ALL_USERS_REQUEST,
-                Sender = "ME" // Sender không quan trọng ở request này
+                Content = "ALL" // <--- Đây chính là chìa khóa để Server biết đường trả về tất cả
             });
         }
 

@@ -1,4 +1,5 @@
 ﻿using BasicChat.Networking;
+using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -225,8 +226,26 @@ namespace ServerLogConsole.Networking
                 case MessageType.GET_ALL_USERS_REQUEST:
                     HandleGetAllUsers(clientInfo, message);
                     break;
+                case MessageType.GET_RECENT_USERS_REQUEST:
+                    HandleGetRecentUsers(clientInfo);
+                    break;
             }
         }
+
+        private void HandleGetRecentUsers(ClientInfo client)
+        {
+            // Lấy từ bảng Messages (những ai đã chat với mình)
+            List<string> users = _dbHelper.GetRecentChatUsers(client.Username);
+            string responseData = string.Join(",", users);
+
+            SendToClient(client, new ChatMessage
+            {
+                Type = MessageType.GET_RECENT_USERS_RESPONSE, // Trả về loại RECENT
+                Content = responseData
+            });
+        }
+
+
 
         private void HandleGetAvatar(ClientInfo clientInfo, ChatMessage message)
         {
@@ -267,24 +286,37 @@ namespace ServerLogConsole.Networking
 
         // Trong ServerSocket.cs -> HandleGetAllUsers (hoặc đoạn xử lý tương ứng)
 
+        // Trong ServerSocket.cs
+
         private void HandleGetAllUsers(ClientInfo client, ChatMessage message)
         {
-            // [CODE CŨ]: var users = _dbHelper.GetAllUsers();  <-- Xóa dòng này
-            Console.WriteLine($"[DEBUG] Server nhận yêu cầu lấy User từ: {client.Username}");
-            // [CODE MỚI]: Chỉ lấy những người đã từng chat với client này
-            var users = _dbHelper.GetRecentChatUsers(client.Username);
+            List<string> users;
+
+            // [LOGIC MỚI] Kiểm tra Content để biết Client muốn lấy list nào
+            if (message.Content == "ALL")
+            {
+                // Trường hợp 1: Form NewConversation muốn lấy TẤT CẢ user để tìm kiếm
+                users = _dbHelper.GetAllUsers();
+                // (Nếu DatabaseHelper chưa có hàm này thì xem Bước 2)
+            }
+            else
+            {
+                // Trường hợp 2: Sidebar bên trái chỉ muốn lấy lịch sử chat
+                users = _dbHelper.GetRecentChatUsers(client.Username);
+            }
 
             // Gửi trả về Client (Phần này giữ nguyên)
             string userListString = string.Join(",", users);
 
-            var response = new ChatMessage
+            // Debug để kiểm tra
+            Console.WriteLine($"[UserList] Client {client.Username} asked for {(message.Content == "ALL" ? "ALL" : "RECENT")}. Found: {users.Count}");
+
+            SendToClient(client, new ChatMessage
             {
                 Type = MessageType.GET_ALL_USERS_RESPONSE,
                 Receiver = client.Username,
                 Content = userListString
-            };
-
-            SendToClient(client, response);
+            });
         }
 
         private void HandleSearchUser(ClientInfo client, ChatMessage message)

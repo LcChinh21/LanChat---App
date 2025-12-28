@@ -83,7 +83,12 @@ namespace BasicChat
                     {
                         RenderOnlineUserList();
                     }
+                    if (!_isShowingGroups)
+                    {
+                        RenderOnlineUserList();
+                    }
                 }));
+
             };
             _client.OnDisconnected = (msg) => Invoke((MethodInvoker)(() => MessageBox.Show(msg)));
 
@@ -131,9 +136,11 @@ namespace BasicChat
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                if (files != null && files.Length > 0)
+                // Duyệt qua từng file và gửi
+                foreach (string file in files)
                 {
-                    SendFileByPath(files[0]);
+                    // GỌI HÀM CHUNG (Y hệt nút bấm)
+                    SendFilePath(file);
                 }
             };
 
@@ -185,6 +192,62 @@ namespace BasicChat
             inviteForm.ShowDialog();
         }
 
+        // Trong FormChat.cs
+
+        private void SendFilePath(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath)) return;
+
+            string target = _isGroupChat ? _currentGroup : _selectedUser;
+            if (string.IsNullOrEmpty(target)) return;
+
+            try
+            {
+                // 1. Đọc dữ liệu file
+                byte[] fileBytes = File.ReadAllBytes(filePath);
+                string fileName = Path.GetFileName(filePath);
+
+                // Kiểm tra dung lượng (Ví dụ > 10MB thì thôi)
+                if (fileBytes.Length > 10 * 1024 * 1024)
+                {
+                    MessageBox.Show("File quá lớn (>10MB).");
+                    return;
+                }
+
+                string base64 = Convert.ToBase64String(fileBytes);
+                string contentToSend = $"{fileName}|{base64}";
+
+                // 2. Gửi lên Server
+                _client.Send(new ChatMessage
+                {
+                    Type = MessageType.FILE_SEND,
+                    Sender = _currentUser,
+                    Receiver = target,
+                    Content = contentToSend,
+                    Timestamp = DateTime.Now
+                });
+
+                // [THAY ĐỔI Ở ĐÂY]: Phân loại hiển thị
+                if (IsImageFile(fileName))
+                {
+                    // Convert byte[] sang Image để hiển thị
+                    using (MemoryStream ms = new MemoryStream(fileBytes))
+                    {
+                        // Dùng new Bitmap(ms) để tránh lỗi GDI+ khi đóng stream
+                        AddImageBubble("Me", new Bitmap(ms), true, DateTime.Now);
+                    }
+                }
+                else
+                {
+                    // File thường
+                    AddFileBubble("Me", fileName, fileBytes, true, DateTime.Now);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi gửi file: " + ex.Message);
+            }
+        }
         private void PbMyAvatar_Click(object sender, EventArgs e)
         {
             Form shadow = new Form()
@@ -427,11 +490,14 @@ namespace BasicChat
                 var members = _groupMembers[_currentGroup];
                 lblMemberCount.Text = $"{members.Count} Members";
 
-                var sortedMembers = members.OrderByDescending(u => _client.OnlineUsers.Contains(u)).ToList();
+                var sortedMembers = members
+                    .OrderByDescending(u => _client.OnlineUsers.Contains(u)) // Online lên đầu
+                    .ThenBy(u => u) // A-Z
+                    .ToList();
 
                 foreach (var member in sortedMembers)
                 {
-                    bool isOnline = _client.OnlineUsers.Contains(member);
+                    bool isOnline = (member == _currentUser) || _client.OnlineUsers.Contains(member);
                     AddMemberToPanel(member, isOnline);
                 }
             }
@@ -533,7 +599,6 @@ namespace BasicChat
         private void HandleMessage(ChatMessage msg)
         {
             if (InvokeRequired) { Invoke(new Action<ChatMessage>(HandleMessage), msg); return; }
-            if (msg.Type == MessageType.UPDATE_PROFILE_RESPONSE) return;
             switch (msg.Type)
             {
                 case MessageType.GROUP_MESSAGE:
@@ -663,53 +728,107 @@ namespace BasicChat
                     {
                         if (!_groupMembers.ContainsKey(msg.Content)) _groupMembers[msg.Content] = new List<string>();
                         if (!_groupMembers[msg.Content].Contains(msg.Receiver)) _groupMembers[msg.Content].Add(msg.Receiver);
-                        UpdateRightSideBar(_currentGroup, true);
+
+                        this.Invoke(new Action(() => UpdateRightPanelMembers()));
                     }
                     break;
-                case MessageType.GET_ALL_USERS_RESPONSE:
-                    {
-                        string contenttt = msg.Content;
-
-                        string[] users = string.IsNullOrEmpty(contenttt)
-                                         ? new string[0]
-                                         : contenttt.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-                        RenderUserChatList(users);
-                        break;
-                    }
                 case MessageType.FILE_SEND:
                     ProcessReceivedFile(msg);
                     break;
                 case MessageType.GET_AVATAR_RESPONSE:
                     {
-                        string targetUser = msg.Sender; // Tên user chủ sở hữu cái ảnh này
+                        string targetUser = msg.Sender; // Tên user chủ sở hữu ảnh
                         string base64Image = msg.Content; // Dữ liệu ảnh
-                        bool hasImage = msg.Success;      // Có ảnh hay không
+                        bool hasImage = msg.Success;
 
-                        if (!hasImage || string.IsNullOrEmpty(base64Image)) break; // Nếu không có ảnh thì giữ nguyên ảnh mặc định
+                        if (!hasImage || string.IsNullOrEmpty(base64Image)) break;
 
                         this.Invoke(new Action(() =>
                         {
-                            // Quét danh sách các nút trong sidebar
-                            foreach (Control c in flowGroups.Controls)
+                            // Chuyển đổi ảnh một lần để dùng chung
+                            Image newAvatar = null;
+                            try
                             {
-                                // Kiểm tra xem nút này có phải của User đó không (dựa vào Tag)
-                                if (c is Guna2Button btn && btn.Tag?.ToString() == targetUser)
+                                byte[] imgBytes = Convert.FromBase64String(base64Image);
+                                using (MemoryStream ms = new MemoryStream(imgBytes))
                                 {
-                                    try
-                                    {
-                                        // Convert Base64 sang Image và gán vào nút
-                                        byte[] imgBytes = Convert.FromBase64String(base64Image);
-                                        using (MemoryStream ms = new MemoryStream(imgBytes))
-                                        {
-                                            btn.Image = Image.FromStream(ms); // Cập nhật ảnh mới
-                                        }
-                                    }
-                                    catch { } // Nếu ảnh lỗi thì kệ, giữ ảnh cũ
-                                    break; // Tìm thấy rồi thì thoát vòng lặp
+                                    newAvatar = new Bitmap(Image.FromStream(ms)); // Clone ra bitmap mới để tránh lỗi stream closed
                                 }
                             }
+                            catch { return; } // Ảnh lỗi thì bỏ qua
+
+                            // 1. Cập nhật Sidebar (Danh sách User/Group)
+                            foreach (Control c in flowGroups.Controls)
+                            {
+                                // Kiểm tra Tag của nút xem có đúng user không
+                                if (c is Guna2Button btn && btn.Tag != null && btn.Tag.ToString() == targetUser)
+                                {
+                                    btn.Image = newAvatar;
+                                }
+                                // Nếu là Group panel (trong trường hợp bạn hiện avatar user trong list group)
+                                else if (c is Guna2GradientPanel pnl && pnl.Tag != null && pnl.Tag.ToString() == targetUser)
+                                {
+                                    foreach (Control child in pnl.Controls)
+                                    {
+                                        if (child is Guna2CirclePictureBox pb) pb.Image = newAvatar;
+                                    }
+                                }
+                            }
+
+                            // 2. Cập nhật Right Panel (Danh sách thành viên bên phải)
+                            foreach (Control pnl in flowMembers.Controls)
+                            {
+                                foreach (Control child in pnl.Controls)
+                                {
+                                    // Tìm PictureBox có Tag trùng tên User
+                                    if (child is Guna2CirclePictureBox pb &&
+                                        pb.Tag != null &&
+                                        pb.Tag.ToString() == targetUser)
+                                    {
+                                        pb.Image = newAvatar;
+                                    }
+                                }
+                            }
+
+                            // 3. Cập nhật icon chính mình (Góc trên trái) nếu là mình đổi
+                            if (targetUser == _currentUser)
+                            {
+                                pbAppIcon.Image = newAvatar;
+                            }
+
+                            // 4. (Tùy chọn) Cập nhật icon trong khung chat hiện tại (nếu đang chat với người đó)
+                            if (!_isGroupChat && _selectedUser == targetUser)
+                            {
+                                pbGroupIconRight.Image = newAvatar; // Icon to bên phải
+                            }
                         }));
+                        break;
+                    }
+                case MessageType.UPDATE_PROFILE_RESPONSE:
+                    if (msg.Success)
+                    {
+                        _client.Send(new ChatMessage
+                        {
+                            Type = MessageType.GET_AVATAR_REQUEST,
+                            Sender = _currentUser,
+                            Content = msg.Sender
+                        });
+                    }
+                    break;
+                case MessageType.GET_RECENT_USERS_RESPONSE:
+                    {
+                        // 1. Lấy chuỗi danh sách user (Ví dụ: "UserA,UserB,UserC")
+                        string hcontent = msg.Content;
+
+                        // 2. Tách chuỗi thành mảng các tên (Array String)
+                        // Nếu chuỗi rỗng thì tạo mảng rỗng để tránh lỗi
+                        string[] users = string.IsNullOrEmpty(hcontent)
+                                         ? new string[0]
+                                         : hcontent.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        // 3. Gọi hàm vẽ giao diện (Hàm này sẽ tự xử lý Invoke/Thread safe bên trong)
+                        RenderUserChatList(users);
+
                         break;
                     }
             }
@@ -820,13 +939,16 @@ namespace BasicChat
 
         private void UpdateRightSideBar(string name, bool isGroup)
         {
-            lblGroupNameRight.Text = name;
-            pbGroupIconRight.Image = AvatarGenerator.Generate(name);
+            lblGroupNameRight.Text = name; 
+
+
             pbGroupIconRight.SizeMode = PictureBoxSizeMode.StretchImage;
             flowMembers.Controls.Clear();
 
             if (isGroup && _groupMembers.ContainsKey(name))
             {
+                lblMemberCount.Visible = true;
+                pbGroupIconRight.Image = AvatarGenerator.Generate(name);
                 List<string> members = _groupMembers[name];
                 lblMemberCount.Text = $"Members ({members.Count})";
 
@@ -852,10 +974,61 @@ namespace BasicChat
                     flowMembers.Controls.Add(p);
                 }
             }
-            else
+            if (string.IsNullOrEmpty(_selectedUser)) return;
+
+            // Invisible
+            lblGroupNameRight.Text = _selectedUser;
+            pbGroupIconRight.Image = AvatarGenerator.Generate(_selectedUser);
+            lblMemberCount.Visible = false; // Ẩn số lượng thành viên đi
+
+            // --- HIỂN THỊ PROFILE USER ---
+
+            // 1. Tạo Panel chứa Avatar to
+            Guna2Panel pnlProfile = new Guna2Panel();
+            pnlProfile.Size = new Size(flowMembers.Width - 10, 160);
+            pnlProfile.Margin = new Padding(0, 0, 0, 10);
+
+            // Avatar to (80x80)
+            Guna2CirclePictureBox pbBig = new Guna2CirclePictureBox();
+            pbBig.Size = new Size(80, 80);
+            pbBig.Location = new Point((pnlProfile.Width - 80) / 2, 10); // Căn giữa
+            pbBig.SizeMode = PictureBoxSizeMode.StretchImage;
+            pbBig.Image = AvatarGenerator.Generate(_selectedUser, 80, 80); // Dùng lại Generator
+
+            // Tên User to
+            Label lblBigName = new Label();
+            lblBigName.Text = _selectedUser;
+            lblBigName.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+            lblBigName.ForeColor = Color.White;
+            lblBigName.AutoSize = false;
+            lblBigName.Size = new Size(pnlProfile.Width, 30);
+            lblBigName.TextAlign = ContentAlignment.MiddleCenter;
+            lblBigName.Location = new Point(0, 100);
+
+            // Trạng thái Online/Offline dưới tên
+            Label lblStatus = new Label();
+            bool isUserOnline = _client.OnlineUsers.Contains(_selectedUser);
+            lblStatus.Text = isUserOnline ? "● Online" : "○ Offline";
+            lblStatus.ForeColor = isUserOnline ? Color.LimeGreen : Color.Gray;
+            lblStatus.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+            lblStatus.AutoSize = false;
+            lblStatus.Size = new Size(pnlProfile.Width, 20);
+            lblStatus.TextAlign = ContentAlignment.MiddleCenter;
+            lblStatus.Location = new Point(0, 130);
+
+            pnlProfile.Controls.Add(pbBig);
+            pnlProfile.Controls.Add(lblBigName);
+            pnlProfile.Controls.Add(lblStatus);
+            flowMembers.Controls.Add(pnlProfile);
+
+            // Gửi request lấy Avatar thật (nếu có) để update lại sau
+            _client.Send(new ChatMessage
             {
-                lblMemberCount.Text = "Private Chat";
-            }
+                Type = MessageType.GET_AVATAR_REQUEST,
+                Sender = _currentUser,
+                Content = _selectedUser
+            });
+
         }
         private void AddMessageBubble(string sender, string message, bool isMe, DateTime time)
         {
@@ -1018,44 +1191,85 @@ namespace BasicChat
 
         private void AddUserToSidebar(string username)
         {
+            // Kiểm tra xem user đã có trong list chưa (dựa vào Tag)
             foreach (Control c in flowGroups.Controls)
             {
-                if (c is Guna2Button b && b.Tag?.ToString() == username) return;
+                if (c.Tag != null && c.Tag.ToString() == username) return;
             }
 
-            Guna2Button btnUser = new Guna2Button();
-            btnUser.Size = new Size(flowGroups.Width - 10, 60);
-            btnUser.BorderRadius = 10;
-            btnUser.FillColor = Color.Transparent;
-            btnUser.ForeColor = Color.White;
-            btnUser.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            // 1. Tạo Panel chứa (Thay cho Guna2Button cũ)
+            Guna2GradientPanel pnl = new Guna2GradientPanel();
+            pnl.Size = new Size(flowGroups.Width - 10, 60);
+            pnl.BorderRadius = 15; // Bo góc panel
+            pnl.FillColor = Color.Transparent;
+            pnl.FillColor2 = Color.Transparent;
+            pnl.Cursor = Cursors.Hand;
+            pnl.Margin = new Padding(5, 5, 5, 0);
+            pnl.Tag = username; // Cực kỳ quan trọng: Để hàm HandleMessage tìm được và update AVT sau này
 
-            btnUser.Image = AvatarGenerator.Generate(username);
-            btnUser.ImageSize = new Size(40, 40);
-            btnUser.ImageAlign = HorizontalAlignment.Left;
-            btnUser.ImageOffset = new Point(5, 0);
+            // 2. Tạo Avatar hình tròn (Guna2CirclePictureBox)
+            Guna2CirclePictureBox pb = new Guna2CirclePictureBox();
+            pb.Size = new Size(40, 40);
+            pb.Location = new Point(10, 10);
+            pb.SizeMode = PictureBoxSizeMode.StretchImage;
+            pb.Image = AvatarGenerator.Generate(username); // Tạo ảnh mặc định
+            pb.BackColor = Color.Transparent;
+            pb.UseTransparentBackground = true;
 
-            btnUser.Text = "    " + username;
-            btnUser.TextAlign = HorizontalAlignment.Left;
-            btnUser.TextOffset = new Point(10, 0);
+            // 3. Tạo Tên User
+            Label lbl = new Label();
+            lbl.Text = "    " + username; // Thêm khoảng trắng cho đẹp
+            lbl.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            lbl.ForeColor = Color.White;
+            lbl.AutoSize = true;
+            lbl.Location = new Point(60, 18); // Căn chỉnh vị trí bên cạnh Avatar
+            lbl.BackColor = Color.Transparent;
 
-            btnUser.Margin = new Padding(5, 5, 5, 0);
-            btnUser.Cursor = Cursors.Hand;
-            btnUser.Tag = username;
-
-            btnUser.Click += (s, e) =>
+            // 4. Sự kiện Click (Xử lý giống nút bấm cũ)
+            EventHandler clickEvent = (s, e) =>
             {
+                // Reset màu các item khác (cả Button và Panel để an toàn)
                 foreach (Control c in flowGroups.Controls)
+                {
                     if (c is Guna2Button b) b.FillColor = Color.Transparent;
+                    if (c is Guna2GradientPanel p)
+                    {
+                        p.FillColor = Color.Transparent;
+                        p.FillColor2 = Color.Transparent;
+                    }
+                }
 
-                btnUser.FillColor = _colorSelected1;
+                // Đổi màu item đang chọn
+                pnl.FillColor = _colorSelected1;
+                // pnl.FillColor2 = _colorSelected2; // Nếu muốn hiệu ứng gradient thì bỏ comment dòng này
 
                 OpenPrivateChat(username);
+                UpdateRightSideBar(username, false);
             };
 
-            flowGroups.Controls.Add(btnUser);
+            // Gán sự kiện click cho tất cả thành phần để bấm vào đâu cũng ăn
+            pnl.Click += clickEvent;
+            pb.Click += clickEvent;
+            lbl.Click += clickEvent;
 
-            btnUser.PerformClick();
+            // 5. Thêm các control con vào Panel
+            pnl.Controls.Add(pb);
+            pnl.Controls.Add(lbl);
+
+            // 6. Thêm Panel vào danh sách
+            flowGroups.Controls.Add(pnl);
+
+            // Kích hoạt click ngay lập tức (giống logic cũ)
+            // Lưu ý: Cần gọi sự kiện click một cách thủ công hoặc gọi hàm xử lý
+            // Ở đây ta gọi trực tiếp logic xử lý để tránh lỗi Event tham số
+            foreach (Control c in flowGroups.Controls)
+            {
+                if (c is Guna2GradientPanel p) { p.FillColor = Color.Transparent; p.FillColor2 = Color.Transparent; }
+                if (c is Guna2Button b) b.FillColor = Color.Transparent;
+            }
+            pnl.FillColor = _colorSelected1;
+            OpenPrivateChat(username);
+            UpdateRightSideBar(username, false);
         }
 
         private void ResetSidebarColor()
@@ -1211,7 +1425,7 @@ namespace BasicChat
             {
                 _client.Send(new ChatMessage
                 {
-                    Type = MessageType.GET_ALL_USERS_REQUEST,
+                    Type = MessageType.GET_RECENT_USERS_REQUEST,
                     Sender = _currentUser
                 });
             }
