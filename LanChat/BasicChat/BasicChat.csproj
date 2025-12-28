@@ -127,6 +127,9 @@
       <DependentUpon>FormChat.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormProfile.resx">
+      <DependentUpon>FormProfile.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InviteMembers.resx">
       <DependentUpon>InviteMembers.cs</DependentUpon>
     </EmbeddedResource>
@@ -147,6 +150,8 @@
     <None Include="Resources\ic_send_128_28719.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\send.png" />
+    <None Include="Resources\happy.png" />
     <Content Include="telegram.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
