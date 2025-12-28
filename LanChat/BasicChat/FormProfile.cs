@@ -13,6 +13,9 @@ namespace BasicChat
         private string _username;
         private string _base64ImageString = "";
 
+        // Truyền ảnh về Form chính sau khi cập nhật thành công
+        public Image NewAvatar { get; private set; }
+
         public FormProfile(ClientSocket client, string username)
         {
             InitializeComponent();
@@ -99,6 +102,9 @@ namespace BasicChat
                     if (msg.Success)
                     {
                         MessageBox.Show("Cập nhật Avatar thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // Lưu ảnh hiện tại vào biến NewAvatar để FormChat lấy dùng
+                        NewAvatar = pbAvatar.Image;
+                        this.DialogResult = DialogResult.OK;
                         this.Close();
                     }
                     else

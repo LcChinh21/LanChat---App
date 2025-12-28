@@ -28,9 +28,32 @@ namespace BasicChat
         private Color _colorUnselected = Color.FromArgb(23, 28, 41);
         private Color _colorText = Color.White;
 
+        private Guna2Panel _pnlEmoji;
+        private readonly string[] _emojiList = {
+            "😀", "😁", "😂", "🤣", "😃", "😄", "😅", "😆", "😉", "😊",
+            "😋", "😎", "😍", "😘", "🥰", "😗", "😙", "😚", "☺", "🙂",
+            "🤗", "🤩", "🤔", "🤨", "😐", "😑", "😶", "🙄", "😏", "😣",
+            "😥", "😮", "😯", "😪", "😫", "😴", "😌", "😛", "😜", "😝",
+            "🤤", "😒", "😓", "😔", "😕", "🙃", "👍", "👎", "👌", "❤",
+            "💔", "🌹", "🎉", "🎂", "🎁", "🔥"
+        };
+
+        private NotifyIcon _notifyIcon;
+
         public FormChat(string username, ClientSocket client)
         {
             InitializeComponent();
+
+            InitializeEmojiPanel(); 
+            btnEmoji.Click += (s, e) => ToggleEmojiPanel(); 
+
+            guna2DragControl1.TargetControl = pnlHeader;
+            Guna.UI2.WinForms.Guna2DragControl dragSidebar = new Guna.UI2.WinForms.Guna2DragControl(this.components);
+            dragSidebar.TargetControl = pnlSidebar;
+            dragSidebar.TransparentWhileDrag = true;
+
+            txtSearchGroup.TextChanged += txtSearchGroup_TextChanged;
+
             _currentUser = username;
             _client = client;
 
@@ -64,6 +87,51 @@ namespace BasicChat
             });
 
             this.Load += FormChat_Load;
+
+            flowMessages.Click += (s, e) => _pnlEmoji.Visible = false;
+            pnlChatArea.Click += (s, e) => _pnlEmoji.Visible = false;
+            pnlHeader.Click += (s, e) => _pnlEmoji.Visible = false;
+            lblHeaderTitle.Click += (s, e) => _pnlEmoji.Visible = false;
+            txtMessage.Click += (s, e) => _pnlEmoji.Visible = false;
+
+            flowMessages.AllowDrop = true;
+            pnlChatArea.AllowDrop = true; 
+
+            DragEventHandler dragEnter = (s, e) =>
+            {
+                if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                    e.Effect = DragDropEffects.Copy; 
+                else
+                    e.Effect = DragDropEffects.None;
+            };
+
+            flowMessages.DragEnter += dragEnter;
+            pnlChatArea.DragEnter += dragEnter;
+
+            DragEventHandler dragDrop = (s, e) =>
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                if (files != null && files.Length > 0)
+                {
+                    SendFileByPath(files[0]);
+                }
+            };
+
+            flowMessages.DragDrop += dragDrop;
+            pnlChatArea.DragDrop += dragDrop;
+
+
+            _notifyIcon = new NotifyIcon();
+            _notifyIcon.Icon = SystemIcons.Application; 
+            _notifyIcon.Visible = true;
+            _notifyIcon.Text = "LanChat is running";
+
+            _notifyIcon.BalloonTipClicked += (s, e) =>
+            {
+                this.WindowState = FormWindowState.Normal;
+                this.Focus();
+            };
         }
 
         private void PbMyAvatar_Click(object sender, EventArgs e)
@@ -81,7 +149,26 @@ namespace BasicChat
             };
             shadow.Show();
             FormProfile frm = new FormProfile(_client, _currentUser);
-            frm.ShowDialog();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                // Kiểm tra xem có ảnh mới không
+                if (frm.NewAvatar != null)
+                {
+                    pbAppIcon.Image = frm.NewAvatar;
+                    foreach (Control pnl in flowMembers.Controls)
+                    {
+                        foreach (Control child in pnl.Controls)
+                        {
+                            if (child is Guna2CirclePictureBox pb &&
+                                pb.Tag != null &&
+                                pb.Tag.ToString() == _currentUser)
+                            {
+                                pb.Image = frm.NewAvatar;
+                            }
+                        }
+                    }
+                }
+            }
 
             shadow.Close();
         }
@@ -243,11 +330,20 @@ namespace BasicChat
                 case MessageType.GROUP_MESSAGE:
                     string grp = msg.Receiver;
                     string content = msg.Content;
-                    if (content.Contains("|")) { var p = content.Split('|'); grp = p[0]; content = p.Length > 1 ? p[1] : ""; }
+
+                    if (content.Contains("|"))
+                    {
+                        var p = content.Split('|');
+                        grp = p[0];
+                        content = p.Length > 1 ? p[1] : "";
+                    }
 
                     AddMessageToStorage(grp, msg.Sender, content, msg.Sender == _currentUser);
+
                     if (_currentGroup == grp)
                         AddMessageBubble(msg.Sender, content, msg.Sender == _currentUser, DateTime.Now);
+
+                    NotifyIfHidden(msg.Sender, content);
                     break;
 
                 case MessageType.PRIVATE_MESSAGE:
@@ -257,6 +353,8 @@ namespace BasicChat
                     // Nếu đang chat với người này thì hiện luôn
                     if (!_isGroupChat && _selectedUser == target)
                         AddMessageBubble(msg.Sender, msg.Content, msg.Sender == _currentUser, DateTime.Now);
+
+                    NotifyIfHidden(msg.Sender, msg.Content);
                     break;
 
                 case MessageType.LOAD_GROUP_RESPONSE:
@@ -483,6 +581,7 @@ namespace BasicChat
             pnlContainer.BackColor = Color.Transparent;
 
             Guna2Panel pnlBubble = new Guna2Panel();
+            pnlBubble.Tag = isMe;
             pnlBubble.BorderRadius = 12;
             pnlBubble.FillColor = isMe ? _colorSelected2 : Color.FromArgb(40, 42, 55);
             pnlBubble.AutoSize = true;
@@ -534,9 +633,51 @@ namespace BasicChat
 
             flowMessages.ScrollControlIntoView(pnlContainer);
         }
+        //fix lỗi bong bóng chat khi resize form
+        private void AdjustChatBubbles()
+        {
+            flowMessages.SuspendLayout();
+            int newContainerWidth = flowMessages.ClientSize.Width - 25;
+
+            foreach (Control control in flowMessages.Controls)
+            {
+                if (control is Panel pnlContainer)
+                {
+                    pnlContainer.Width = newContainerWidth;
+
+                    foreach (Control child in pnlContainer.Controls)
+                    {
+                        if (child is Guna.UI2.WinForms.Guna2Panel pnlBubble && pnlBubble.Tag is bool isMe)
+                        {
+                            pnlBubble.MaximumSize = new Size((int)(newContainerWidth * 0.7), 0);
+
+                            if (isMe)
+                            {
+                                pnlBubble.Location = new Point(pnlContainer.Width - pnlBubble.Width, 0);
+                            }
+                            else
+                            {
+                                int currentY = pnlBubble.Location.Y;
+                                pnlBubble.Location = new Point(0, currentY);
+                            }
+                        }
+                    }
+                }
+            }
+
+            flowMessages.ResumeLayout();
+            flowMessages.PerformLayout();
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            AdjustChatBubbles();
+        }
 
         private void btnSend_Click(object sender, EventArgs e)
         {
+            _pnlEmoji.Visible = false; // Tắt bảng icon khi gửi
             string txt = txtMessage.Text.Trim();
             if (string.IsNullOrEmpty(txt)) return;
 
@@ -589,28 +730,48 @@ namespace BasicChat
             _client.Disconnect();
         }
 
+        // Hàm riêng để xử lý gửi file từ đường dẫn (dùng chung cho cả button gửi file và Kéo thả)
+        private void SendFileByPath(string filePath)
+        {
+            try
+            {
+                // Kiểm tra dung lượng (10MB)
+                long length = new FileInfo(filePath).Length;
+                if (length > 10 * 1024 * 1024)
+                {
+                    MessageBox.Show("File quá lớn (>10MB). Vui lòng chọn file nhỏ hơn.");
+                    return;
+                }
+
+                // Đọc file và chuyển sang Base64
+                byte[] b = File.ReadAllBytes(filePath);
+                string b64 = Convert.ToBase64String(b);
+                string payload = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{Path.GetFileName(filePath)}|{b64}"));
+
+                // Gửi lệnh lên Server
+                _client.Send(new ChatMessage
+                {
+                    Type = MessageType.FILE_SEND,
+                    Sender = _currentUser,
+                    Receiver = _isGroupChat ? _currentGroup : _selectedUser,
+                    Content = payload
+                });
+
+                // Hiển thị bong bóng chat 
+                AddMessageBubble(_currentUser, $"Sent file: {Path.GetFileName(filePath)}", true, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi gửi file: " + ex.Message);
+            }
+        }
+
         private void btnSendFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                try
-                {
-                    byte[] b = File.ReadAllBytes(ofd.FileName);
-                    if (b.Length > 10 * 1024 * 1024) { MessageBox.Show("File > 10MB"); return; }
-                    string b64 = Convert.ToBase64String(b);
-                    string payload = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes($"{Path.GetFileName(ofd.FileName)}|{b64}"));
-
-                    _client.Send(new ChatMessage
-                    {
-                        Type = MessageType.FILE_SEND,
-                        Sender = _currentUser,
-                        Receiver = _isGroupChat ? _currentGroup : _selectedUser,
-                        Content = payload
-                    });
-                    AddMessageBubble(_currentUser, $"Sent file: {Path.GetFileName(ofd.FileName)}", true, DateTime.Now);
-                }
-                catch (Exception ex) { MessageBox.Show("Error: " + ex.Message); }
+                SendFileByPath(ofd.FileName); 
             }
         }
 
@@ -636,9 +797,157 @@ namespace BasicChat
             catch { }
         }
 
+        private void NotifyIfHidden(string sender, string message)
+        {
+            if (sender != _currentUser && (this.WindowState == FormWindowState.Minimized || !this.Focused))
+            {
+                try
+                {
+                    System.Media.SystemSounds.Exclamation.Play();
+
+                    _notifyIcon.ShowBalloonTip(3000, $"New message from {sender}", message, ToolTipIcon.Info);
+                }
+                catch
+                {
+                }
+            }
+        }
+
         private void pbGroupIconRight_Click(object sender, EventArgs e)
         {
 
+        }
+        // Cho phép resize form từ các cạnh và góc
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_NCHITTEST = 0x0084;
+            const int HTCLIENT = 1;
+            const int HTCAPTION = 2;
+
+            // Resize handles (các cạnh và góc)
+            const int HTLEFT = 10;
+            const int HTRIGHT = 11;
+            const int HTTOP = 12;
+            const int HTTOPLEFT = 13;
+            const int HTTOPRIGHT = 14;
+            const int HTBOTTOM = 15;
+            const int HTBOTTOMLEFT = 16;
+            const int HTBOTTOMRIGHT = 17;
+
+            base.WndProc(ref m);
+
+            // Nếu là tin nhắn kiểm tra vị trí chuột
+            if (m.Msg == WM_NCHITTEST)
+            {
+                int resizeBorder = 10; // Độ rộng vùng biên để bắt sự kiện resize (pixel)
+
+                Point pos = this.PointToClient(new Point(m.LParam.ToInt32()));
+
+                if (pos.X <= resizeBorder && pos.Y <= resizeBorder)
+                    m.Result = (IntPtr)HTTOPLEFT;
+                else if (pos.X >= this.ClientSize.Width - resizeBorder && pos.Y <= resizeBorder)
+                    m.Result = (IntPtr)HTTOPRIGHT;
+                else if (pos.X <= resizeBorder && pos.Y >= this.ClientSize.Height - resizeBorder)
+                    m.Result = (IntPtr)HTBOTTOMLEFT;
+                else if (pos.X >= this.ClientSize.Width - resizeBorder && pos.Y >= this.ClientSize.Height - resizeBorder)
+                    m.Result = (IntPtr)HTBOTTOMRIGHT;
+                else if (pos.X <= resizeBorder)
+                    m.Result = (IntPtr)HTLEFT;
+                else if (pos.X >= this.ClientSize.Width - resizeBorder)
+                    m.Result = (IntPtr)HTRIGHT;
+                else if (pos.Y <= resizeBorder)
+                    m.Result = (IntPtr)HTTOP;
+                else if (pos.Y >= this.ClientSize.Height - resizeBorder)
+                    m.Result = (IntPtr)HTBOTTOM;
+            }
+        }
+
+        private void txtSearchGroup_TextChanged(object sender, EventArgs e)
+        {
+            string keyword = txtSearchGroup.Text.Trim().ToLower();
+            flowGroups.SuspendLayout();
+
+            foreach (Control control in flowGroups.Controls)
+            {               
+                if (control is Guna2GradientPanel pnl && pnl.Tag != null)
+                {
+                    string groupName = pnl.Tag.ToString().ToLower();
+
+                    if (string.IsNullOrEmpty(keyword) || groupName.Contains(keyword))
+                    {
+                        pnl.Visible = true;
+                    }
+                    else
+                    {
+                        pnl.Visible = false;
+                    }
+                }
+            }
+
+            flowGroups.ResumeLayout();
+        }
+
+        private void InitializeEmojiPanel()
+        {
+            _pnlEmoji = new Guna2Panel();
+            _pnlEmoji.Size = new Size(250, 200); 
+            _pnlEmoji.FillColor = Color.FromArgb(35, 45, 65); 
+            _pnlEmoji.BorderRadius = 10;
+            _pnlEmoji.Visible = false; 
+            _pnlEmoji.ShadowDecoration.Enabled = true; 
+
+            FlowLayoutPanel flowEmoji = new FlowLayoutPanel();
+            flowEmoji.Dock = DockStyle.Fill;
+            flowEmoji.Padding = new Padding(10);
+            flowEmoji.AutoScroll = true; 
+            flowEmoji.BackColor = Color.Transparent;
+
+            foreach (string icon in _emojiList)
+            {
+                Label lblIcon = new Label();
+                lblIcon.Text = icon;
+                lblIcon.Font = new Font("Segoe UI Emoji", 14F); 
+                lblIcon.ForeColor = Color.White;
+                lblIcon.AutoSize = false;
+                lblIcon.Size = new Size(35, 35);
+                lblIcon.TextAlign = ContentAlignment.MiddleCenter;
+                lblIcon.Cursor = Cursors.Hand;
+
+                lblIcon.MouseEnter += (s, e) => { lblIcon.BackColor = Color.FromArgb(50, 60, 80); };
+                lblIcon.MouseLeave += (s, e) => { lblIcon.BackColor = Color.Transparent; };
+
+                lblIcon.Click += (s, e) =>
+                {
+                    txtMessage.Text += icon; 
+                    txtMessage.SelectionStart = txtMessage.Text.Length;
+                    txtMessage.Focus();
+                };
+
+                flowEmoji.Controls.Add(lblIcon);
+            }
+
+            _pnlEmoji.Controls.Add(flowEmoji);
+            this.Controls.Add(_pnlEmoji); 
+            _pnlEmoji.BringToFront(); 
+        }
+        private void ToggleEmojiPanel()
+        {
+            if (_pnlEmoji.Visible)
+            {
+                _pnlEmoji.Visible = false;
+            }
+            else
+            {
+                Point btnLoc = btnEmoji.PointToScreen(Point.Empty);
+                Point formLoc = this.PointToScreen(Point.Empty);
+
+                int x = btnLoc.X - formLoc.X;
+                int y = (btnLoc.Y - formLoc.Y) - _pnlEmoji.Height - 10;
+
+                _pnlEmoji.Location = new Point(x, y);
+                _pnlEmoji.Visible = true;
+                _pnlEmoji.BringToFront();
+            }
         }
     }
 }

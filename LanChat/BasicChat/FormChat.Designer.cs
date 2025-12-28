@@ -18,15 +18,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormChat));
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             this.btnAddGroup = new Guna.UI2.WinForms.Guna2Button();
-            this.pbAppIcon = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.pnlRightInfo = new Guna.UI2.WinForms.Guna2Panel();
             this.flowMembers = new System.Windows.Forms.FlowLayoutPanel();
             this.lblMemberCount = new System.Windows.Forms.Label();
             this.lblGroupNameRight = new System.Windows.Forms.Label();
-            this.pbGroupIconRight = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.guna2ControlBox3 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
@@ -39,25 +38,30 @@
             this.pnlChatArea = new Guna.UI2.WinForms.Guna2Panel();
             this.flowMessages = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlInput = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnSendFile = new Guna.UI2.WinForms.Guna2Button();
-            this.btnSend = new Guna.UI2.WinForms.Guna2Button();
             this.txtMessage = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2DragControl1 = new Guna.UI2.WinForms.Guna2DragControl(this.components);
+            this.btnEmoji = new Guna.UI2.WinForms.Guna2Button();
+            this.btnSendFile = new Guna.UI2.WinForms.Guna2Button();
+            this.btnSend = new Guna.UI2.WinForms.Guna2Button();
+            this.pbGroupIconRight = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            this.pbAppIcon = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.pnlSidebar.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbAppIcon)).BeginInit();
             this.pnlRightInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbGroupIconRight)).BeginInit();
             this.pnlHeader.SuspendLayout();
             this.pnlHeaderContent.SuspendLayout();
             this.pnlGroupList.SuspendLayout();
             this.pnlChatArea.SuspendLayout();
             this.pnlInput.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbGroupIconRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbAppIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2BorderlessForm1
             // 
+            this.guna2BorderlessForm1.BorderRadius = 10;
             this.guna2BorderlessForm1.ContainerControl = this;
             this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2BorderlessForm1.ResizeForm = false;
             this.guna2BorderlessForm1.TransparentWhileDrag = true;
             // 
             // pnlSidebar
@@ -66,9 +70,9 @@
             this.pnlSidebar.Controls.Add(this.btnAddGroup);
             this.pnlSidebar.Controls.Add(this.pbAppIcon);
             this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
+            this.pnlSidebar.Location = new System.Drawing.Point(4, 4);
             this.pnlSidebar.Name = "pnlSidebar";
-            this.pnlSidebar.Size = new System.Drawing.Size(78, 600);
+            this.pnlSidebar.Size = new System.Drawing.Size(78, 592);
             this.pnlSidebar.TabIndex = 0;
             // 
             // btnAddGroup
@@ -84,17 +88,6 @@
             this.btnAddGroup.Text = "+";
             this.btnAddGroup.Click += new System.EventHandler(this.lblAdd_Click);
             // 
-            // pbAppIcon
-            // 
-            this.pbAppIcon.FillColor = System.Drawing.Color.MediumSlateBlue;
-            this.pbAppIcon.ImageRotate = 0F;
-            this.pbAppIcon.Location = new System.Drawing.Point(16, 12);
-            this.pbAppIcon.Name = "pbAppIcon";
-            this.pbAppIcon.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.pbAppIcon.Size = new System.Drawing.Size(40, 40);
-            this.pbAppIcon.TabIndex = 0;
-            this.pbAppIcon.TabStop = false;
-            // 
             // pnlRightInfo
             // 
             this.pnlRightInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
@@ -106,9 +99,9 @@
             this.pnlRightInfo.Controls.Add(this.guna2ControlBox2);
             this.pnlRightInfo.Controls.Add(this.guna2ControlBox1);
             this.pnlRightInfo.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlRightInfo.Location = new System.Drawing.Point(718, 0);
+            this.pnlRightInfo.Location = new System.Drawing.Point(714, 4);
             this.pnlRightInfo.Name = "pnlRightInfo";
-            this.pnlRightInfo.Size = new System.Drawing.Size(180, 600);
+            this.pnlRightInfo.Size = new System.Drawing.Size(180, 592);
             this.pnlRightInfo.TabIndex = 1;
             // 
             // flowMembers
@@ -125,7 +118,7 @@
             this.lblMemberCount.ForeColor = System.Drawing.Color.Gray;
             this.lblMemberCount.Location = new System.Drawing.Point(12, 135);
             this.lblMemberCount.Name = "lblMemberCount";
-            this.lblMemberCount.Size = new System.Drawing.Size(82, 16);
+            this.lblMemberCount.Size = new System.Drawing.Size(98, 20);
             this.lblMemberCount.TabIndex = 8;
             this.lblMemberCount.Text = "Members (0)";
             // 
@@ -136,21 +129,9 @@
             this.lblGroupNameRight.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lblGroupNameRight.Location = new System.Drawing.Point(60, 80);
             this.lblGroupNameRight.Name = "lblGroupNameRight";
-            this.lblGroupNameRight.Size = new System.Drawing.Size(105, 18);
+            this.lblGroupNameRight.Size = new System.Drawing.Size(124, 22);
             this.lblGroupNameRight.TabIndex = 6;
             this.lblGroupNameRight.Text = "No Selection";
-            // 
-            // pbGroupIconRight
-            // 
-            this.pbGroupIconRight.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(125)))), ((int)(((byte)(93)))));
-            this.pbGroupIconRight.ImageRotate = 0F;
-            this.pbGroupIconRight.Location = new System.Drawing.Point(15, 70);
-            this.pbGroupIconRight.Name = "pbGroupIconRight";
-            this.pbGroupIconRight.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.pbGroupIconRight.Size = new System.Drawing.Size(40, 40);
-            this.pbGroupIconRight.TabIndex = 3;
-            this.pbGroupIconRight.TabStop = false;
-            this.pbGroupIconRight.Click += new System.EventHandler(this.pbGroupIconRight_Click);
             // 
             // guna2ControlBox3
             // 
@@ -191,9 +172,9 @@
             this.pnlHeader.Controls.Add(this.pnlHeaderContent);
             this.pnlHeader.Controls.Add(this.txtSearchGroup);
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(78, 0);
+            this.pnlHeader.Location = new System.Drawing.Point(82, 4);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(640, 50);
+            this.pnlHeader.Size = new System.Drawing.Size(632, 50);
             this.pnlHeader.TabIndex = 2;
             // 
             // pnlHeaderContent
@@ -211,7 +192,7 @@
             this.lblHeaderTitle.ForeColor = System.Drawing.Color.White;
             this.lblHeaderTitle.Location = new System.Drawing.Point(15, 15);
             this.lblHeaderTitle.Name = "lblHeaderTitle";
-            this.lblHeaderTitle.Size = new System.Drawing.Size(207, 28);
+            this.lblHeaderTitle.Size = new System.Drawing.Size(248, 32);
             this.lblHeaderTitle.TabIndex = 0;
             this.lblHeaderTitle.Text = "Welcome to LanChat";
             // 
@@ -236,9 +217,9 @@
             // 
             this.pnlGroupList.Controls.Add(this.flowGroups);
             this.pnlGroupList.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlGroupList.Location = new System.Drawing.Point(78, 50);
+            this.pnlGroupList.Location = new System.Drawing.Point(82, 54);
             this.pnlGroupList.Name = "pnlGroupList";
-            this.pnlGroupList.Size = new System.Drawing.Size(210, 550);
+            this.pnlGroupList.Size = new System.Drawing.Size(210, 542);
             this.pnlGroupList.TabIndex = 3;
             // 
             // flowGroups
@@ -249,7 +230,7 @@
             this.flowGroups.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowGroups.Location = new System.Drawing.Point(0, 0);
             this.flowGroups.Name = "flowGroups";
-            this.flowGroups.Size = new System.Drawing.Size(210, 550);
+            this.flowGroups.Size = new System.Drawing.Size(210, 542);
             this.flowGroups.TabIndex = 0;
             this.flowGroups.WrapContents = false;
             // 
@@ -258,9 +239,9 @@
             this.pnlChatArea.Controls.Add(this.flowMessages);
             this.pnlChatArea.Controls.Add(this.pnlInput);
             this.pnlChatArea.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlChatArea.Location = new System.Drawing.Point(288, 50);
+            this.pnlChatArea.Location = new System.Drawing.Point(292, 54);
             this.pnlChatArea.Name = "pnlChatArea";
-            this.pnlChatArea.Size = new System.Drawing.Size(430, 550);
+            this.pnlChatArea.Size = new System.Drawing.Size(422, 542);
             this.pnlChatArea.TabIndex = 4;
             // 
             // flowMessages
@@ -271,49 +252,26 @@
             this.flowMessages.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowMessages.Location = new System.Drawing.Point(0, 0);
             this.flowMessages.Name = "flowMessages";
-            this.flowMessages.Size = new System.Drawing.Size(430, 500);
+            this.flowMessages.Size = new System.Drawing.Size(422, 492);
             this.flowMessages.TabIndex = 0;
             this.flowMessages.WrapContents = false;
             // 
             // pnlInput
             // 
             this.pnlInput.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
+            this.pnlInput.Controls.Add(this.btnEmoji);
             this.pnlInput.Controls.Add(this.btnSendFile);
             this.pnlInput.Controls.Add(this.btnSend);
             this.pnlInput.Controls.Add(this.txtMessage);
             this.pnlInput.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlInput.Location = new System.Drawing.Point(0, 500);
+            this.pnlInput.Location = new System.Drawing.Point(0, 492);
             this.pnlInput.Name = "pnlInput";
-            this.pnlInput.Size = new System.Drawing.Size(430, 50);
+            this.pnlInput.Size = new System.Drawing.Size(422, 50);
             this.pnlInput.TabIndex = 1;
-            // 
-            // btnSendFile
-            // 
-            this.btnSendFile.BorderRadius = 15;
-            this.btnSendFile.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnSendFile.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnSendFile.ForeColor = System.Drawing.Color.White;
-            this.btnSendFile.Location = new System.Drawing.Point(6, 8);
-            this.btnSendFile.Name = "btnSendFile";
-            this.btnSendFile.Size = new System.Drawing.Size(35, 36);
-            this.btnSendFile.TabIndex = 0;
-            this.btnSendFile.Text = "📎";
-            this.btnSendFile.Click += new System.EventHandler(this.btnSendFile_Click);
-            // 
-            // btnSend
-            // 
-            this.btnSend.BorderRadius = 15;
-            this.btnSend.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnSend.ForeColor = System.Drawing.Color.White;
-            this.btnSend.Location = new System.Drawing.Point(365, 8);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(50, 36);
-            this.btnSend.TabIndex = 1;
-            this.btnSend.Text = "➤";
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // txtMessage
             // 
+            this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMessage.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(50)))));
             this.txtMessage.BorderRadius = 15;
             this.txtMessage.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -321,12 +279,12 @@
             this.txtMessage.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(45)))), ((int)(((byte)(65)))));
             this.txtMessage.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtMessage.ForeColor = System.Drawing.Color.White;
-            this.txtMessage.Location = new System.Drawing.Point(47, 8);
+            this.txtMessage.Location = new System.Drawing.Point(6, 8);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.PlaceholderText = "Type a message...";
             this.txtMessage.SelectedText = "";
-            this.txtMessage.Size = new System.Drawing.Size(310, 36);
+            this.txtMessage.Size = new System.Drawing.Size(281, 36);
             this.txtMessage.TabIndex = 2;
             this.txtMessage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtMessage_KeyPress);
             // 
@@ -336,10 +294,79 @@
             this.guna2DragControl1.TargetControl = this.pnlHeader;
             this.guna2DragControl1.UseTransparentDrag = true;
             // 
+            // btnEmoji
+            // 
+            this.btnEmoji.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnEmoji.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnEmoji.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnEmoji.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnEmoji.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnEmoji.FillColor = System.Drawing.Color.Transparent;
+            this.btnEmoji.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnEmoji.ForeColor = System.Drawing.Color.White;
+            this.btnEmoji.Image = global::BasicChat.Properties.Resources.happy;
+            this.btnEmoji.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnEmoji.Location = new System.Drawing.Point(294, 8);
+            this.btnEmoji.Name = "btnEmoji";
+            this.btnEmoji.Size = new System.Drawing.Size(36, 36);
+            this.btnEmoji.TabIndex = 3;
+            // 
+            // btnSendFile
+            // 
+            this.btnSendFile.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnSendFile.BorderRadius = 15;
+            this.btnSendFile.FillColor = System.Drawing.Color.Transparent;
+            this.btnSendFile.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSendFile.ForeColor = System.Drawing.Color.White;
+            this.btnSendFile.Image = ((System.Drawing.Image)(resources.GetObject("btnSendFile.Image")));
+            this.btnSendFile.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnSendFile.Location = new System.Drawing.Point(336, 8);
+            this.btnSendFile.Name = "btnSendFile";
+            this.btnSendFile.Size = new System.Drawing.Size(35, 36);
+            this.btnSendFile.TabIndex = 0;
+            this.btnSendFile.Click += new System.EventHandler(this.btnSendFile_Click);
+            // 
+            // btnSend
+            // 
+            this.btnSend.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.btnSend.BorderRadius = 15;
+            this.btnSend.FillColor = System.Drawing.Color.Transparent;
+            this.btnSend.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSend.ForeColor = System.Drawing.Color.White;
+            this.btnSend.Image = global::BasicChat.Properties.Resources.send;
+            this.btnSend.Location = new System.Drawing.Point(377, 8);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(38, 36);
+            this.btnSend.TabIndex = 1;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
+            // pbGroupIconRight
+            // 
+            this.pbGroupIconRight.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(125)))), ((int)(((byte)(93)))));
+            this.pbGroupIconRight.ImageRotate = 0F;
+            this.pbGroupIconRight.Location = new System.Drawing.Point(15, 70);
+            this.pbGroupIconRight.Name = "pbGroupIconRight";
+            this.pbGroupIconRight.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.pbGroupIconRight.Size = new System.Drawing.Size(40, 40);
+            this.pbGroupIconRight.TabIndex = 3;
+            this.pbGroupIconRight.TabStop = false;
+            this.pbGroupIconRight.Click += new System.EventHandler(this.pbGroupIconRight_Click);
+            // 
+            // pbAppIcon
+            // 
+            this.pbAppIcon.FillColor = System.Drawing.Color.MediumSlateBlue;
+            this.pbAppIcon.ImageRotate = 0F;
+            this.pbAppIcon.Location = new System.Drawing.Point(16, 12);
+            this.pbAppIcon.Name = "pbAppIcon";
+            this.pbAppIcon.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.pbAppIcon.Size = new System.Drawing.Size(40, 40);
+            this.pbAppIcon.TabIndex = 0;
+            this.pbAppIcon.TabStop = false;
+            // 
             // FormChat
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(36)))), ((int)(((byte)(53)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(30)))), ((int)(((byte)(46)))));
             this.ClientSize = new System.Drawing.Size(898, 600);
             this.Controls.Add(this.pnlChatArea);
             this.Controls.Add(this.pnlGroupList);
@@ -348,19 +375,20 @@
             this.Controls.Add(this.pnlSidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormChat";
+            this.Padding = new System.Windows.Forms.Padding(4);
             this.Text = "LanChat";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormChat_FormClosing);
             this.pnlSidebar.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbAppIcon)).EndInit();
             this.pnlRightInfo.ResumeLayout(false);
             this.pnlRightInfo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbGroupIconRight)).EndInit();
             this.pnlHeader.ResumeLayout(false);
             this.pnlHeaderContent.ResumeLayout(false);
             this.pnlHeaderContent.PerformLayout();
             this.pnlGroupList.ResumeLayout(false);
             this.pnlChatArea.ResumeLayout(false);
             this.pnlInput.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbGroupIconRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbAppIcon)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -400,5 +428,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowMembers;
         private System.Windows.Forms.Label lblMemberCount;
         private Guna.UI2.WinForms.Guna2DragControl guna2DragControl1;
+        private Guna.UI2.WinForms.Guna2Button btnEmoji;
     }
 }

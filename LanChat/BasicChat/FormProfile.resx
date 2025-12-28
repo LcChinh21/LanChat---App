@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,54 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="guna2BorderlessForm1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="guna2Elipse1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>107</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="btnSendFile.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        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
-        08lMDcKcwf8AAAAASUVORK5CYII=
-</value>
-  </data>
   <metadata name="guna2DragControl1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>225, 17</value>
+    <value>181, 17</value>
   </metadata>
 </root>
