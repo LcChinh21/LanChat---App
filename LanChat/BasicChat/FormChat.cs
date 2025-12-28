@@ -276,11 +276,9 @@ namespace BasicChat
                     string hTarget = msg.Receiver; 
                     if (msg.HistoryList != null)
                     {
-                        // Clear current view first if it matches
                         if ((_isGroupChat && _currentGroup == hTarget) || (!_isGroupChat && _selectedUser == hTarget))
                             flowMessages.Controls.Clear();
 
-                        // Populate
                         foreach (var m in msg.HistoryList)
                         {
                             bool isMe = m.Sender == _currentUser;
@@ -289,7 +287,6 @@ namespace BasicChat
                     }
                     break;
                 case MessageType.ADD_MEMBER_RESPONSE:
-                    // Cập nhật lại danh sách member nếu đang mở group đó
                     if (_currentGroup == msg.Content)
                     {
                         if (!_groupMembers.ContainsKey(msg.Content)) _groupMembers[msg.Content] = new List<string>();
@@ -298,8 +295,7 @@ namespace BasicChat
                     }
                     break;
                 case MessageType.GET_ALL_USERS_RESPONSE:
-                    // Ở đây bạn có thể load user list vào UI nếu muốn (ví dụ tạo 1 tab Users riêng)
-                    // Hiện tại mình chỉ tập trung vào Groups như UI mẫu
+                    
                     break;
                 case MessageType.FILE_SEND:
                     ProcessReceivedFile(msg);
