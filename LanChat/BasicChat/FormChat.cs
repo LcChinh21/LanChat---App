@@ -757,15 +757,12 @@ namespace BasicChat
                             }
                             catch { return; } // Ảnh lỗi thì bỏ qua
 
-                            // 1. Cập nhật Sidebar (Danh sách User/Group)
                             foreach (Control c in flowGroups.Controls)
                             {
-                                // Kiểm tra Tag của nút xem có đúng user không
                                 if (c is Guna2Button btn && btn.Tag != null && btn.Tag.ToString() == targetUser)
                                 {
                                     btn.Image = newAvatar;
                                 }
-                                // Nếu là Group panel (trong trường hợp bạn hiện avatar user trong list group)
                                 else if (c is Guna2GradientPanel pnl && pnl.Tag != null && pnl.Tag.ToString() == targetUser)
                                 {
                                     foreach (Control child in pnl.Controls)
@@ -775,7 +772,6 @@ namespace BasicChat
                                 }
                             }
 
-                            // 2. Cập nhật Right Panel (Danh sách thành viên bên phải)
                             foreach (Control pnl in flowMembers.Controls)
                             {
                                 foreach (Control child in pnl.Controls)
@@ -790,16 +786,27 @@ namespace BasicChat
                                 }
                             }
 
-                            // 3. Cập nhật icon chính mình (Góc trên trái) nếu là mình đổi
                             if (targetUser == _currentUser)
                             {
                                 pbAppIcon.Image = newAvatar;
                             }
 
-                            // 4. (Tùy chọn) Cập nhật icon trong khung chat hiện tại (nếu đang chat với người đó)
                             if (!_isGroupChat && _selectedUser == targetUser)
                             {
                                 pbGroupIconRight.Image = newAvatar; // Icon to bên phải
+                            }
+
+                            foreach (Control container in flowMessages.Controls)
+                            {
+                                foreach (Control child in container.Controls)
+                                {
+                                    if (child is Guna2CirclePictureBox pb &&
+                                        pb.Tag != null &&
+                                        pb.Tag.ToString() == targetUser)
+                                    {
+                                        pb.Image = newAvatar;
+                                    }
+                                }
                             }
                         }));
                         break;
@@ -817,16 +824,12 @@ namespace BasicChat
                     break;
                 case MessageType.GET_RECENT_USERS_RESPONSE:
                     {
-                        // 1. Lấy chuỗi danh sách user (Ví dụ: "UserA,UserB,UserC")
                         string hcontent = msg.Content;
 
-                        // 2. Tách chuỗi thành mảng các tên (Array String)
-                        // Nếu chuỗi rỗng thì tạo mảng rỗng để tránh lỗi
                         string[] users = string.IsNullOrEmpty(hcontent)
                                          ? new string[0]
                                          : hcontent.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                        // 3. Gọi hàm vẽ giao diện (Hàm này sẽ tự xử lý Invoke/Thread safe bên trong)
                         RenderUserChatList(users);
 
                         break;
@@ -976,12 +979,9 @@ namespace BasicChat
             }
             if (string.IsNullOrEmpty(_selectedUser)) return;
 
-            // Invisible
             lblGroupNameRight.Text = _selectedUser;
             pbGroupIconRight.Image = AvatarGenerator.Generate(_selectedUser);
             lblMemberCount.Visible = false; // Ẩn số lượng thành viên đi
-
-            // --- HIỂN THỊ PROFILE USER ---
 
             // 1. Tạo Panel chứa Avatar to
             Guna2Panel pnlProfile = new Guna2Panel();
@@ -993,6 +993,7 @@ namespace BasicChat
             pbBig.Size = new Size(80, 80);
             pbBig.Location = new Point((pnlProfile.Width - 80) / 2, 10); // Căn giữa
             pbBig.SizeMode = PictureBoxSizeMode.StretchImage;
+            pbBig.Tag = _selectedUser;
             pbBig.Image = AvatarGenerator.Generate(_selectedUser, 80, 80); // Dùng lại Generator
 
             // Tên User to
@@ -1033,11 +1034,17 @@ namespace BasicChat
         private void AddMessageBubble(string sender, string message, bool isMe, DateTime time)
         {
             Guna2Panel pnlMsg = new Guna2Panel();
-            pnlMsg.AutoSize = true;
-            pnlMsg.MaximumSize = new Size(flowMessages.Width - 30, 0);
+
+            pnlMsg.AutoSize = false;
+
+            // Đặt chiều rộng panel bằng chiều rộng khung chat (trừ đi thanh cuộn)
+            pnlMsg.Size = new Size(flowMessages.ClientSize.Width - 25, 0);
+
             pnlMsg.Padding = new Padding(5);
             pnlMsg.Margin = new Padding(0, 0, 0, 10);
             pnlMsg.FillColor = Color.Transparent;
+
+            pnlMsg.Tag = isMe;
 
             if (!isMe)
             {
@@ -1046,17 +1053,17 @@ namespace BasicChat
                 pbAvatar.Image = AvatarGenerator.Generate(sender);
                 pbAvatar.SizeMode = PictureBoxSizeMode.StretchImage;
                 pbAvatar.Location = new Point(0, 0);
+                pbAvatar.Tag = sender; // Tag này dùng để update avatar sau này
                 pnlMsg.Controls.Add(pbAvatar);
             }
 
-            Guna2Button btnBubble = new Guna2Button(); 
+            Guna2Button btnBubble = new Guna2Button();
             btnBubble.Text = message;
             btnBubble.Font = new Font("Segoe UI", 10);
             btnBubble.ForeColor = Color.White;
             btnBubble.TextAlign = HorizontalAlignment.Left;
             btnBubble.AutoRoundedCorners = true;
             btnBubble.BorderRadius = 10;
-
             btnBubble.FillColor = isMe ? _colorSelected2 : _colorUnselected;
 
             Size textSize = TextRenderer.MeasureText(message, btnBubble.Font, new Size(flowMessages.Width - 100, 0), TextFormatFlags.WordBreak);
@@ -1064,12 +1071,11 @@ namespace BasicChat
 
             if (isMe)
             {
-                btnBubble.Location = new Point(pnlMsg.MaximumSize.Width - btnBubble.Width, 0);
+                btnBubble.Location = new Point(pnlMsg.Width - btnBubble.Width, 0);
             }
             else
             {
-                btnBubble.Location = new Point(45, 10); 
-
+                btnBubble.Location = new Point(45, 10);
                 Label lblSenderName = new Label();
                 lblSenderName.Text = sender;
                 lblSenderName.ForeColor = Color.Gray;
@@ -1079,6 +1085,8 @@ namespace BasicChat
                 pnlMsg.Controls.Add(lblSenderName);
             }
 
+            pnlMsg.Height = btnBubble.Height + 20;
+
             pnlMsg.Controls.Add(btnBubble);
             flowMessages.Controls.Add(pnlMsg);
             flowMessages.ScrollControlIntoView(pnlMsg);
@@ -1086,37 +1094,46 @@ namespace BasicChat
         //fix lỗi bong bóng chat khi resize form
         private void AdjustChatBubbles()
         {
+            if (flowMessages.Controls.Count == 0) return;
+
             flowMessages.SuspendLayout();
             int newContainerWidth = flowMessages.ClientSize.Width - 25;
 
             foreach (Control control in flowMessages.Controls)
             {
-                if (control is Panel pnlContainer)
+                // Chỉ xử lý các Panel tin nhắn (Guna2Panel)
+                if (control is Guna2Panel pnlMsg)
                 {
-                    pnlContainer.Width = newContainerWidth;
+                    // 1. Cập nhật chiều rộng Panel bằng chiều rộng khung chat mới
+                    pnlMsg.Width = newContainerWidth;
 
-                    foreach (Control child in pnlContainer.Controls)
+                    // 2. Tìm bong bóng chat (btnBubble) bên trong Panel
+                    Guna2Button btnBubble = null;
+                    foreach (Control child in pnlMsg.Controls)
                     {
-                        if (child is Guna.UI2.WinForms.Guna2Panel pnlBubble && pnlBubble.Tag is bool isMe)
+                        if (child is Guna2Button)
                         {
-                            pnlBubble.MaximumSize = new Size((int)(newContainerWidth * 0.7), 0);
-
-                            if (isMe)
-                            {
-                                pnlBubble.Location = new Point(pnlContainer.Width - pnlBubble.Width, 0);
-                            }
-                            else
-                            {
-                                int currentY = pnlBubble.Location.Y;
-                                pnlBubble.Location = new Point(0, currentY);
-                            }
+                            btnBubble = (Guna2Button)child;
+                            break;
                         }
+                    }
+
+                    // 3. Nếu tìm thấy bong bóng và Panel có Tag (chứa biến isMe)
+                    if (btnBubble != null && pnlMsg.Tag != null)
+                    {
+                        bool isMe = (bool)pnlMsg.Tag; // Lấy lại giá trị isMe từ Tag
+
+                        if (isMe)
+                        {
+                            // Nếu là mình: Tính lại vị trí X để luôn sát lề phải
+                            btnBubble.Location = new Point(newContainerWidth - btnBubble.Width, btnBubble.Location.Y);
+                        }
+                        // Nếu là người khác: Giữ nguyên vị trí (bên trái), không cần chỉnh
                     }
                 }
             }
 
-            flowMessages.ResumeLayout();
-            flowMessages.PerformLayout();
+            flowMessages.ResumeLayout(true);
         }
 
         protected override void OnResize(EventArgs e)

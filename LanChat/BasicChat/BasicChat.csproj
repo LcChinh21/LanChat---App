@@ -152,6 +152,7 @@
   <ItemGroup>
     <None Include="Resources\send.png" />
     <None Include="Resources\happy.png" />
+    <None Include="Resources\add.png" />
     <Content Include="telegram.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
